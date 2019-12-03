@@ -2,6 +2,9 @@ from manimlib.imports import *
 #Note that manim internally runs update source functions multiple times in order to render the update. This means any internal variables
 #are reset every frame. Therefore, all position and angle and similar variables that must remain unreset between updates must remain outside the function.
 # t_offset = 0
+
+
+
 initposEl=0
 class RutherfordsModel(Scene):
     def construct(self):
@@ -24,9 +27,61 @@ class RutherfordsModel(Scene):
         electron.add_updater(update_electron)
         self.wait(9)
 
-class ThomsonModel(Scene):
-    def construct(self):
-        shell=Sphere(stroke_color=WHITE,checkerboard_colors=[None,None])
+class ThomsonsModel(SpecialThreeDScene):
+    CONFIG = {
+        "R_color": YELLOW,
+        "space_out_factor": 1.15,
+    }
 
-        self.play(GrowFromCenter(shell))
-        self.play(shell.)
+    def construct(self):
+        self.showPlumPudding()
+
+    def showPlumPudding(self):
+        
+        PlumPudding = Sphere(radius=1.5,stroke_width=0,stroke_color=BLACK)
+        PlumPudding.set_fill(REP_GREEN, opacity=0.5)
+        PlumPudding.add_updater(lambda s, dt: s.rotate(0.1 * dt, axis=OUT))
+        
+        pieces = PlumPudding.deepcopy()
+        electronlist=[]
+        for submobjects in pieces:
+            electron=Sphere(radius=DEFAULT_DOT_RADIUS)
+            electron.set_fill(YELLOW, opacity=1)
+            electron.move_to(submobjects.get_center())
+            electronlist.append(electron)
+            print("Done")
+            
+        pieces.space_out_submobjects(1.5)
+        pieces.shift(OUT)
+        pieces.set_color(REP_GREEN)
+
+
+
+        self.set_camera_orientation(
+            phi=70 * DEGREES,
+            theta=-90 * DEGREES,
+        )
+
+        self.play(
+            ShowCreation(PlumPudding,run_time=1.5),
+        )
+        for electrons in electronlist:
+            self.add(electrons)
+        #Comment the below play statement to avoid expanding the sphere sectors.
+        self.play(
+            Transform(
+                PlumPudding, pieces,
+                rate_func=there_and_back_with_pause,
+                run_time=2
+            )
+        )
+        self.play(LaggedStartMap(
+            UpdateFromAlphaFunc, PlumPudding,
+            lambda mob: (mob, lambda m, a: m.set_fill(
+                color=interpolate_color(REP_GREEN, YELLOW,a),
+                opacity=interpolate(0.5, 1, a)
+            )),
+            rate_func=there_and_back,
+            lag_ratio=0.1,
+            run_time=4
+        ))
