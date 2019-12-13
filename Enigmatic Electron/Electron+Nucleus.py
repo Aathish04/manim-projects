@@ -38,18 +38,11 @@ class ThomsonsModel(SpecialThreeDScene):
 
     def showPlumPudding(self):
         
-        PlumPudding = Sphere(radius=1.5,stroke_width=0,stroke_color=BLACK)
+        PlumPudding = Sphere(radius=1.5,stroke_width=0.5,stroke_color=BLACK)
         PlumPudding.set_fill(REP_GREEN, opacity=0.5)
         PlumPudding.add_updater(lambda s, dt: s.rotate(0.1 * dt, axis=OUT))
         
         pieces = PlumPudding.deepcopy()
-        electronlist=[]
-        for submobjects in pieces:
-            electron=Sphere(radius=DEFAULT_DOT_RADIUS)
-            electron.set_fill(YELLOW, opacity=1)
-            electron.move_to(submobjects.get_center())
-            electronlist.append(electron)
-            print("Done")
             
         pieces.space_out_submobjects(1.5)
         pieces.shift(OUT)
@@ -65,8 +58,6 @@ class ThomsonsModel(SpecialThreeDScene):
         self.play(
             ShowCreation(PlumPudding,run_time=1.5),
         )
-        for electrons in electronlist:
-            self.add(electrons)
         #Comment the below play statement to avoid expanding the sphere sectors.
         self.play(
             Transform(
