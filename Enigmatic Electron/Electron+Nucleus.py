@@ -1,12 +1,11 @@
 from manimlib.imports import *
+from random import randrange
 #Note that manim internally runs update source functions multiple times in order to render the update. This means any internal variables
 #are reset every frame. Therefore, all position and angle and similar variables that must remain unreset between updates must remain outside the function.
 # t_offset = 0
 
-
-
-initposEl=0
 class RutherfordsModel(Scene):
+    initposEl=0    
     def construct(self):
         
         nucleus= Dot(color = BLUE).center()
@@ -28,51 +27,31 @@ class RutherfordsModel(Scene):
         self.wait(9)
 
 class ThomsonsModel(SpecialThreeDScene):
-    CONFIG = {
-        "R_color": YELLOW,
-        "space_out_factor": 1.15,
-    }
+        
+    def get_surface(self, surface,shade_color,opacity=0.2):
+        result = surface.copy()
+        result.set_fill(shade_color, opacity=opacity)
+        result.set_stroke(WHITE, width=0.5, opacity=opacity)
+        return result
 
     def construct(self):
-        self.showPlumPudding()
-
-    def showPlumPudding(self):
+        electronlist=[]
+        for i in range(0,20):
+            electron=self.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
+            electron.move_to([(randrange(-14,14,1))/10,(randrange(-14,14,1))/10,(randrange(-14,14,1))/10])
+            electronlist.append(electron)
         
-        PlumPudding = Sphere(radius=1.5,stroke_width=0.5,stroke_color=BLACK)
-        PlumPudding.set_fill(REP_GREEN, opacity=0.5)
-        PlumPudding.add_updater(lambda s, dt: s.rotate(0.1 * dt, axis=OUT))
+        positivecloud = self.get_surface(surface = self.get_sphere(),shade_color=BLUE)
+        positivecloud.set_stroke(width=0)
+        axes = self.get_axes()
         
-        pieces = PlumPudding.deepcopy()
-            
-        pieces.space_out_submobjects(1.5)
-        pieces.shift(OUT)
-        pieces.set_color(REP_GREEN)
+        atom=VGroup(*electronlist,positivecloud)
 
-
-
-        self.set_camera_orientation(
-            phi=70 * DEGREES,
-            theta=-90 * DEGREES,
+        self.add(positivecloud,axes)
+        for electron in electronlist:
+            self.add(electron)
+        
+        self.move_camera(
+            **self.default_angled_camera_position,
+            run_time=2,
         )
-
-        self.play(
-            ShowCreation(PlumPudding,run_time=1.5),
-        )
-        #Comment the below play statement to avoid expanding the sphere sectors.
-        self.play(
-            Transform(
-                PlumPudding, pieces,
-                rate_func=there_and_back_with_pause,
-                run_time=2
-            )
-        )
-        self.play(LaggedStartMap(
-            UpdateFromAlphaFunc, PlumPudding,
-            lambda mob: (mob, lambda m, a: m.set_fill(
-                color=interpolate_color(REP_GREEN, YELLOW,a),
-                opacity=interpolate(0.5, 1, a)
-            )),
-            rate_func=there_and_back,
-            lag_ratio=0.1,
-            run_time=4
-        ))
