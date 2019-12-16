@@ -26,7 +26,12 @@ class RutherfordsModel(Scene):
         self.wait(9)
 
 class ThomsonsModel(SpecialThreeDScene):
-        
+
+    def polar_to_cartesian(self,pol_ang,azim_ang,radius):
+        return np.array((radius*np.sin(pol_ang) * np.cos(azim_ang),
+                            radius*np.sin(pol_ang) * np.sin(azim_ang),
+                            radius*np.cos(pol_ang)))
+    
     def get_surface(self, surface,shade_color,opacity=0.3):
         result = surface.copy()
         result.set_fill(shade_color, opacity=opacity)
@@ -34,22 +39,21 @@ class ThomsonsModel(SpecialThreeDScene):
         return result
 
     def Make_Atom(self):
+            
+        def get_electron_coordinates(inner_radius):
+            pol_ang= np.random.uniform(0, 2*PI)
+            azi_ang= np.random.uniform(0, 2*PI)
+            return self.polar_to_cartesian(pol_ang,azi_ang,inner_radius)   
+        
         electronlist=[]
-        electron_count=3
-
-        # def get_electron_coordinates(sphere_radius):
-
+        electron_count=100
 
         while electron_count>0:
             electron=self.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
             
-            ps_x=randrange(-20,20,1)/10
-            ps_y=randrange(-20,20,1)/10
-            ps_z=randrange(-20,20,1)/10
-            
-            electron_position=[ps_x,ps_y,ps_z]
-
-            DistFromOrigin=np.sqrt((ps_x**2)+(ps_y**2)+(ps_z**2))
+            # electron_position=[ps_x,ps_y,ps_z]
+            electron_position=get_electron_coordinates(1)
+            DistFromOrigin=1
             
             if DistFromOrigin<2:
                 electron.move_to(electron_position)
