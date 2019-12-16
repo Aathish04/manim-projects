@@ -3,9 +3,8 @@ from random import randrange
 #Note that manim internally runs update source functions multiple times in order to render the update. This means any internal variables
 #are reset every frame. Therefore, all position and angle and similar variables that must remain unreset between updates must remain outside the function.
 # t_offset = 0
-
+initposEl=0
 class RutherfordsModel(Scene):
-    initposEl=0    
     def construct(self):
         
         nucleus= Dot(color = BLUE).center()
@@ -28,7 +27,7 @@ class RutherfordsModel(Scene):
 
 class ThomsonsModel(SpecialThreeDScene):
         
-    def get_surface(self, surface,shade_color,opacity=0.2):
+    def get_surface(self, surface,shade_color,opacity=0.3):
         result = surface.copy()
         result.set_fill(shade_color, opacity=opacity)
         result.set_stroke(WHITE, width=0.5, opacity=opacity)
@@ -36,12 +35,23 @@ class ThomsonsModel(SpecialThreeDScene):
 
     def construct(self):
         electronlist=[]
-        for i in range(0,20):
-            electron=self.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
-            electron.move_to([(randrange(-14,14,1))/10,(randrange(-14,14,1))/10,(randrange(-14,14,1))/10])
-            electronlist.append(electron)
+        ENum=100
+
+        while ENum>0:
+            rad=randrange(8,30,3)/100
+            electron=self.get_surface(Sphere(radius=rad),shade_color=YELLOW,opacity=1)
+            ps_x=randrange(-20,20,1)/10
+            ps_y=randrange(-20,20,1)/10
+            ps_z=randrange(-20,20,1)/10
+            DistFromOrigin=np.sqrt((ps_x**2)+(ps_y**2)+(ps_z**2))
+            if DistFromOrigin<2:
+                electron.move_to([ps_x,ps_y,ps_z])
+                electronlist.append(electron)
+                ENum-=1
+            else:
+                continue
         
-        positivecloud = self.get_surface(surface = self.get_sphere(),shade_color=BLUE)
+        positivecloud = self.get_surface(surface = self.get_sphere(radius=2.4),shade_color=DARK_BLUE)
         positivecloud.set_stroke(width=0)
         axes = self.get_axes()
         
@@ -55,3 +65,5 @@ class ThomsonsModel(SpecialThreeDScene):
             **self.default_angled_camera_position,
             run_time=2,
         )
+        self.begin_ambient_camera_rotation()
+        self.wait(8)
