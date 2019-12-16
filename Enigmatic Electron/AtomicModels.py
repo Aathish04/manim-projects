@@ -33,21 +33,28 @@ class ThomsonsModel(SpecialThreeDScene):
         result.set_stroke(WHITE, width=0.5, opacity=opacity)
         return result
 
-    def construct(self):
+    def Make_Atom(self):
         electronlist=[]
-        ENum=100
+        electron_count=3
 
-        while ENum>0:
-            rad=randrange(8,30,3)/100
-            electron=self.get_surface(Sphere(radius=rad),shade_color=YELLOW,opacity=1)
+        # def get_electron_coordinates(sphere_radius):
+
+
+        while electron_count>0:
+            electron=self.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
+            
             ps_x=randrange(-20,20,1)/10
             ps_y=randrange(-20,20,1)/10
             ps_z=randrange(-20,20,1)/10
+            
+            electron_position=[ps_x,ps_y,ps_z]
+
             DistFromOrigin=np.sqrt((ps_x**2)+(ps_y**2)+(ps_z**2))
+            
             if DistFromOrigin<2:
-                electron.move_to([ps_x,ps_y,ps_z])
+                electron.move_to(electron_position)
                 electronlist.append(electron)
-                ENum-=1
+                electron_count-=1
             else:
                 continue
         
@@ -57,9 +64,10 @@ class ThomsonsModel(SpecialThreeDScene):
         
         atom=VGroup(*electronlist,positivecloud)
 
-        self.add(positivecloud,axes)
-        for electron in electronlist:
-            self.add(electron)
+        self.add(atom,axes)
+
+    def construct(self):
+        self.Make_Atom()
         
         self.move_camera(
             **self.default_angled_camera_position,
