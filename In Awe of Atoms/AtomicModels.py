@@ -74,9 +74,11 @@ class ThomsonsModel(SpecialThreeDScene):
         
         def get_electron_coordinates_list(electron_count):
             #Special Edge Case for 2 Electrons.
-            if electron_count==2:
+            if electron_count==1: #Edge case for Hydrogen. DO NOT RUN if shell is greater than 1
+                print("1 point generated")
+                return([[0,0,0]])
+            elif electron_count==2: #Edge case for 2 electrons.
                 print("2 points generated")
-                print("Got coordinates for 2 Points. Don't worry about location.") #The position assigning algorithm takes care of scale and radius and stuff
                 return([[0,0,1],[0,0,-1]])
             else:
                 #Algorithm used was mostly  taken from https://www.cmu.edu/biolphys/deserno/pdf/sphere_equi.pdf . Explanations in code added by me.
@@ -112,22 +114,20 @@ class ThomsonsModel(SpecialThreeDScene):
                         electron_coordinate=self.spherical_to_cartesian(pol_ang, azim_ang,inner_radius) #Converts the recieved spherical coordinates to cartesian so Manim can easily handle them.
                         electron_coordinate_list.append(electron_coordinate) #Add this coordinate to the electron_coordinate_list
                 
-                        print("Got coordinates: ",electron_coordinate) #Print the coordinate recieved.
+                        #print("Got coordinates: ",electron_coordinate) #Print the coordinate recieved.
                 
                 print(len(electron_coordinate_list)," points generated.") #Print the amount of electrons will exist. Comment these two lines out if you don't need the data.
                 return electron_coordinate_list 
         
         
         shell_config={ #gives info about each shell and electrons inside.
-            "shell_1":{"radius":1.0,"electron_count":3,"colour":YELLOW_C},
-            "shell_2":{"radius":1.5,"electron_count":0,"colour":WHITE}
+            "shell_1":{"radius":1.0,"electron_count":4,"colour":YELLOW_C},
+            "shell_2":{"radius":1.5,"electron_count":4,"colour":YELLOW_B}
         }
-        electron_dict={ #Holds Electrons
-            "shell_1":[],
-            "shell_2":[]
-        }
+        electron_dict={} #This holds all the electrons in the format {"shell_n":electron}
         
         for shell in shell_config:
+            electron_dict[shell]=[]
             tempVGroup=VGroup()
             if shell_config[shell]["electron_count"]==0:
                 continue
@@ -135,11 +135,12 @@ class ThomsonsModel(SpecialThreeDScene):
                 for electron_coordinate in get_electron_coordinates_list(shell_config[shell]["electron_count"]): #for each electron coordinate in get_electron_coordinates where the radius of the inner circle is 1 and electron_count electrons are needed:
                     electron=self.get_surface(Sphere(radius=0.08),shade_color=shell_config[shell]["colour"],opacity=1)
                     electron.move_to(electron_coordinate)
-                    electron_dict[str(shell)].append(electron)
+                    electron_dict[shell].append(electron)
             tempVGroup=VGroup(*electron_dict[shell])
             tempVGroup.space_out_submobjects(shell_config[str(shell)]["radius"])
 
-
+        #print(electron_dict)
+        
         positivecloud = self.get_surface(surface = self.get_sphere(radius=2),shade_color=DARK_BLUE)
         positivecloud.set_stroke(width=0)
         axes = self.get_axes()
