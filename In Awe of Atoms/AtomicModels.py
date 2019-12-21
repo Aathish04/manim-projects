@@ -1,12 +1,28 @@
 from manimlib.imports import *
-#Note that manim internally runs update source functions multiple times in order to render the update. This means any internal variables
-#are reset every frame. Therefore, all position and angle and similar variables that must remain unreset between updates must remain outside the function.
-# t_offset = 0
-initposEl=0
-class RutherfordsModel(Scene):
+
+class Tools():
+    def spherical_to_cartesian(pol_ang,azim_ang,radius): #This function converts given spherical coordinates (theta, phi and radius) to cartesian coordinates.
+        return np.array((radius*np.sin(pol_ang) * np.cos(azim_ang),
+                            radius*np.sin(pol_ang) * np.sin(azim_ang),
+                            radius*np.cos(pol_ang))
+                            )
+    def get_surface(surface,shade_color,opacity=0.3):
+        result = surface.copy()
+        result.set_fill(shade_color, opacity=opacity)
+        result.set_stroke(WHITE, width=0.5, opacity=opacity)
+        return result
+    
+    def flatten(inlist):
+        outlist=[]
+        for element in inlist:
+            for sub_element in element:
+                outlist.append(sub_element)
+        return outlist
+
+class RutherfordsModel(SpecialThreeDScene):
     def construct(self):
         
-        nucleus= Dot(color = BLUE).center()
+        nucleus= Sphere(color = BLUE,radius=0.08,).center()
 
         orbit = Circle(color=WHITE,stroke_width=1,center=nucleus)
         
@@ -25,25 +41,6 @@ class RutherfordsModel(Scene):
         self.wait(9)
 
 class ThomsonsModel(SpecialThreeDScene):
-
-    def spherical_to_cartesian(self,pol_ang,azim_ang,radius): #This function converts given spherical coordinates (theta, phi and radius) to cartesian coordinates.
-        return np.array((radius*np.sin(pol_ang) * np.cos(azim_ang),
-                            radius*np.sin(pol_ang) * np.sin(azim_ang),
-                            radius*np.cos(pol_ang))
-                            )
-
-    def get_surface(self, surface,shade_color,opacity=0.3):
-        result = surface.copy()
-        result.set_fill(shade_color, opacity=opacity)
-        result.set_stroke(WHITE, width=0.5, opacity=opacity)
-        return result
-
-    def flatten(self,inlist):
-        outlist=[]
-        for element in inlist:
-            for sub_element in element:
-                outlist.append(sub_element)
-        return outlist
     
     def Make_Atom(self):
         
@@ -57,18 +54,18 @@ class ThomsonsModel(SpecialThreeDScene):
         # def get_random_electron_coordinates(inner_radius):
         #     pol_ang= np.random.uniform(0, 2*PI)
         #     azi_ang= np.random.uniform(0, 2*PI)
-        #     return self.spherical_to_cartesian(pol_ang,azi_ang,inner_radius)
+        #     return Tools.spherical_to_cartesian(pol_ang,azi_ang,inner_radius)
 
         # # The following code generates random electron postions, but only if used in conjucntion with get_random_electron_coordinates().
         # # Uncomment them both, and comment out the other electron generation functions to enable randomization.
         # for i in range(0,electron_count):
-        #     electron=self.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
+        #     electron=Tools.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
         #     electron_position=get_random_electron_coordinates(1)
         #     electron.move_to(electron_position)
         #     electronlist.append(electron)
 
         # for electron_coordinate in get_electron_coordinates_list(electron_count): #for each electron coordinate in get_electron_coordinates where the radius of the inner circle is 1 and electron_count electrons are needed:
-        #     electron=self.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
+        #     electron=Tools.get_surface(Sphere(radius=0.08),shade_color=YELLOW,opacity=1)
         #     electron.move_to(electron_coordinate)
         #     electronlist.append(electron)
         
@@ -111,7 +108,7 @@ class ThomsonsModel(SpecialThreeDScene):
                         
                         azim_ang=(2*PI)*(electron_num_long)/possible_count_of_longs #This gets the azimuthal angle as 2PI*longitudenumber/totalnumberoflongitudes
                         
-                        electron_coordinate=self.spherical_to_cartesian(pol_ang, azim_ang,inner_radius) #Converts the recieved spherical coordinates to cartesian so Manim can easily handle them.
+                        electron_coordinate=Tools.spherical_to_cartesian(pol_ang, azim_ang,inner_radius) #Converts the recieved spherical coordinates to cartesian so Manim can easily handle them.
                         electron_coordinate_list.append(electron_coordinate) #Add this coordinate to the electron_coordinate_list
                 
                         #print("Got coordinates: ",electron_coordinate) #Print the coordinate recieved.
@@ -133,7 +130,7 @@ class ThomsonsModel(SpecialThreeDScene):
                 continue
             else:
                 for electron_coordinate in get_electron_coordinates_list(shell_config[shell]["electron_count"]): #for each electron coordinate in get_electron_coordinates where the radius of the inner circle is 1 and electron_count electrons are needed:
-                    electron=self.get_surface(Sphere(radius=0.08),shade_color=shell_config[shell]["colour"],opacity=1)
+                    electron=Tools.get_surface(Sphere(radius=0.08),shade_color=shell_config[shell]["colour"],opacity=1)
                     electron.move_to(electron_coordinate)
                     electron_dict[shell].append(electron)
             tempVGroup=VGroup(*electron_dict[shell])
@@ -141,11 +138,11 @@ class ThomsonsModel(SpecialThreeDScene):
 
         #print(electron_dict)
         
-        positivecloud = self.get_surface(surface = self.get_sphere(radius=2),shade_color=DARK_BLUE)
+        positivecloud = Tools.get_surface(surface = self.get_sphere(radius=2),shade_color=DARK_BLUE)
         positivecloud.set_stroke(width=0)
         axes = self.get_axes()
 
-        allElectrons=self.flatten(list(electron_dict.values()))
+        allElectrons=Tools.flatten(list(electron_dict.values()))
 
         # atom=VGroup(*electron_dict["shell_1"],*electron_dict["shell_2"],positivecloud)
         atom=VGroup(*allElectrons,positivecloud)
@@ -161,3 +158,6 @@ class ThomsonsModel(SpecialThreeDScene):
         )
         self.begin_ambient_camera_rotation(0.15)
         self.wait(8)
+
+# class SceneTransform(Scene):
+    
