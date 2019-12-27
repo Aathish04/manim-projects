@@ -21,7 +21,7 @@ class LogoAdd(Scene):
         logo=VGroup(background,Re,FaradaysConst,AvogadrosNum)
         logo.scale(0.5)
         
-        self.play(DrawBorderThenFill(background,run_time = 1))
+        self.play(ShowCreation(background,run_time = 1))
         self.play(Write(Re,run_time = 1))
         self.play(Write(FaradaysConst,run_time = 0.5))
         self.play(Write(AvogadrosNumN,run_time = 0.25))
@@ -83,7 +83,7 @@ class LogoBoth(Scene):
         logo=VGroup(background,Re,FaradaysConst,AvogadrosNum)
         logo.scale(0.5)
         
-        self.play(DrawBorderThenFill(background,run_time = 1))
+        self.play(ShowCreation(background,run_time = 1))
         self.play(Write(Re,run_time = 1))
         self.play(Write(FaradaysConst,run_time = 0.5))
         self.play(Write(AvogadrosNumN,run_time = 0.25))
@@ -94,6 +94,6 @@ class LogoBoth(Scene):
         self.play(Uncreate(AvogadrosNumN,run_time = 0.25))
         self.play(Uncreate(FaradaysConst,run_time = 0.5))
         self.play(Uncreate(Re,run_time = 0.5))
-        self.play(FadeOut(background,run_time = 0.5))
+        self.play(Uncreate(background,run_time = 0.5))
         self.wait(0.5)
 
