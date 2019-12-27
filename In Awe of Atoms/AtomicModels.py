@@ -19,27 +19,6 @@ class Tools():
                 outlist.append(sub_element)
         return outlist
 
-class RutherfordsModel(SpecialThreeDScene):
-    def construct(self):
-        
-        nucleus= Sphere(color = BLUE,radius=0.08,).center()
-
-        orbit = Circle(color=WHITE,stroke_width=1,center=nucleus)
-        
-        electron = Dot(color=YELLOW)
-
-        H_atom=VGroup(electron,nucleus,orbit) # Manim adds onto screen in the order in which it reads. Adds electron first, nucleus second, and orbit third.
-        
-        def update_electron(electron, dt):
-            global initposEl
-            rate = dt
-            electron.move_to(orbit.point_from_proportion(((initposEl + rate))%1)) #point_from_proportion takes a value from -1,1 specifying direction to move in with sign and how much to move by with value
-            initposEl += rate*2
-
-        self.play(GrowFromCenter(H_atom))
-        electron.add_updater(update_electron)
-        self.wait(9)
-
 class ThomsonsModel(SpecialThreeDScene):
     
     def Make_Atom(self):
@@ -159,5 +138,23 @@ class ThomsonsModel(SpecialThreeDScene):
         self.begin_ambient_camera_rotation(0.15)
         self.wait(8)
 
-# class SceneTransform(Scene):
-    
+class RutherfordsModel(SpecialThreeDScene):
+    def construct(self):
+        
+        nucleus= Tools.get_surface(Sphere(color = BLUE,radius=0.08,).center())
+
+        orbit = Circle(color=WHITE,stroke_width=1,center=nucleus)
+        
+        electron = Dot(color=YELLOW)
+
+        H_atom=VGroup(electron,nucleus,orbit) # Manim adds onto screen in the order in which it reads. Adds electron first, nucleus second, and orbit third.
+        
+        def update_electron(electron, dt):
+            global initposEl
+            rate = dt
+            electron.move_to(orbit.point_from_proportion(((initposEl + rate))%1)) #point_from_proportion takes a value from -1,1 specifying direction to move in with sign and how much to move by with value
+            initposEl += rate*2
+
+        self.play(GrowFromCenter(H_atom))
+        electron.add_updater(update_electron)
+        self.wait(9)
