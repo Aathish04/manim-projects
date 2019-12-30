@@ -22,12 +22,27 @@ class Tools():
 class DaltonsModel(SpecialThreeDScene):
     def Make_Atom(self,color,radius):
         atom=Tools.get_surface(self.get_sphere(color=color,radius=radius),shade_color=color,opacity=0.5)
-        atom.set_fill(color=WHITE)
+        atom.set_stroke(width=0)
+        atom.set_fill(color=color)
         always_rotate(atom)
         return atom
 
     def construct(self):
-        self.play(GrowFromCenter(self.Make_Atom(color=WHITE,radius=1)))
+        self.set_camera_orientation(**self.default_angled_camera_position)
+        
+        H_atom=self.Make_Atom(color=WHITE,radius=1)
+        Fe_atom=self.Make_Atom(color=MAROON_A,radius=2.4)
+        
+
+        Fe_atom.shift(RIGHT*1.6)
+        atoms=VGroup(Fe_atom,H_atom)
+        self.play(GrowFromCenter(H_atom))
+        self.play(H_atom.shift,LEFT*2)
+
+        self.play(GrowFromCenter(Fe_atom))
+        self.play(Fe_atom.shift,RIGHT*2)
+
+        self.play(atoms.move_to, ORIGIN)
         self.wait(1)
 
 
