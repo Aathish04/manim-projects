@@ -19,6 +19,18 @@ class Tools():
                 outlist.append(sub_element)
         return outlist
 
+class DaltonsModel(SpecialThreeDScene):
+    def Make_Atom(self,color,radius):
+        atom=Tools.get_surface(self.get_sphere(color=color,radius=radius),shade_color=color,opacity=0.5)
+        atom.set_fill(color=WHITE)
+        always_rotate(atom)
+        return atom
+
+    def construct(self):
+        self.play(GrowFromCenter(self.Make_Atom(color=WHITE,radius=1)))
+        self.wait(1)
+
+
 class ThomsonsModel(SpecialThreeDScene):
     
     def Make_Atom(self):
@@ -125,40 +137,20 @@ class ThomsonsModel(SpecialThreeDScene):
 
         # atom=VGroup(*electron_dict["shell_1"],*electron_dict["shell_2"],positivecloud)
         atom=VGroup(*allElectrons,positivecloud)
-        atomaxes=VGroup(atom,axes)
-        self.add(atomaxes)
+        
+        # atomaxes=VGroup(atom,axes)
+        
+        # always_rotate(atomaxes,rate=0.15,about_point=(0,0,0))
+        
+        always_rotate(atom,rate=0.15)
+        self.add(atom)
 
     def construct(self):
         self.Make_Atom()
         
         self.move_camera(
             **self.default_angled_camera_position,
-            run_time=2,
+            run_time=1,
         )
-        self.begin_ambient_camera_rotation(0.15)
+        # self.begin_ambient_camera_rotation(0.15) #I dont need this since im using always_rotate()
         self.wait(8)
-initposEl=1
-class RutherfordsModel(SpecialThreeDScene):
-    def construct(self):
-        
-
-        nucleus= Tools.get_surface(Sphere(radius=0.08).center(),shade_color=BLUE,opacity=1)
-
-        orbit = Circle(color=WHITE,stroke_width=1,center=nucleus)
-        
-        electron = Tools.get_surface(Sphere(color=YELLOW,radius=0.08),shade_color=YELLOW,opacity=1)
-
-        H_atom=VGroup(nucleus,electron) # Manim adds onto screen in the order in which it reads. Adds electron first, nucleus second, and orbit third.
-        def update_electron(electron, dt):
-            global initposEl
-            rate = dt
-            electron.move_to(orbit.point_from_proportion(((initposEl + rate))%1)) #point_from_proportion takes a value from -1,1 specifying direction to move in with sign and how much to move by with value
-            initposEl += rate*2
-       
-        self.play(ShowCreation(H_atom))
-        electron.add_updater(update_electron)
-        self.set_camera_orientation(70*DEGREES,20*DEGREES)
-        # electron.add_updater(update_electron)
-        self.wait(1)
-        self.play(FadeIn(orbit))
-        self.wait(1)
