@@ -1,5 +1,5 @@
 from manimlib.imports import *
-
+from sanim.anim_tools.tables import *
 class Tools():
     def spherical_to_cartesian(pol_ang,azim_ang,radius): #This function converts given spherical coordinates (theta, phi and radius) to cartesian coordinates.
         return np.array((radius*np.sin(pol_ang) * np.cos(azim_ang),
@@ -44,7 +44,6 @@ class DaltonsModel(SpecialThreeDScene):
 
         self.play(atoms.move_to, ORIGIN)
         self.wait(1)
-
 
 class ThomsonsModel(SpecialThreeDScene):
     
@@ -169,3 +168,7 @@ class ThomsonsModel(SpecialThreeDScene):
         )
         # self.begin_ambient_camera_rotation(0.15) #I dont need this since im using always_rotate()
         self.wait(8)
+    
+class RutherfordsModel(SpecialThreeDScene):
+    def Make_Atom(self):
+        ATOMIC_NUMBER=10
