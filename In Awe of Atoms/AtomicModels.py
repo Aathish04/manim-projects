@@ -188,10 +188,17 @@ class RutherfordsModel(SpecialThreeDScene):
             return nucleus
         
         nucleus=make_nucleus(ATOMIC_NUMBER)
-        self.add(nucleus)
+        atom.add(nucleus)
         electron_count=ATOMIC_NUMBER
         angle_between_orbits=PI/electron_count
         electrons=VGroup()
+
+        for n in range(electron_count):
+            orbit=Circle(radius=1)
+            orbit.rotate(angle_between_orbits*n,axis=Y_AXIS)
+            atom.add(orbit)
+        always_rotate(atom,rate=-20*DEGREES)
+        self.add(atom)
 
 
     def construct(self):
