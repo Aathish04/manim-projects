@@ -1,14 +1,18 @@
 from manimlib.imports import *
+from sanim.anim_tools.tables import *
 class Tables(Scene):
-    
     def construct(self):
+        
         tabledict={
-            "Vowels":["\\alpha","\\epsilon","\\iota","\\omega","a","e","i","o"],
-            "Consonants":["\\beta","\\gamma","\\delta","\\phi","\\eta","\\kappa","\\lambda","\\mu","\\nu","\\pi","\\chi","\\zeta"],
-            "Words":["Must","add","proper","length","checking","for","use","with","LaTeX.","(No","wraparound","currently.)"],
-        }
-        table=Table.get_table(tabledict)
-        table.scale(0.50)
-        table.move_to((0,0,0))
-        self.play(Write(table))
+            TextMobject("TextMobject Input"):["Must","add","element","retrieval."],
+            TexMobject("TexMobject Input"):[TexMobject(r"e^{\iota\pi}+1 = 0"),TexMobject(r"Tex: \alpha\theta\epsilon")],
+            Text("Text input",font="Lucida Grande"):[Text("Text",font="Alys Script Bold"),Text("is"),Text("Supported")],
+            "Raw String Input":["Defaults","to","TextMobject."]
 
+        }
+
+        table=Table.get_table(tabledict)
+        table.move_to((0,0,0))
+        self.play(Write(table.scale(0.5)),run_time=2)
+
+        self.wait(1)
