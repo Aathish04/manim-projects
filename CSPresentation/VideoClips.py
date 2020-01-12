@@ -51,8 +51,11 @@ class Intro(SpecialThreeDScene):
         Ecomm.move_to(SpinningGlobe.get_center()+2*DOWN)
         BeforeCyberSafety=Group(EmailLogo,CommApps,Ecomm,InternetIsEverywhere,SpinningGlobe)
         self.play(GrowFromPoint(EmailLogo,SpinningGlobe.get_center()))
+        self.wait(1)
         self.play(GrowFromPoint(CommApps,SpinningGlobe.get_center()))
+        self.wait(1)
         self.play(GrowFromPoint(Ecomm,SpinningGlobe.get_center()))
+        self.wait(1)
         
         self.play(ShrinkToCenter(BeforeCyberSafety))
         self.remove(BeforeCyberSafety)
@@ -116,13 +119,13 @@ class WebBrowsing(Scene):
         self.play(Write(PointsTable[0]),Write(PointsTable[5]))
         self.wait(0.5)
         self.play(Write(PointsTable[1]))
-        self.wait(0.25)
+        self.wait(0.5)
         self.play(Write(PointsTable[2]))
-        self.wait(0.25)
+        self.wait(0.5)
         self.play(Write(PointsTable[3]))
-        self.wait(0.25)
+        self.wait(0.5)
         self.play(Write(PointsTable[4]))
-        self.wait(0.25)
+        self.wait(0.5)
         
         Anonymity=PointsTable[1].deepcopy()
         self.add(Anonymity)
@@ -147,7 +150,7 @@ class WebBrowsing(Scene):
         self.play(Why.scale,0.5)
         self.play(Why.to_edge,LEFT,
         Why.shift,2*UP)
-
+        self.wait(1)
         IDTheft=Text("Identity Theft",font="Impact").scale(1.5)
         IDTDetails={
             IDTheft:[Text("Fraud",color=RED,font="Arial Black"),Text("Impersonation",color=RED,font="Arial Black"),Text("Steal Private Info",color=RED,font="Arial Black")]
@@ -161,8 +164,11 @@ class WebBrowsing(Scene):
         self.play(Write(IDTheftTable[0]))
 
         self.play(Write(IDTheftTable[1]))
+        self.wait(0.5)
         self.play(Write(IDTheftTable[2]))
+        self.wait(0.5)
         self.play(Write(IDTheftTable[3]))
+        self.wait(0.5)
         self.play(Write(IDTheftTable[4]))
 
         NotSolution=Group(IDTheftTable,Why,IDTheft)
@@ -181,7 +187,7 @@ class WebBrowsing(Scene):
         self.remove(HowToPrevent)
 
         self.play(PrivateBrowsing.shift,2*UP)
-        
+        self.wait(1.5)
         HowDoWebsitesTrack=Text("How do Websites Track You?",font="Geneva",color=GREY).scale(0.75)
         HowDoWebsitesTrack.move_to(PrivateBrowsing.get_center())
         self.play(ReplacementTransform(PrivateBrowsing,HowDoWebsitesTrack))
@@ -213,7 +219,7 @@ class WebBrowsing(Scene):
         IPsGeo.scale(0.5)
         
         self.play(Write(IPAddressHeading))
-        self.play(Write(IPDef))
+        self.play(Write(IPDef),run_time=2)
     def construct(self):
         self.LeadIntoTracking()
         self.Tracking()
