@@ -203,22 +203,17 @@ class WebBrowsing(Scene):
 
 
         IPAddressHeading=Text("IP Address Tracing").next_to(HowDoWebsitesTrack,DOWN)
-        WhatIsIP1=Text("Your IP Address is essentially the")
-        WhatIsIP2=Text("address of your computer on the Internet.").next_to(WhatIsIP1,DOWN)
-        WhatIsIP=VGroup(WhatIsIP1,WhatIsIP2).scale(0.5)
+        IPDef1=Text("Your IP Address is essentially the")
+        IPDef2=Text("address of your computer on the Internet.").next_to(IPDef1,DOWN)
+        IPDef=VGroup(IPDef1,IPDef2).scale(0.5)
 
         IPsLinked=Text("Your IP address is linked to that of other devices on the same network.",color=DARK_GRAY)
         IPsLinked.scale(0.4)
         IPsGeo=Text("Your IP can be used to get your rough location.",color=DARK_GRAY).next_to(IPsLinked,DOWN)
         IPsGeo.scale(0.5)
-
         
         self.play(Write(IPAddressHeading))
-        self.play(Write(WhatIsIP))
-        self.wait(0.5)
-        self.play(ReplacementTransform(WhatIsIP,VGroup(IPsLinked,IPsGeo)))
-        
-        self.wait(1)
+        self.play(Write(IPDef))
     def construct(self):
         self.LeadIntoTracking()
         self.Tracking()
