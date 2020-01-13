@@ -200,6 +200,7 @@ class WebBrowsing(Scene):
         self.remove(VGroup(HowDoWebsitesTrack,Anonymity,AnonyMask,Tracking))
     
     def Tracking(self):
+
         HowDoWebsitesTrack=Text("How do Websites Track You?",font="Geneva",color=GREY).scale(0.75)
         HowDoWebsitesTrack.move_to((0,2,0))
         self.add(HowDoWebsitesTrack)
@@ -218,6 +219,9 @@ class WebBrowsing(Scene):
         IPsGeo=Text("Your IP can be used to get your rough location.",color=DARK_GRAY).next_to(IPsLinked,DOWN)
         IPsGeo.scale(0.5)
         
+        InvisiSquare=Rectangle(color=None,stroke_width=0) #This is used to update the IP values easier.
+        self.add(InvisiSquare)
+
         self.play(Write(IPAddressHeading))
         self.play(Write(IPDef),run_time=2)
     def construct(self):
