@@ -42,23 +42,24 @@ class Intro(SpecialThreeDScene):
         
         self.wait(1)
 
-        EmailLogo=ImageMobject("/Users/aathishs/Desktop/EmailLogo.png").scale(0.75)
+        WikipediaLogo=ImageMobject("/Users/aathishs/Desktop/WikipediaLogo.png").scale(1)
         CommApps=ImageMobject("/Users/aathishs/Desktop/CommApps.png").scale(0.5)
         Ecomm=ImageMobject("/Users/aathishs/Desktop/Ecommerce.jpg").scale(0.75)
         
-        EmailLogo.move_to(SpinningGlobe.get_center()+2*RIGHT+UP)
+        WikipediaLogo.move_to(SpinningGlobe.get_center()+2*RIGHT+UP)
         CommApps.move_to(SpinningGlobe.get_center()+2*LEFT+UP)
         Ecomm.move_to(SpinningGlobe.get_center()+2*DOWN)
-        BeforeCyberSafety=Group(EmailLogo,CommApps,Ecomm,InternetIsEverywhere,SpinningGlobe)
-        self.play(GrowFromPoint(EmailLogo,SpinningGlobe.get_center()))
+        BeforeCyberSafety=Group(WikipediaLogo,CommApps,Ecomm,InternetIsEverywhere,SpinningGlobe)
+        self.play(GrowFromPoint(WikipediaLogo,SpinningGlobe.get_center()))
         self.wait(1)
         self.play(GrowFromPoint(CommApps,SpinningGlobe.get_center()))
         self.wait(1)
         self.play(GrowFromPoint(Ecomm,SpinningGlobe.get_center()))
         self.wait(1)
         
-        self.play(ShrinkToCenter(BeforeCyberSafety))
+        self.play(ShrinkToCenter(BeforeCyberSafety),run_time=1.5)
         self.remove(BeforeCyberSafety)
+        self.wait(0.5)
         self.play(Write(CYBERSAFETY))
         
         self.wait(2)
@@ -74,15 +75,21 @@ class WhatIsCyberSafety(Scene):
         self.add(CYBERSAFETY)
         self.play(CYBERSAFETY.to_edge,UP)
 
-        SoWhatIsIt=Text("So what is it?")
-
+        MainQualities=Text("Cybersafety is the practice of utilising the internet:")
+        
         Qualities={
-            SoWhatIsIt:[Text("Safe Usage",font="Geneva"),Text("Responsible Usage",font="Geneva"),Text("Ensure Security",font="Geneva")]
+            MainQualities:[Text("Safely",font="Geneva"),Text("Responsibly",font="Geneva"),Text("Securely",font="Geneva")]
         }
+        
         QualitiesTable=Table.get_table(Qualities).scale(0.5)
         QualitiesTable.move_to((0,-1,0))
+        
+        SoWhatIsIt=Text("So what is it?").move_to(QualitiesTable[0].get_center())
+        
+        self.play(Write(SoWhatIsIt))
+        self.wait(0.5)
 
-        self.play(Write(QualitiesTable[0]))
+        self.play(ReplacementTransform(SoWhatIsIt,QualitiesTable[0]))
         self.play(Write(QualitiesTable[4]))
         self.wait(0.5)
         self.play(Write(QualitiesTable[1]))
@@ -92,10 +99,19 @@ class WhatIsCyberSafety(Scene):
         self.play(Write(QualitiesTable[3]))
         
         self.wait(1)
-        Everything=Group(CYBERSAFETY,QualitiesTable)
+        Everything=Group(CYBERSAFETY,QualitiesTable,MainQualities,SoWhatIsIt)
         self.play(ShrinkToCenter(Everything))
+        self.remove(Everything)
+        self.wait(1)
+        
+        NetsMostPrevalent=Text("Let's talk about securing the net's most prevalent use...",font="Geneva").scale(0.5)
+        
+        self.play(Write(NetsMostPrevalent))
+        self.wait(1)
+        self.play(ReplacementTransform(NetsMostPrevalent,Text("Web Browsing",font="Geneva").scale(2)))
 
-        self.play(Write(Text("Web Browsing",font="Geneva").scale(2)))
+        self.remove(NetsMostPrevalent)
+
 
     def construct(self):
         self.Define()
@@ -109,7 +125,7 @@ class WebBrowsing(Scene):
             WebBrowsing.scale,0.75,
             WebBrowsing.to_edge,UP
         )
-        PointsToNote=Text("Points To Note:",font="Geneva",color=REP_GREEN).scale(1.5)
+        PointsToNote=Text("Points To Be Covered:",font="Geneva",color=REP_GREEN).scale(1.5)
         PointsDict={
             PointsToNote:[Text("Anonymity",font="Geneva"),Text("Tracking",font="Geneva"),Text("Privacy",font="Geneva"),Text("Cybercrime",font="Geneva")]
         }
@@ -162,6 +178,8 @@ class WebBrowsing(Scene):
         IDTheftTable.move_to((0,-1,0))
 
         self.play(Write(IDTheftTable[0]))
+        self.wait(0.5)
+        self.play(Transform((IDTheftTable[0]),Text("What is it?")),rate_func=there_and_back_with_pause,run_time=3)
 
         self.play(Write(IDTheftTable[1]))
         self.wait(0.5)
@@ -221,6 +239,7 @@ class WebBrowsing(Scene):
         
         InvisiSquare=Rectangle(color=None,stroke_width=0) #This is used to update the IP values easier.
         self.add(InvisiSquare)
+        
 
         self.play(Write(IPAddressHeading))
         self.play(Write(IPDef),run_time=2)
