@@ -1,6 +1,8 @@
 from manimlib.imports import *
 from sanim.anim_tools.tables import *
 class Tools():
+    def wait_while_updating(duration=1):
+        return Animation(Mobject(), run_time=duration)
     def spherical_to_cartesian(pol_ang,azim_ang,radius=1): #This function converts given spherical coordinates (theta, phi and radius) to cartesian coordinates.
         return np.array((radius*np.sin(pol_ang) * np.cos(azim_ang),
                             radius*np.sin(pol_ang) * np.sin(azim_ang),
@@ -251,7 +253,6 @@ class WebBrowsing(Scene):
                 IP4.set_value(np.random.randint(100,999))
 
         IP1=Integer()
-        IP1.next_to(IPDef2,DOWN)
         IP2=Integer()
         IP2.move_to(IP1.get_center()+((IP1.get_width()/2)+IP2.get_width()/2,0,0)+RIGHT/1.25)
         IP3=Integer()
@@ -259,6 +260,8 @@ class WebBrowsing(Scene):
         IP4=Integer()
         IP4.move_to(IP3.get_center()+((IP3.get_width()/2)+IP4.get_width()/2,0,0)+RIGHT/1.25)
         
+        IPNums=VGroup(IP1,IP2,IP3,IP4).next_to(IPDef,DOWN)
+
         IP1.add_updater(IPUpdaters.Updater1)
         IP2.add_updater(IPUpdaters.Updater2)
         IP3.add_updater(IPUpdaters.Updater3)
@@ -267,20 +270,18 @@ class WebBrowsing(Scene):
         IPSep1=SmallDot(color=WHITE).move_to(IP1.get_center()+((IP1.get_width()/2)+0.1,-(IP1.get_height()/2)+0.05,0))
         IPSep2=SmallDot(color=WHITE).move_to(IP2.get_center()+((IP2.get_width()/2)+0.1,-(IP2.get_height()/2)+0.05,0))
         IPSep3=SmallDot(color=WHITE).move_to(IP3.get_center()+((IP3.get_width()/2)+0.1,-(IP3.get_height()/2)+0.05,0))
-        
-        IP=VGroup(IP1,IP2,IP3,IP4,IPSep1,IPSep2,IPSep3)
-        
+
+        IP=VGroup(IPNums,IPSep1,IPSep2,IPSep3)
         
         self.play(Write(IPAddressHeading))
         self.play(Write(IPDef),run_time=2)
         self.wait(0.25)
-        self.add(IP)
+        self.play(Write(IP))
         
-        self.play(FadeOut(IPDef),run_time=5)
-        IP2.clear_updaters()
-        
-        self.play(Write(IPDef),run_time=5)
 
+        self.play(Tools.wait_while_updating(5))
+        IP4.clear_updaters()
+        self.play(Tools.wait_while_updating(5))
     
     def construct(self):
         self.LeadIntoTracking()
