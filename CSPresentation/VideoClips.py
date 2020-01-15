@@ -77,7 +77,7 @@ class WhatIsCyberSafety(Scene):
         self.add(CYBERSAFETY)
         self.play(CYBERSAFETY.to_edge,UP)
 
-        MainQualities=Text("Cybersafety is the practice of utilising the internet:")
+        MainQualities=Text("Cybersafety is the practice of utilising the internet:",font="Geneva")
         
         Qualities={
             MainQualities:[Text("Safely",font="Geneva"),Text("Responsibly",font="Geneva"),Text("Securely",font="Geneva")]
@@ -86,7 +86,7 @@ class WhatIsCyberSafety(Scene):
         QualitiesTable=Table.get_table(Qualities).scale(0.5)
         QualitiesTable.move_to((0,-1,0))
         
-        SoWhatIsIt=Text("So what is it?").move_to(QualitiesTable[0].get_center())
+        SoWhatIsIt=Text("So what is it?",font=Geneva).move_to(QualitiesTable[0].get_center())
         
         self.play(Write(SoWhatIsIt))
         self.wait(0.5)
@@ -163,7 +163,7 @@ class WebBrowsing(Scene):
         self.wait(1)
 
 
-        Why=Text("Why be anonymous?")
+        Why=Text("Why be anonymous?",font="Geneva")
         self.play(Write(Why))
         self.play(Why.scale,0.5)
         self.play(Why.to_edge,LEFT,
@@ -181,7 +181,7 @@ class WebBrowsing(Scene):
 
         self.play(Write(IDTheftTable[0]))
         self.wait(0.5)
-        self.play(Transform((IDTheftTable[0]),Text("What is it?")),rate_func=there_and_back_with_pause,run_time=3)
+        self.play(Transform((IDTheftTable[0]),Text("What is it?",font="Geneva")),rate_func=there_and_back_with_pause,run_time=3)
 
         self.play(Write(IDTheftTable[1]))
         self.wait(0.5)
@@ -200,7 +200,7 @@ class WebBrowsing(Scene):
         self.remove(NotSolution)
         self.play(HowToPrevent.shift,UP*2)
 
-        PrivateBrowsing=Text("Private Browsing",color=GREY)
+        PrivateBrowsing=Text("Private Browsing",font="Geneva",color=GREY)
 
         self.play(Write(PrivateBrowsing))
         self.play(Uncreate(HowToPrevent))
@@ -213,44 +213,45 @@ class WebBrowsing(Scene):
         self.play(ReplacementTransform(PrivateBrowsing,HowDoWebsitesTrack))
 
 
-        Tracking=Text("Tracking",color=REP_GREEN)
+        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN)
         Tracking.to_edge(UP)
         self.play(ReplacementTransform(VGroup(Anonymity,AnonyMask),Tracking))
 
-        self.remove(VGroup(HowDoWebsitesTrack,Anonymity,AnonyMask,Tracking))
+        self.remove(Tracking,HowDoWebsitesTrack,Anonymity,AnonyMask)
     
-    def Tracking(self):
+    def IPTracking(self):
+        
+        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN)
+        Tracking.to_edge(UP)
+        self.add(Tracking)
 
         HowDoWebsitesTrack=Text("How do Websites Track You?",font="Geneva",color=GREY).scale(0.75)
         HowDoWebsitesTrack.move_to((0,2,0))
         self.add(HowDoWebsitesTrack)
-        Tracking=Text("Tracking",color=REP_GREEN)
-        Tracking.to_edge(UP)
-        self.add(Tracking)
 
 
-        IPAddressHeading=Text("IP Address Tracing").next_to(HowDoWebsitesTrack,DOWN)
-        IPDef1=Text("Your IP Address is essentially the")
-        IPDef2=Text("address of your computer on the Internet.").next_to(IPDef1,DOWN)
+        IPAddressTracing=Text("IP Address Tracing",font="Geneva").next_to(HowDoWebsitesTrack,DOWN)
+        IPDef1=Text("Your IP Address is essentially the",font="Geneva")
+        IPDef2=Text("address of your computer on the Internet.",font="Geneva").next_to(IPDef1,DOWN)
         IPDef=VGroup(IPDef1,IPDef2).scale(0.5)
 
-        IPsLinked=Text("Your IP address is linked to that of other devices on the same network.",color=DARK_GRAY)
-        IPsLinked.scale(0.4)
-        IPsGeo=Text("Your IP can be used to get your rough location.",color=DARK_GRAY).next_to(IPsLinked,DOWN)
-        IPsGeo.scale(0.5)
+        IPsLinked1=Text("Your local IP address is linked to that of",font="Geneva",color=DARK_GRAY)
+        IPsLinked2=Text("other devices on the same local network.",font="Geneva",color=DARK_GRAY).next_to(IPsLinked1,DOWN)
+        IPsLinked=VGroup(IPsLinked1,IPsLinked2)
+        IPsLinked.scale(0.5)
         
-        class IPUpdaters():
+        class LocalIPUpdaters():
             def Updater1(self):
-                IP1.set_value(np.random.randint(100,999))
+                IP1.set_value(192)
 
             def Updater2(self):
-                IP2.set_value(np.random.randint(100,999))
+                IP2.set_value(168)
 
             def Updater3(self):
-                IP3.set_value(np.random.randint(100,999))
+                IP3.set_value(np.random.randint(100,255))
 
             def Updater4(self):
-                IP4.set_value(np.random.randint(100,999))
+                IP4.set_value(np.random.randint(100,255))
 
         IP1=Integer()
         IP2=Integer()
@@ -262,28 +263,62 @@ class WebBrowsing(Scene):
         
         IPNums=VGroup(IP1,IP2,IP3,IP4).next_to(IPDef,DOWN)
 
-        IP1.add_updater(IPUpdaters.Updater1)
-        IP2.add_updater(IPUpdaters.Updater2)
-        IP3.add_updater(IPUpdaters.Updater3)
-        IP4.add_updater(IPUpdaters.Updater4)
-        
+        IP1.add_updater(LocalIPUpdaters.Updater1)
+        IP2.add_updater(LocalIPUpdaters.Updater2)
+        IP3.add_updater(LocalIPUpdaters.Updater3)
+        IP4.add_updater(LocalIPUpdaters.Updater4)
         IPSep1=SmallDot(color=WHITE).move_to(IP1.get_center()+((IP1.get_width()/2)+0.1,-(IP1.get_height()/2)+0.05,0))
         IPSep2=SmallDot(color=WHITE).move_to(IP2.get_center()+((IP2.get_width()/2)+0.1,-(IP2.get_height()/2)+0.05,0))
         IPSep3=SmallDot(color=WHITE).move_to(IP3.get_center()+((IP3.get_width()/2)+0.1,-(IP3.get_height()/2)+0.05,0))
 
         IP=VGroup(IPNums,IPSep1,IPSep2,IPSep3)
-        
-        self.play(Write(IPAddressHeading))
+        IP.shift(DOWN)
+        self.play(Write(IPAddressTracing))
         self.play(Write(IPDef),run_time=2)
-        self.wait(0.25)
+        
+        self.wait(1.5)
+        
+        self.play(ReplacementTransform(IPDef,IPsLinked))
+        
         self.play(Write(IP))
         
 
-        self.play(Tools.wait_while_updating(5))
+        self.play(Tools.wait_while_updating(1))
+        
+        IP4Brace=Brace(IP4,DOWN,color=BLUE)
+        
+        YourIP=Text("the IP part unique to you",color=BLUE,font="Geneva").scale(0.3).next_to(IP4Brace,DOWN)
+        
+        self.play(Tools.wait_while_updating(1))
+        
         IP4.clear_updaters()
-        self.play(Tools.wait_while_updating(5))
-    
+        self.play(Write(YourIP),FadeToColor(IP4,BLUE),ShowCreation(IP4Brace))
+        self.play(Tools.wait_while_updating(1))
+
+        RestOfIPBrace=Brace(VGroup(IP1,IP2,IP3,IPSep1,IPSep2,IPSep3),UP,color=REP_GREEN)
+        YourSharedSubnet=Text("your local network",font="Geneva",color=REP_GREEN).scale(0.3).next_to(RestOfIPBrace,UP)
+        
+        self.play(FadeToColor(VGroup(IP1,IP2,IP3,IPSep1,IPSep2,IPSep3),REP_GREEN),
+        ShowCreation(RestOfIPBrace),
+        Write(YourSharedSubnet)
+        )
+        self.play(Tools.wait_while_updating(2))
+        OthersCanAttack1=Text("Others on the same (local) network",font="Geneva",color=RED)
+        OthersCanAttack2=Text("could attack you.",font="Geneva",color=RED).next_to(OthersCanAttack1,DOWN)
+        OthersCanAttack=VGroup(OthersCanAttack1,OthersCanAttack2).scale(0.5)
+
+        self.play(ReplacementTransform(IPsLinked,OthersCanAttack))
+
+        self.play(Tools.wait_while_updating(2))
+
+        self.play(Uncreate(IP),Uncreate(IP4Brace),Uncreate(YourIP),Uncreate(YourSharedSubnet),Uncreate(RestOfIPBrace),Uncreate(OthersCanAttack))
+
+        self.wait(1)
+
+        self.remove(IP,IP4Brace,YourIP,YourSharedSubnet,RestOfIPBrace,OthersCanAttack)
+
+        
     def construct(self):
         self.LeadIntoTracking()
-        self.Tracking()
+        self.IPTracking()
 
