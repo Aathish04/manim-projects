@@ -237,12 +237,51 @@ class WebBrowsing(Scene):
         IPsGeo=Text("Your IP can be used to get your rough location.",color=DARK_GRAY).next_to(IPsLinked,DOWN)
         IPsGeo.scale(0.5)
         
-        InvisiSquare=Rectangle(color=None,stroke_width=0) #This is used to update the IP values easier.
-        self.add(InvisiSquare)
-        
+        class IPUpdaters():
+            def Updater1(self):
+                IP1.set_value(np.random.randint(100,999))
 
+            def Updater2(self):
+                IP2.set_value(np.random.randint(100,999))
+
+            def Updater3(self):
+                IP3.set_value(np.random.randint(100,999))
+
+            def Updater4(self):
+                IP4.set_value(np.random.randint(100,999))
+
+        IP1=Integer()
+        IP1.next_to(IPDef2,DOWN)
+        IP2=Integer()
+        IP2.move_to(IP1.get_center()+((IP1.get_width()/2)+IP2.get_width()/2,0,0)+RIGHT/1.25)
+        IP3=Integer()
+        IP3.move_to(IP2.get_center()+((IP2.get_width()/2)+IP3.get_width()/2,0,0)+RIGHT/1.25)
+        IP4=Integer()
+        IP4.move_to(IP3.get_center()+((IP3.get_width()/2)+IP4.get_width()/2,0,0)+RIGHT/1.25)
+        
+        IP1.add_updater(IPUpdaters.Updater1)
+        IP2.add_updater(IPUpdaters.Updater2)
+        IP3.add_updater(IPUpdaters.Updater3)
+        IP4.add_updater(IPUpdaters.Updater4)
+        
+        IPSep1=SmallDot(color=WHITE).move_to(IP1.get_center()+((IP1.get_width()/2)+0.1,-(IP1.get_height()/2)+0.05,0))
+        IPSep2=SmallDot(color=WHITE).move_to(IP2.get_center()+((IP2.get_width()/2)+0.1,-(IP2.get_height()/2)+0.05,0))
+        IPSep3=SmallDot(color=WHITE).move_to(IP3.get_center()+((IP3.get_width()/2)+0.1,-(IP3.get_height()/2)+0.05,0))
+        
+        IP=VGroup(IP1,IP2,IP3,IP4,IPSep1,IPSep2,IPSep3)
+        
+        
         self.play(Write(IPAddressHeading))
         self.play(Write(IPDef),run_time=2)
+        self.wait(0.25)
+        self.add(IP)
+        
+        self.play(FadeOut(IPDef),run_time=5)
+        IP2.clear_updaters()
+        
+        self.play(Write(IPDef),run_time=5)
+
+    
     def construct(self):
         self.LeadIntoTracking()
         self.Tracking()
