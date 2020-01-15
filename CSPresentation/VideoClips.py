@@ -216,7 +216,7 @@ class WebBrowsing(Scene):
         Tracking=Text("Tracking",font="Geneva",color=REP_GREEN)
         Tracking.to_edge(UP)
         self.play(ReplacementTransform(VGroup(Anonymity,AnonyMask),Tracking))
-
+        self.play(Uncreate(HowDoWebsitesTrack))
         self.remove(Tracking,HowDoWebsitesTrack,Anonymity,AnonyMask)
     
     def IPTracking(self):
@@ -225,19 +225,15 @@ class WebBrowsing(Scene):
         Tracking.to_edge(UP)
         self.add(Tracking)
 
-        HowDoWebsitesTrack=Text("How do Websites Track You?",font="Geneva",color=GREY).scale(0.75)
-        HowDoWebsitesTrack.move_to((0,2,0))
-        self.add(HowDoWebsitesTrack)
 
-
-        IPAddressTracing=Text("IP Address Tracing",font="Geneva").next_to(HowDoWebsitesTrack,DOWN)
+        IPAddressTracing=Text("IP Address Tracing",font="Geneva").next_to(Tracking,DOWN)
         IPDef1=Text("Your IP Address is essentially the",font="Geneva")
         IPDef2=Text("address of your computer on the Internet.",font="Geneva").next_to(IPDef1,DOWN)
-        IPDef=VGroup(IPDef1,IPDef2).scale(0.5)
+        IPDef=VGroup(IPDef1,IPDef2).scale(0.5).next_to(IPAddressTracing,DOWN)
 
         IPsLinked1=Text("Your local IP address is linked to that of",font="Geneva",color=DARK_GRAY)
         IPsLinked2=Text("other devices on the same local network.",font="Geneva",color=DARK_GRAY).next_to(IPsLinked1,DOWN)
-        IPsLinked=VGroup(IPsLinked1,IPsLinked2)
+        IPsLinked=VGroup(IPsLinked1,IPsLinked2).move_to(IPDef.get_center())
         IPsLinked.scale(0.5)
         
         class LocalIPUpdaters():
@@ -246,6 +242,19 @@ class WebBrowsing(Scene):
 
             def Updater2(self):
                 IP2.set_value(168)
+
+            def Updater3(self):
+                IP3.set_value(np.random.randint(100,255))
+
+            def Updater4(self):
+                IP4.set_value(np.random.randint(100,255))
+        
+        class GlobalIPUpdaters():
+            def Updater1(self):
+                IP1.set_value(np.random.randint(100,223))
+
+            def Updater2(self):
+                IP2.set_value(np.random.randint(100,255))
 
             def Updater3(self):
                 IP3.set_value(np.random.randint(100,255))
@@ -305,17 +314,42 @@ class WebBrowsing(Scene):
         self.play(Tools.wait_while_updating(2))
         OthersCanAttack1=Text("Others on the same (local) network",font="Geneva",color=RED)
         OthersCanAttack2=Text("could attack you.",font="Geneva",color=RED).next_to(OthersCanAttack1,DOWN)
-        OthersCanAttack=VGroup(OthersCanAttack1,OthersCanAttack2).scale(0.5)
+        OthersCanAttack=VGroup(OthersCanAttack1,OthersCanAttack2).scale(0.5).move_to(IPsLinked.get_center())
 
         self.play(ReplacementTransform(IPsLinked,OthersCanAttack))
 
         self.play(Tools.wait_while_updating(2))
 
-        self.play(Uncreate(IP),Uncreate(IP4Brace),Uncreate(YourIP),Uncreate(YourSharedSubnet),Uncreate(RestOfIPBrace),Uncreate(OthersCanAttack))
+        self.play(FadeOutAndShiftDown(IP),Uncreate(IP4Brace),Uncreate(YourIP),Uncreate(YourSharedSubnet),Uncreate(RestOfIPBrace),Uncreate(OthersCanAttack))
 
         self.wait(1)
 
-        self.remove(IP,IP4Brace,YourIP,YourSharedSubnet,RestOfIPBrace,OthersCanAttack)
+        IP1.clear_updaters()
+        IP2.clear_updaters()
+        IP3.clear_updaters()
+        IP4.clear_updaters()
+
+        self.remove(IP,IP4Brace,YourIP,YourSharedSubnet,RestOfIPBrace,OthersCanAttack) #Mandatory cleanup. ;)
+
+        IP1.add_updater(GlobalIPUpdaters.Updater1)
+        IP2.add_updater(GlobalIPUpdaters.Updater2)
+        IP3.add_updater(GlobalIPUpdaters.Updater3)
+        IP4.add_updater(GlobalIPUpdaters.Updater4)
+        IP.set_color(WHITE)
+
+        IP4Brace=Brace(IP4,DOWN,color=BLUE)
+        RouterPart=Text("for your router",font="Geneva",color=BLUE).next_to(IP4Brace,DOWN)
+        
+        FromGlobalIP=Text("From your Global IP address,",font="Geneva")
+        CanGetLocation=Text("a website can get your rough physical location.",font="Geneva",color=RED).next_to(FromGlobalIP,DOWN)
+
+        LocationFromIP=VGroup(FromGlobalIP,CanGetLocation).scale(0.5).next_to(IPAddressTracing,DOWN)
+        
+        self.play(FadeInFromDown(IP))
+        
+        self.play(ShowCreation(LocationFromIP))
+        self.play(FadeInFromDown(VGroup(IP4Brace,RouterPart)))
+
 
         
     def construct(self):
