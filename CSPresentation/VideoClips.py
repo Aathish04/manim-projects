@@ -585,7 +585,7 @@ class WebBrowsing(Scene):
         
         self.play(ReplacementTransform(UserAgent,HowToCircumvent))
         self.wait(3)
-        PrivateBrowsing=Text("Private Browsing",font="Geneva",color=REP_GREEN).scale(1.3).to_edge(UP)
+        PrivateBrowsing=Text("Private and Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
 
         self.play(ReplacementTransform(Tracking,PrivateBrowsing),Uncreate(HowToCircumvent))
 
@@ -598,3 +598,27 @@ class WebBrowsing(Scene):
         self.HTTPReferrers()
         self.UserAgents()
 
+class PrivateAndAnonymousBrowsing(Scene):
+    def DefinePrivateAnonBrowsing(self):
+        
+        PrivateAndAnonBrowsing=Text("Private and Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
+        self.add(PrivateAndAnonBrowsing)
+        self.wait(1)
+        WhatTheyDo1=Text("Anonymous Browsers allow users to view ",font="Geneva").scale(0.5).next_to(PrivateAndAnonBrowsing,DOWN)
+        WhatTheyDo2=Text("websites without revealing their information.",font="Geneva").scale(0.5).next_to(WhatTheyDo1,DOWN)
+        WhatTheyDo=VGroup(WhatTheyDo1,WhatTheyDo2)
+        UsedBy=Text("It's often used by whistleblowers and journalists. ",font="Geneva").scale(0.5).move_to(WhatTheyDo.get_center())
+        self.play(Write(WhatTheyDo))
+        self.wait(1)
+        self.play(ReplacementTransform(WhatTheyDo,UsedBy))
+        self.wait(1)
+        AnotherType=Text("Another type of browsing is called Private Browsing. ",font="Geneva").scale(0.5).move_to(UsedBy.get_center())
+        self.play(ReplacementTransform(UsedBy,AnotherType))
+
+
+
+
+
+    def construct(self):
+        self.DefinePrivateAnonBrowsing()
+        
