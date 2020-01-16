@@ -63,8 +63,8 @@ class Intro(SpecialThreeDScene):
         self.remove(BeforeCyberSafety)
         self.wait(0.5)
         self.play(Write(CYBERSAFETY))
-        
         self.wait(2)
+        self.clear()
     
     def construct(self):
         self.InternetNow()
@@ -86,7 +86,7 @@ class WhatIsCyberSafety(Scene):
         QualitiesTable=Table.get_table(Qualities).scale(0.5)
         QualitiesTable.move_to((0,-1,0))
         
-        SoWhatIsIt=Text("So what is it?",font=Geneva).move_to(QualitiesTable[0].get_center())
+        SoWhatIsIt=Text("So what is it?",font="Geneva").move_to(QualitiesTable[0].get_center())
         
         self.play(Write(SoWhatIsIt))
         self.wait(0.5)
@@ -112,7 +112,7 @@ class WhatIsCyberSafety(Scene):
         self.wait(1)
         self.play(ReplacementTransform(NetsMostPrevalent,Text("Web Browsing",font="Geneva").scale(2)))
 
-        self.remove(NetsMostPrevalent)
+        self.clear()
 
 
     def construct(self):
@@ -217,12 +217,12 @@ class WebBrowsing(Scene):
         Tracking.to_edge(UP)
         self.play(ReplacementTransform(VGroup(Anonymity,AnonyMask),Tracking))
         self.play(Uncreate(HowDoWebsitesTrack))
-        self.remove(Tracking,HowDoWebsitesTrack,Anonymity,AnonyMask)
+
+        self.clear()
     
     def IPTracking(self):
         
-        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN)
-        Tracking.to_edge(UP)
+        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN).to_edge(UP)
         self.add(Tracking)
 
 
@@ -338,21 +338,133 @@ class WebBrowsing(Scene):
         IP.set_color(WHITE)
 
         IP4Brace=Brace(IP4,DOWN,color=BLUE)
-        RouterPart=Text("for your router",font="Geneva",color=BLUE).next_to(IP4Brace,DOWN)
+        RouterPart=Text("for your router",font="Geneva",color=BLUE).next_to(IP4Brace,DOWN).scale(0.3)
         
+        RestOfIPBrace=Brace(VGroup(IP1,IP2,IP3),UP,color=REP_GREEN)
+
+        ISPSpecific=Text("from ISP, for everyone",font="Geneva",color=REP_GREEN).scale(0.3).next_to(RestOfIPBrace,UP)
+
         FromGlobalIP=Text("From your Global IP address,",font="Geneva")
         CanGetLocation=Text("a website can get your rough physical location.",font="Geneva",color=RED).next_to(FromGlobalIP,DOWN)
 
         LocationFromIP=VGroup(FromGlobalIP,CanGetLocation).scale(0.5).next_to(IPAddressTracing,DOWN)
         
-        self.play(FadeInFromDown(IP))
         
-        self.play(ShowCreation(LocationFromIP))
-        self.play(FadeInFromDown(VGroup(IP4Brace,RouterPart)))
+        
+        
+        self.play(Write(LocationFromIP),run_time=2)
+
+        self.play(FadeInFromDown(IP))
+        self.play(FadeInFromDown(VGroup(IP4Brace,RouterPart)),FadeToColor(IP4,BLUE))
+
+        self.play(Tools.wait_while_updating(1))
+
+        self.play(Write(VGroup(RestOfIPBrace,ISPSpecific)),FadeToColor(VGroup(IP1,IPSep1,IP2,IPSep2,IP3,IPSep3),REP_GREEN))
+
+        self.play(Tools.wait_while_updating(0.5))
+
+
+        WorldMap=ImageMobject("/Users/aathishs/Desktop/WorldMap.png").scale(2).shift(2.5*RIGHT+1.8*DOWN)
+        TracerDot=SmallDot(color=RED).move_to(WorldMap.get_center())
+        self.play(VGroup(IP,IP4Brace,RouterPart,RestOfIPBrace,ISPSpecific).shift,3*LEFT)
+        
+        self.play(FadeInFromDown(WorldMap))
+        self.play(FadeIn(TracerDot))
+
+        self.play(ApplyMethod(
+                TracerDot.shift, (RIGHT*1.23),
+                path_func = path_along_arc(-TAU/2)
+            ))
+
+        self.play(Tools.wait_while_updating(2))
+        
+        self.play(Uncreate(TracerDot))
+        
+        self.play(FadeOutAndShiftDown(WorldMap))
+        
+        self.play(Uncreate(RestOfIPBrace),
+        Uncreate(ISPSpecific),
+        Uncreate(IP4Brace),
+        Uncreate(RouterPart),
+        Uncreate(IP)
+        )
+
+        self.play(Uncreate(LocationFromIP))
+
+
+        CookieTracking=Text("Cookies and Scripts",font="Geneva").next_to(Tracking,DOWN)
+        DummyCookie=Text("Cookies and Cream",font="Geneva").next_to(Tracking,DOWN)
+        
+        self.play(ReplacementTransform(IPAddressTracing,DummyCookie))
+        self.wait(0.5)
+        self.play(ReplacementTransform(DummyCookie,CookieTracking))
+        self.wait(1)
+
+        self.clear()
+
+    def CookiesAndScripts(self):
+        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN).to_edge(UP)
+        self.add(Tracking)
+
+        CookieTracking=Text("Cookies and Scripts",font="Geneva").next_to(Tracking,DOWN)
+        self.add(CookieTracking)
+
+        CookieDef1=Text("A cookie is a small text file on your computer that stores",font="Geneva").next_to(CookieTracking,DOWN)
+        CookieDef2=Text("some data about your behaviour online and/or on a website.",font="Geneva").next_to(CookieDef1,DOWN)
+
+        CookieDef=VGroup(CookieDef1,CookieDef2).scale(0.4)
+
+        self.play(Write(CookieDef),run_time=2)
+
+        self.wait(1)
+
+        CookiesGood=Text("Cookies are really useful to keep your preferences on a website.",font="Geneva").scale(0.4)
+
+        CookiesBad=Text("But they can also be used by cybercriminals to get personal info.",font="Geneva",color=RED).scale(0.4)
+
+        self.play(ReplacementTransform(CookieDef,CookiesGood))
+        self.wait(2)
+        self.play(ReplacementTransform(CookiesGood,CookiesBad))
+
+        self.wait(2)
+
+        CookiesDict={
+            Text("Cookie Types:",font="Geneva",color=REP_GREEN):[Text("First Party",color=BLUE),Text("Third party",font="Geneva",color=RED),Text("SuperCookies",font="Geneva",color=PURPLE)]
+        }
+
+        CookiesTable=Table.get_table(CookiesDict).scale(0.5)
+
+        CookiesTable.move_to(ORIGIN)
+        CookiesTable.shift(DOWN)
+
+        self.play(ReplacementTransform(CookiesBad,CookiesTable))
+
+        FirstParty=CookiesTable[1].deepcopy()
+
+        self.add(FirstParty)
+
+        
+
+        self.play(
+        FadeOut(CookiesTable),
+        FirstParty.set_color,REP_GREEN,
+        FirstParty.scale,1.5,
+        FirstParty.next_to,CookieTracking,DOWN
+        )
+
+        FirstPartyDef1=Text("These are cookies that the websites you visit",font="Geneva").next_to(FirstParty,DOWN)
+        FirstPartyDef2=Text("use to store your login details and preferences.",font="Geneva").next_to(FirstPartyDef1,DOWN)
+
+        FirstPartyDef=VGroup(FirstPartyDef1,FirstPartyDef2).scale(0.5)
+
+        self.play(Write(FirstPartyDef),run_time=2)
+
+
 
 
         
     def construct(self):
         self.LeadIntoTracking()
         self.IPTracking()
+        self.CookiesAndScripts()
 
