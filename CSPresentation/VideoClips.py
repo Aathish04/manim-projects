@@ -429,7 +429,7 @@ class WebBrowsing(Scene):
         self.wait(2)
 
         CookiesDict={
-            Text("Cookie Types:",font="Geneva",color=REP_GREEN):[Text("First Party",color=BLUE),Text("Third party",font="Geneva",color=RED),Text("SuperCookies",font="Geneva",color=PURPLE)]
+            Text("Cookie Types:",font="Geneva",color=REP_GREEN):[Text("First Party",color=BLUE,font="Geneva"),Text("Third party",font="Geneva",color=RED),Text("SuperCookies",font="Geneva",color=PURPLE)]
         }
 
         CookiesTable=Table.get_table(CookiesDict).scale(0.5)
@@ -470,7 +470,7 @@ class WebBrowsing(Scene):
         self.play(ReplacementTransform(FirstParty,ThirdParty))
 
         ThirdPartyDef1=Text("These are cookies that websites use to",font="Geneva").next_to(ThirdParty,DOWN)
-        ThirdPartyDef2=Text("record your web activity.",color=RED).next_to(ThirdPartyDef1,DOWN)
+        ThirdPartyDef2=Text("record your web activity.",font="Geneva",color=RED).next_to(ThirdPartyDef1,DOWN)
 
         ThirdPartyDef=VGroup(ThirdPartyDef1,ThirdPartyDef2).scale(0.5)
 
@@ -517,10 +517,84 @@ class WebBrowsing(Scene):
         
         self.clear()
 
+    def HTTPReferrers(self):
+        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN).to_edge(UP)
+        self.add(Tracking)
 
+        HTTPReferrer=Text("HTTP Referrers",font="Geneva").next_to(Tracking,DOWN)
+        self.add(HTTPReferrer)
+
+        ReallySimple=Text("These are really simple.",font="Geneva").next_to(HTTPReferrer,DOWN).scale(0.5)
+
+        TellNextPage1=Text("Essentially, when you click a link to another page,",font="Geneva").next_to(HTTPReferrer,DOWN)
+        TellNextPage2=Text("the page you were on, tells the new page about you.",font="Geneva").next_to(TellNextPage1,DOWN)
+        TellNextPage=VGroup(TellNextPage1,TellNextPage2).scale(0.5)
+
+        self.play(Write(ReallySimple))
+
+        self.wait(2)
+        self.play(ReplacementTransform(ReallySimple,TellNextPage))
+
+        Page1=ImageMobject("/Users/aathishs/Desktop/WebsiteIcon1.png").next_to(TellNextPage,DOWN*2).shift(LEFT*3)
+        Page2=ImageMobject("/Users/aathishs/Desktop/WebsiteIcon2.png").next_to(TellNextPage,DOWN*2).shift(RIGHT*3)
+        self.play(FadeIn(Page1),FadeIn(Page2))
+
+        HeyHeWants=Text("Hey, this guy wants to see you.",font="American Typewriter",color=LIGHT_GREY).scale(0.375).next_to(Page1,UP*0.3)
+        HisIPIs=Text("His IP is 74.125.24.101",font="American Typewriter",color=LIGHT_GREY).next_to(Page1,DOWN).scale(0.375)
+
+        Cool=Text("Cool. Thanks!",font="Baskerville",color=LIGHT_GREY).scale(0.5).next_to(Page2,DOWN)
+
+        self.play(Write(HeyHeWants))
+        self.play(Write(HisIPIs))
+        self.play(Write(Cool))
+
+        self.wait(1)
+        self.play(FadeOut(HeyHeWants),FadeOut(HisIPIs),FadeOut(Cool))
+        self.play(FadeOut(Page1),FadeOut(Page2))
+        self.play(Uncreate(TellNextPage))
+
+        UserAgent=Text("User Agents",font="Geneva").next_to(Tracking,DOWN)
+
+        self.play(ReplacementTransform(HTTPReferrer,UserAgent))
+
+        self.wait(1)
+
+        self.clear()
         
+    def UserAgents(self):
+        Tracking=Text("Tracking",font="Geneva",color=REP_GREEN).to_edge(UP)
+        self.add(Tracking)
+
+        UserAgent=Text("User Agents",font="Geneva").next_to(Tracking,DOWN)
+        self.add(UserAgent)
+        QuiteSimple=Text("This one is quite simple.",font="Geneva").scale(0.5).next_to(UserAgent,DOWN)
+        
+        UADef1=Text("A 'User Agent' is sent by your browser to the",font="Geneva").next_to(UserAgent,DOWN)
+        UADef2=Text("sites you visit with info on your OS and browser.",font="Geneva").next_to(UADef1,DOWN)
+        UADef=VGroup(UADef1,UADef2).scale(0.5)
+
+        self.play(Write(QuiteSimple))
+        self.play(ReplacementTransform(QuiteSimple,UADef))
+
+        self.wait(2)
+        
+        self.play(Uncreate(UADef))
+
+
+        HowToCircumvent=Text("So how do you circumvent all this stalking?",font="Geneva").scale(0.6).next_to(UserAgent,DOWN)
+        
+        self.play(ReplacementTransform(UserAgent,HowToCircumvent))
+        self.wait(3)
+        PrivateBrowsing=Text("Private Browsing",font="Geneva",color=REP_GREEN).scale(1.3).to_edge(UP)
+
+        self.play(ReplacementTransform(Tracking,PrivateBrowsing),Uncreate(HowToCircumvent))
+
+        self.clear()
+    
     def construct(self):
-        # self.LeadIntoTracking()
-        # self.IPTracking()
+        self.LeadIntoTracking()
+        self.IPTracking()
         self.CookiesAndScripts()
+        self.HTTPReferrers()
+        self.UserAgents()
 
