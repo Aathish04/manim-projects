@@ -439,6 +439,8 @@ class WebBrowsing(Scene):
 
         self.play(ReplacementTransform(CookiesBad,CookiesTable))
 
+        self.wait(2)
+
         FirstParty=CookiesTable[1].deepcopy()
 
         self.add(FirstParty)
@@ -459,12 +461,66 @@ class WebBrowsing(Scene):
 
         self.play(Write(FirstPartyDef),run_time=2)
 
+        self.wait(1.5)
 
+        self.play(Uncreate(FirstPartyDef))
+
+        ThirdParty=Text("Third party",font="Geneva",color=RED).scale(0.75).move_to(FirstParty.get_center())
+        
+        self.play(ReplacementTransform(FirstParty,ThirdParty))
+
+        ThirdPartyDef1=Text("These are cookies that websites use to",font="Geneva").next_to(ThirdParty,DOWN)
+        ThirdPartyDef2=Text("record your web activity.",color=RED).next_to(ThirdPartyDef1,DOWN)
+
+        ThirdPartyDef=VGroup(ThirdPartyDef1,ThirdPartyDef2).scale(0.5)
+
+        self.play(Write(ThirdPartyDef))
+
+        UsetoAdvert1=Text("They can use this info to annoyingly advertise",font="Geneva",color=RED) 
+        
+        UsetoAdvert2=Text("products that may interest you.",font="Geneva",color=RED).next_to(UsetoAdvert1,DOWN)
+
+        UsetoAdvert=VGroup(UsetoAdvert1,UsetoAdvert2).next_to(ThirdParty,DOWN).scale(0.5)
+        
+        self.play(ReplacementTransform(ThirdPartyDef,UsetoAdvert))
+
+        self.wait(1)
+
+        self.play(Uncreate(UsetoAdvert))
+
+        SuperCookies=Text("SuperCookies",font="Geneva",color=PURPLE).scale(0.75).move_to(ThirdParty.get_center())
+
+        self.play(ReplacementTransform(ThirdParty,SuperCookies))
+
+        LikeNormalCookies=Text("These are very similar to normal cookies.",font="Geneva").scale(0.5).next_to(SuperCookies,DOWN)
+
+        CanRepairSelves=Text("But, they can repair themselves if deleted.",font="Geneva",color=RED).scale(0.5).move_to(LikeNormalCookies.get_center())
+
+        UsedforBoth=Text("They can be used for both bad and good.",font="Geneva").scale(0.5).move_to(CanRepairSelves.get_center())
+
+        MustBeCareful=Text("So it is best to constantly be aware of them.",font="Geneva",color=BLUE_E).scale(0.5).move_to(UsedforBoth.get_center())
+
+        self.play(Write(LikeNormalCookies))
+        self.wait(2)
+        self.play(ReplacementTransform(LikeNormalCookies,CanRepairSelves))
+        self.wait(2)
+        self.play(ReplacementTransform(CanRepairSelves,UsedforBoth))
+        self.wait(2)
+        self.play(ReplacementTransform(UsedforBoth,MustBeCareful))
+        self.wait(2)
+
+        self.play(Uncreate(MustBeCareful),Uncreate(SuperCookies))
+        HTTPReferrer=Text("HTTP Referrers",font="Geneva").next_to(Tracking,DOWN)
+
+        self.play(ReplacementTransform(CookieTracking, HTTPReferrer))
+
+        
+        self.clear()
 
 
         
     def construct(self):
-        self.LeadIntoTracking()
-        self.IPTracking()
+        # self.LeadIntoTracking()
+        # self.IPTracking()
         self.CookiesAndScripts()
 
