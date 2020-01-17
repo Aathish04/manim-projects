@@ -800,7 +800,7 @@ class SafePracticesAgainstCyberCrime(Scene):
 
         SafePracDict={
             Text("Some good practices to be safe are:",color=REP_GREEN,font="Geneva"):[
-                Text("Using firewalls.",color=RED,font="RED"),
+                Text("Using firewalls.",color=RED,font= "Geneva"),
                 Text("Controlling your browser to avoid tracking.",color=WHITE,font="Geneva"),
                 Text("Browsing Privately",color=LIGHT_GREY,font="Geneva"),
                 Text("Using Common Sense. ;)",color=BLUE,font="Geneva"),
