@@ -118,7 +118,7 @@ class WebBrowsing(Scene):
         )
         PointsToNote=Text("Points To Be Covered:",font="Geneva",color=REP_GREEN).scale(1.5)
         PointsDict={
-            PointsToNote:[Text("Anonymity",font="Geneva"),Text("Tracking",font="Geneva"),Text("Privacy",font="Geneva"),Text("Cybercrime",font="Geneva")]
+            PointsToNote:[Text("Anonymity",font="Geneva"),Text("Tracking",font="Geneva"),Text("Privacy",font="Geneva"),Text("Cybersafety",font="Geneva")]
         }
 
         PointsTable=Table.get_table(PointsDict).scale(0.5)
