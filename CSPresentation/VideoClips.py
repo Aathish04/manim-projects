@@ -3,23 +3,12 @@ from sanim.anim_tools.tables import *
 class Tools():
     def wait_while_updating(duration=1):
         return Animation(Mobject(), run_time=duration)
-    def spherical_to_cartesian(pol_ang,azim_ang,radius=1): #This function converts given spherical coordinates (theta, phi and radius) to cartesian coordinates.
-        return np.array((radius*np.sin(pol_ang) * np.cos(azim_ang),
-                            radius*np.sin(pol_ang) * np.sin(azim_ang),
-                            radius*np.cos(pol_ang))
-                            )
+
     def get_surface(surface,shade_color,opacity=0.3):
         result = surface.copy()
         result.set_fill(shade_color, opacity=opacity)
         result.set_stroke(WHITE, width=0.5, opacity=opacity)
         return result
-    
-    def flatten(inlist):
-        outlist=[]
-        for element in inlist:
-            for sub_element in element:
-                outlist.append(sub_element)
-        return outlist
 
 class Intro(SpecialThreeDScene):
     def InternetNow(self):
@@ -760,6 +749,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.play(Uncreate(GetsOtherIPAndNotYours))
 
         self.play(ReplacementTransform(ProxiedBrowsing,Text("Virtual Private Networks",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)))
+        
         self.clear()
 
     def VPNs(self):
@@ -809,10 +799,32 @@ class SafePracticesAgainstCyberCrime(Scene):
                 Text("Transmiting sensitive data securely.",color=BLUE,font="Geneva"),
                 Text("Avoiding Public Computers.",color=RED,font="Geneva"),]
         }
+        
         SafePracTable=Table.get_table(SafePracDict).scale(0.5).move_to(ORIGIN)
 
-        self.play(Write(SafePracTable))
+        Wall=ImageMobject("/Users/aathishs/Desktop/FireWall.png").scale(0.6).next_to(SafePracTable[1],RIGHT)
+        Browsers=ImageMobject("/Users/aathishs/Desktop/Browsers.png").scale(0.3).next_to(SafePracTable[2],RIGHT)
+        Incognito=ImageMobject("/Users/aathishs/Desktop/Incognito.png").scale(0.5).next_to(SafePracTable[3],RIGHT)
+        Lock=ImageMobject("/Users/aathishs/Desktop/Lock.png").scale(0.5).next_to(SafePracTable[5],RIGHT)
+        HomePC=ImageMobject("/Users/aathishs/Desktop/HomePC.png").scale(0.5).next_to(SafePracTable[8],RIGHT)
+        
+        self.play(Write(SafePracTable[0]),Write(SafePracTable[9]))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[1]),FadeIn(Wall))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[2]),FadeIn(Browsers))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[3]),FadeIn(Incognito))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[4]))
+        self.wait(5)
+        self.play(Write(SafePracTable[5]),FadeIn(Lock))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[6]))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[7]))
+        self.wait(0.5)
+        self.play(Write(SafePracTable[8]),FadeIn(HomePC))
 
     def construct(self):
-
         self.All()
