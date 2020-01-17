@@ -53,11 +53,11 @@ class Intro(SpecialThreeDScene):
         Ecomm.move_to(SpinningGlobe.get_center()+2*DOWN)
         BeforeCyberSafety=Group(WikipediaLogo,CommApps,Ecomm,InternetIsEverywhere,SpinningGlobe)
         self.play(GrowFromPoint(WikipediaLogo,SpinningGlobe.get_center()))
-        self.wait(1)
+        self.wait(1.5)
         self.play(GrowFromPoint(CommApps,SpinningGlobe.get_center()))
-        self.wait(1)
+        self.wait(1.5)
         self.play(GrowFromPoint(Ecomm,SpinningGlobe.get_center()))
-        self.wait(1)
+        self.wait(2)
         
         self.play(ShrinkToCenter(BeforeCyberSafety),run_time=1.5)
         self.remove(BeforeCyberSafety)
@@ -157,7 +157,7 @@ class WebBrowsing(Scene):
         Anonymity.scale,1.5,
         Anonymity.to_edge,UP,
         )
-        AnonyMask=SVGMobject("/Users/aathishs/Desktop/Mask.svg").next_to(Anonymity).scale(0.7)
+        AnonyMask=SVGMobject("/Users/aathishs/Desktop/Mask.svg").next_to(Anonymity).scale(0.6)
         self.play(ShowCreation(AnonyMask))
 
         self.wait(1)
@@ -171,7 +171,7 @@ class WebBrowsing(Scene):
         self.wait(1)
         IDTheft=Text("Identity Theft",font="Impact").scale(1.5)
         IDTDetails={
-            IDTheft:[Text("Fraud",color=RED,font="Arial Black"),Text("Impersonation",color=RED,font="Arial Black"),Text("Steal Private Info",color=RED,font="Arial Black")]
+            IDTheft:[Text("Type of Fraud",color=RED,font="Arial Black"),Text("Impersonation",color=RED,font="Arial Black"),Text("Stealing Private Info",color=RED,font="Arial Black")]
         }
 
         IDTheftTable=Table.get_table(IDTDetails)
@@ -181,7 +181,7 @@ class WebBrowsing(Scene):
 
         self.play(Write(IDTheftTable[0]))
         self.wait(0.5)
-        self.play(Transform((IDTheftTable[0]),Text("What is it?",font="Geneva")),rate_func=there_and_back_with_pause,run_time=3)
+        self.play(Transform((IDTheftTable[0]),Text("What is it?",font="Geneva")).move_to(IDTheftTable[0].get_center()),rate_func=there_and_back_with_pause,run_time=3)
 
         self.play(Write(IDTheftTable[1]))
         self.wait(0.5)
@@ -207,7 +207,7 @@ class WebBrowsing(Scene):
         self.remove(HowToPrevent)
 
         self.play(PrivateBrowsing.shift,2*UP)
-        self.wait(1.5)
+        self.wait(2)
         HowDoWebsitesTrack=Text("How do Websites Track You?",font="Geneva",color=GREY).scale(0.75)
         HowDoWebsitesTrack.move_to(PrivateBrowsing.get_center())
         self.play(ReplacementTransform(PrivateBrowsing,HowDoWebsitesTrack))
@@ -285,7 +285,7 @@ class WebBrowsing(Scene):
         self.play(Write(IPAddressTracing))
         self.play(Write(IPDef),run_time=2)
         
-        self.wait(1.5)
+        self.wait(2)
         
         self.play(ReplacementTransform(IPDef,IPsLinked))
         
@@ -416,7 +416,7 @@ class WebBrowsing(Scene):
 
         self.play(Write(CookieDef),run_time=2)
 
-        self.wait(1)
+        self.wait(3)
 
         CookiesGood=Text("Cookies are really useful to keep your preferences on a website.",font="Geneva").scale(0.4)
 
@@ -446,9 +446,8 @@ class WebBrowsing(Scene):
         self.add(FirstParty)
 
         
-
+        self.play(FadeOut(CookiesTable))
         self.play(
-        FadeOut(CookiesTable),
         FirstParty.set_color,REP_GREEN,
         FirstParty.scale,1.5,
         FirstParty.next_to,CookieTracking,DOWN
@@ -461,7 +460,7 @@ class WebBrowsing(Scene):
 
         self.play(Write(FirstPartyDef),run_time=2)
 
-        self.wait(1.5)
+        self.wait(2)
 
         self.play(Uncreate(FirstPartyDef))
 
@@ -474,7 +473,7 @@ class WebBrowsing(Scene):
 
         ThirdPartyDef=VGroup(ThirdPartyDef1,ThirdPartyDef2).scale(0.5)
 
-        self.play(Write(ThirdPartyDef))
+        self.play(Write(ThirdPartyDef),run_time=2)
 
         UsetoAdvert1=Text("They can use this info to annoyingly advertise",font="Geneva",color=RED) 
         
@@ -604,21 +603,193 @@ class PrivateAndAnonymousBrowsing(Scene):
         PrivateAndAnonBrowsing=Text("Private and Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
         self.add(PrivateAndAnonBrowsing)
         self.wait(1)
+       
+        AnonBrowsing=Text("Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
+        self.play(ReplacementTransform(PrivateAndAnonBrowsing,AnonBrowsing))
+        
         WhatTheyDo1=Text("Anonymous Browsers allow users to view ",font="Geneva").scale(0.5).next_to(PrivateAndAnonBrowsing,DOWN)
         WhatTheyDo2=Text("websites without revealing their information.",font="Geneva").scale(0.5).next_to(WhatTheyDo1,DOWN)
         WhatTheyDo=VGroup(WhatTheyDo1,WhatTheyDo2)
+        
         UsedBy=Text("It's often used by whistleblowers and journalists. ",font="Geneva").scale(0.5).move_to(WhatTheyDo.get_center())
+        
         self.play(Write(WhatTheyDo))
-        self.wait(1)
+        self.wait(2)
         self.play(ReplacementTransform(WhatTheyDo,UsedBy))
-        self.wait(1)
+        self.wait(2)
+        
         AnotherType=Text("Another type of browsing is called Private Browsing. ",font="Geneva").scale(0.5).move_to(UsedBy.get_center())
         self.play(ReplacementTransform(UsedBy,AnotherType))
 
+        PrivateBrowsing=Text("Private Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
 
+        self.play(ReplacementTransform(AnonBrowsing,PrivateBrowsing))
 
+        PrivDef=Text("Private browsers don't store cookies and browsing history.",font="Geneva").scale(0.5).move_to(AnotherType.get_center())
 
+        PrivTypesDict={
+            Text("Some types of private browsing are:",font="Geneva",color=REP_GREEN).scale(1.5):[Text("Incognito Browsing",font="Geneva"),Text("Proxy Based Browsing",font="Geneva"),Text("VPN Based Browsing",font="Geneva")]
+            }
+
+        PrivTypesTable=Table.get_table(PrivTypesDict).scale(0.5)
+
+        PrivTypesTable.move_to(ORIGIN)
+
+        self.play(ReplacementTransform(AnotherType,PrivDef))
+
+        self.wait(2)
+        self.play(ReplacementTransform(PrivDef,PrivTypesTable[0]))
+        self.play(Write(PrivTypesTable[1:]))
+
+        self.wait(1)
+
+        IncognitoBrowsing=PrivTypesTable[1].deepcopy()
+
+        self.add(IncognitoBrowsing)
+
+        self.play(
+        FadeOut(PrivTypesTable),
+        IncognitoBrowsing.set_color,LIGHT_GREY,
+        IncognitoBrowsing.scale,1.25,
+        IncognitoBrowsing.next_to,PrivateBrowsing,DOWN
+        ) 
+
+        DoNotStore=Text("These browsers don't record your activity.",font="Geneva").scale(0.5).next_to(IncognitoBrowsing,DOWN)
+        FoundAsSetting=Text("Most modern browsers show this as an option in settings.",font="Geneva").scale(0.5).next_to(DoNotStore,DOWN)
+        AlsoUseDuck=Text("There are also some privacy oriented browsers like DuckDuckGo.",font="Geneva").scale(0.4).next_to(FoundAsSetting,DOWN)
+
+        self.play(Write(DoNotStore))
+        self.wait(1)
+        self.play(Write(FoundAsSetting))
+        self.wait(2)
+        self.play(Write(AlsoUseDuck))
+
+        DuckLogo=ImageMobject("/Users/aathishs/Desktop/Duckduckgo.png").scale(1.5).shift(DOWN*2)
+
+        self.play(FadeInFromDown(DuckLogo))
+        self.wait(1)
+        self.play(FadeOutAndShiftDown(DuckLogo))
+        self.play(Uncreate(AlsoUseDuck))
+        self.play(Uncreate(FoundAsSetting),Uncreate(DoNotStore))
+        self.play(ReplacementTransform(IncognitoBrowsing,Text("Proxied Browsing",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)))
+        self.wait(1)
+        self.clear()
+    
+    def ProxiedBrowsing(self):
+        PrivateBrowsing=Text("Private Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
+        ProxiedBrowsing= Text("Proxied Browsing",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)
+
+        self.add(PrivateBrowsing)
+        self.add(ProxiedBrowsing)
+
+        ProxyDef1=Text("A proxy acts as a mediator between your",font="Geneva").next_to(ProxiedBrowsing,DOWN)
+        ProxyDef2=Text("computer and the site you want to visit.",font="Geneva").next_to(ProxyDef1,DOWN)
+
+        ProxyDef=VGroup(ProxyDef1,ProxyDef2).scale(0.5)
+
+        GetsOtherIP=Text("The website you visit only gets info",font="Geneva").next_to(ProxiedBrowsing,DOWN)
+        AndNotYours=Text("about the proxy site and not yours!",font="Geneva").next_to(GetsOtherIP,DOWN)
+        GetsOtherIPAndNotYours=VGroup(GetsOtherIP,AndNotYours).scale(0.5)
+
+        self.play(Write(ProxyDef),run_time=2)
+
+        self.wait(2)
+
+        self.play(ReplacementTransform(ProxyDef,GetsOtherIPAndNotYours))
+
+        HomePC=ImageMobject("/Users/aathishs/Desktop/HomePC.png")
+        ProxyServer=ImageMobject("/Users/aathishs/Desktop/ProxyServer.png")
+        Website=ImageMobject("/Users/aathishs/Desktop/WebsiteIcon1.png")
+
+        HomePC.to_edge(DOWN).shift(LEFT*5)
+        ProxyServer.to_edge(DOWN)
+        Website.to_edge(DOWN).shift(RIGHT*5)
+        
+        self.play(FadeInFromDown(HomePC))
+        self.play(FadeInFromDown(Website))
+
+        FirstBeginLoc=HomePC.get_center()+(HomePC.get_width()/2+0.1,0,0)
+        FirstEndLoc=ProxyServer.get_center()-(ProxyServer.get_width()/2+0.1,0,0)
+        
+        FirstArrow=Arrow(start=FirstBeginLoc,end=FirstEndLoc,color=WHITE)
+
+        SecondBeginloc=ProxyServer.get_center()+(ProxyServer.get_width()/2+0.1,0,0)
+        SecondEndLoc=Website.get_center()-(Website.get_width()/2+0.1,0,0)
+
+        SecondArrow=Arrow(start=SecondBeginloc,end=SecondEndLoc,color=LIGHT_GREY)
+
+        ThirdArrow=Arrow(start=SecondEndLoc,end=SecondBeginloc,color=LIGHT_GREY)
+
+        FourthArrow=Arrow(start=FirstEndLoc,end=FirstBeginLoc,color=WHITE)
+
+        ZeroethArrow=Arrow(start=FirstBeginLoc,end=SecondEndLoc,color=RED)
+        ZeroPointOnethArrow=Arrow(start=SecondEndLoc,end=FirstBeginLoc,color=RED)
+        YourInfo=Text("Your Information",font="Geneva",color=RED).scale(0.4).next_to(ZeroethArrow,UP)
+        self.play(ShowCreation(ZeroethArrow))
+        self.play(Write(YourInfo))
+        self.play(Uncreate(ZeroethArrow),Uncreate(YourInfo))
+        self.play(ShowCreation(ZeroPointOnethArrow))
+        self.wait(0.5)
+        self.play(Uncreate(ZeroPointOnethArrow))
+        
+        
+        self.play(FadeIn(ProxyServer))
+        YourInfo2=Text("Your Info",font="Geneva",color=BLUE).scale(0.4).next_to(FirstArrow,UP)
+        self.play(ShowCreation(FirstArrow))
+        self.play(Write(YourInfo2))
+        
+        self.play(Uncreate(FirstArrow),Uncreate(YourInfo2))
+
+        ProxyInfo=Text("Proxy's Info",font="Geneva",color=RED).scale(0.4).next_to(SecondArrow,UP)
+        self.play(ShowCreation(SecondArrow))
+        self.play(Write(ProxyInfo))
+
+        self.play(Uncreate(SecondArrow),Uncreate(ProxyInfo))
+        self.play(ShowCreation(ThirdArrow))
+        self.play(Uncreate(ThirdArrow))
+        self.play(ShowCreation(FourthArrow))
+        self.wait(0.5)
+
+        self.play(Uncreate(FourthArrow))
+
+        self.play(FadeOutAndShiftDown(Website))
+        self.play(FadeOut(ProxyServer))
+        self.play(FadeOutAndShiftDown(HomePC))
+        
+        self.play(Uncreate(GetsOtherIPAndNotYours))
+
+        self.play(ReplacementTransform(ProxiedBrowsing,Text("Virtual Private Networks",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)))
+        self.clear()
+
+    def VPNs(self):
+        PrivateBrowsing=Text("Private Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
+        VPN= Text("Virtual Private Networks",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)
+        self.add(PrivateBrowsing)
+        self.add(VPN)
+        
+        LikeProxy=Text("These work very much like Proxies.",font="Geneva").scale(0.5).next_to(VPN,DOWN)
+        RouteThroughOwnNetwork=Text("However,they route your data through an entire private network",font="Geneva").scale(0.4).next_to(VPN,DOWN)
+        BeforeSending=Text("before it reaches the site, and do it once more before it reaches you.",font="Geneva").scale(0.4).next_to(RouteThroughOwnNetwork,DOWN)
+        RouteThroughOwnNetworkBeforeSending=VGroup(RouteThroughOwnNetwork,BeforeSending)
+        
+        self.play(Write(LikeProxy))
+        self.wait(1)
+        self.play(ReplacementTransform(LikeProxy,RouteThroughOwnNetworkBeforeSending))
+        
+        VPNDiagram=ImageMobject("/Users/aathishs/Desktop/VPN.png").scale(2).shift(DOWN*2)
+        self.play(FadeInFromDown(VPNDiagram))
+        self.wait(1)
+        VPNsAtHome=Text("Now, you can even set up your own VPN's at home!",font="Geneva").scale(0.5).next_to(VPN,DOWN)
+        self.play(ReplacementTransform(RouteThroughOwnNetworkBeforeSending,VPNsAtHome))
+        
+        self.play(FadeOutAndShiftDown(VPNDiagram))
+        self.play(Uncreate(VPNsAtHome))
+        self.play(Uncreate(VPN))
+        self.play(Uncreate(PrivateBrowsing))
+        self.clear()
 
     def construct(self):
-        self.DefinePrivateAnonBrowsing()
+        # self.DefinePrivateAnonBrowsing()
+        self.ProxiedBrowsing()
+        # self.VPNs()
         
