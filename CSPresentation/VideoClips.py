@@ -181,7 +181,8 @@ class WebBrowsing(Scene):
 
         self.play(Write(IDTheftTable[0]))
         self.wait(0.5)
-        self.play(Transform((IDTheftTable[0]),Text("What is it?",font="Geneva")).move_to(IDTheftTable[0].get_center()),rate_func=there_and_back_with_pause,run_time=3)
+        WhatIsit=Text("What is it?",font="Geneva").move_to(IDTheftTable[0].get_center())
+        self.play(Transform((IDTheftTable[0]),WhatIsit),rate_func=there_and_back_with_pause,run_time=3)
 
         self.play(Write(IDTheftTable[1]))
         self.wait(0.5)
@@ -792,4 +793,26 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.DefinePrivateAnonBrowsing()
         self.ProxiedBrowsing()
         self.VPNs()
-        
+
+class SafePracticesAgainstCyberCrime(Scene):
+
+    def All(self):
+
+        SafePracDict={
+            Text("Some good practices to be safe are:",color=REP_GREEN,font="Geneva"):[
+                Text("Using firewalls.",color=RED,font="RED"),
+                Text("Controlling your browser to avoid tracking.",color=WHITE,font="Geneva"),
+                Text("Browsing Privately",color=LIGHT_GREY,font="Geneva"),
+                Text("Using Common Sense. ;)",color=BLUE,font="Geneva"),
+                Text("Ensuring secure connections.",color=GREEN,font="Geneva"),
+                Text("Not responding to scam/spam emails.",color=LIGHT_GREY,font="Geneva"),
+                Text("Transmiting sensitive data securely.",color=BLUE,font="Geneva"),
+                Text("Avoiding Public Computers.",color=RED,font="Geneva"),]
+        }
+        SafePracTable=Table.get_table(SafePracDict).scale(0.5).move_to(ORIGIN)
+
+        self.play(Write(SafePracTable))
+
+    def construct(self):
+
+        self.All()
