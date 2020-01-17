@@ -789,7 +789,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.clear()
 
     def construct(self):
-        # self.DefinePrivateAnonBrowsing()
+        self.DefinePrivateAnonBrowsing()
         self.ProxiedBrowsing()
-        # self.VPNs()
+        self.VPNs()
         
