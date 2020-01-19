@@ -50,7 +50,7 @@ class Intro(SpecialThreeDScene):
         
         self.play(ShrinkToCenter(BeforeCyberSafety),run_time=1.5)
         self.remove(BeforeCyberSafety)
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(CYBERSAFETY))
         self.wait(2)
         self.clear()
@@ -78,15 +78,15 @@ class WhatIsCyberSafety(Scene):
         SoWhatIsIt=Text("So what is it?",font="Geneva").move_to(QualitiesTable[0].get_center())
         
         self.play(Write(SoWhatIsIt))
-        self.wait(0.5)
+        self.wait(1)
 
         self.play(ReplacementTransform(SoWhatIsIt,QualitiesTable[0]))
         self.play(Write(QualitiesTable[4]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(QualitiesTable[1]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(QualitiesTable[2]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(QualitiesTable[3]))
         
         self.wait(1)
@@ -124,18 +124,19 @@ class WebBrowsing(Scene):
         PointsTable=Table.get_table(PointsDict).scale(0.5)
         PointsTable.move_to((0,-1,0))
         self.play(Write(PointsTable[0]),Write(PointsTable[5]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(PointsTable[1]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(PointsTable[2]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(PointsTable[3]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(PointsTable[4]))
-        self.wait(0.5)
+        self.wait(1)
         
         Anonymity=PointsTable[1].deepcopy()
         self.add(Anonymity)
+        self.remove(PointsTable[1])
 
         self.play(FadeOut(WebBrowsing),FadeOut(PointsTable))
         self.remove(WebBrowsing,PointsTable)
@@ -169,16 +170,16 @@ class WebBrowsing(Scene):
         IDTheftTable.move_to((0,-1,0))
 
         self.play(Write(IDTheftTable[0]))
-        self.wait(0.5)
+        self.wait(1)
         WhatIsit=Text("What is it?",font="Geneva").move_to(IDTheftTable[0].get_center())
         self.play(Transform((IDTheftTable[0]),WhatIsit),rate_func=there_and_back_with_pause,run_time=3)
 
         self.play(Write(IDTheftTable[1]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(IDTheftTable[2]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(IDTheftTable[3]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(IDTheftTable[4]))
 
         NotSolution=Group(IDTheftTable,Why,IDTheft)
@@ -386,7 +387,7 @@ class WebBrowsing(Scene):
         DummyCookie=Text("Cookies and Cream",font="Geneva").next_to(Tracking,DOWN)
         
         self.play(ReplacementTransform(IPAddressTracing,DummyCookie))
-        self.wait(0.5)
+        self.wait(1)
         self.play(ReplacementTransform(DummyCookie,CookieTracking))
         self.wait(1)
 
@@ -434,7 +435,7 @@ class WebBrowsing(Scene):
         FirstParty=CookiesTable[1].deepcopy()
 
         self.add(FirstParty)
-
+        self.remove(CookiesTable[1])
         
         self.play(FadeOut(CookiesTable))
         self.play(
@@ -636,6 +637,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         IncognitoBrowsing=PrivTypesTable[1].deepcopy()
 
         self.add(IncognitoBrowsing)
+        self.remove(PrivTypesTable[1])
 
         self.play(
         FadeOut(PrivTypesTable),
@@ -719,7 +721,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.play(Write(YourInfo))
         self.play(Uncreate(ZeroethArrow),Uncreate(YourInfo))
         self.play(ShowCreation(ZeroPointOnethArrow))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Uncreate(ZeroPointOnethArrow))
         
         
@@ -738,7 +740,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.play(ShowCreation(ThirdArrow))
         self.play(Uncreate(ThirdArrow))
         self.play(ShowCreation(FourthArrow))
-        self.wait(0.5)
+        self.wait(1)
 
         self.play(Uncreate(FourthArrow))
 
@@ -784,6 +786,194 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.ProxiedBrowsing()
         self.VPNs()
 
+class CommonCybercrime(Scene):
+    
+    def WhatIsCyberCrime(self):
+        WhatIsCC=Text("What is CyberCrime?",font="Geneva",color=REP_GREEN).to_edge(UP)
+        self.add(WhatIsCC)
+
+        CCDef1=Text("Cybercrime is any criminal offense that uses e-communication",font="Geneva")
+        CCDef2=Text("such as the Internet or uses an electronic device, like a computer.",font="Geneva").next_to(CCDef1,DOWN)
+
+        CCDef=VGroup(CCDef1,CCDef2).scale(0.4).move_to(ORIGIN)
+
+        CyberCrimeDict={
+            Text("The Most Common CyberCrimes are:",color=REP_GREEN,font="Geneva"):[
+                Text("CyberBullying and Trolling",color="#C30000",font= "Geneva"),
+                Text("Cyber Stalking",color="#C30000",font="Geneva"),
+            ]
+        }
+
+        CyberCrimeTable=Table.get_table(CyberCrimeDict).scale(0.5).move_to(ORIGIN)
+
+        self.play(Write(WhatIsCC))
+        self.wait(1)
+        self.play(Write(CCDef),run_time=3)
+        self.wait(3)
+        self.play(Uncreate(CCDef))
+        
+        self.play(ReplacementTransform(WhatIsCC,CyberCrimeTable[0]),Write(CyberCrimeTable[3]))
+
+        self.play(Write(CyberCrimeTable[1:3]))
+        self.wait(3)
+        self.clear()
+
+    def CyberBullying(self):
+        CyberCrimeDict={
+            Text("The Most Common CyberCrimes are:",color=REP_GREEN,font="Geneva"):[
+                Text("CyberBullying and Trolling",color="#C30000",font= "Geneva"),
+                Text("Cyber Stalking",color="#C30000",font="Geneva"),
+            ]
+        }
+
+        CyberCrimeTable=Table.get_table(CyberCrimeDict).scale(0.5).move_to(ORIGIN)
+
+        self.add(CyberCrimeTable)
+        self.wait(2)
+        CyberBullyTroll=CyberCrimeTable[1].deepcopy()
+        self.add(CyberBullyTroll)
+        self.remove(CyberCrimeTable[1])
+
+        self.play(FadeOut(CyberCrimeTable),
+        FadeToColor(CyberBullyTroll,REP_GREEN),
+        CyberBullyTroll.to_edge,UP,
+        CyberBullyTroll.scale,1.5,
+        )
+        
+        CyberTrollDef1=Text("A Cyber Troll is someone who purposely posts sarcastic",color=RED,font= "Geneva").next_to(CyberBullyTroll,DOWN)
+        CyberTrollDef2=Text("sarcastic or insulting comments to target someone online.",color=RED,font= "Geneva").next_to(CyberTrollDef1,DOWN)
+        CyberTrollDef=VGroup(CyberTrollDef1,CyberTrollDef2).scale(0.5)
+
+        TrollMsg=Text("Such a comment is also called 'Troll'.",color=RED,font= "Geneva").scale(0.5).move_to(CyberTrollDef.get_center())
+
+        TrollImage=ImageMobject("/Users/aathishs/Desktop/TrollFace.png").next_to(CyberTrollDef,DOWN)
+
+
+        CyberBullyDef=Text("Harassing or defaming someone using modern tech is called cyberbullying.",color=RED,font= "Geneva").scale(0.36).move_to(TrollMsg.get_center())
+
+        CBasCrime=Text("It is a criminal offence and can even count as assault.",color=RED,font= "Geneva").scale(0.4).next_to(CyberTrollDef,DOWN)
+
+        self.play(Write(CyberTrollDef),FadeIn(TrollImage),run_time=2,
+        )
+
+        self.wait(2)
+
+        self.play(ReplacementTransform(CyberTrollDef,TrollMsg))
+
+        self.wait(2)
+
+        self.play(FadeOutAndShiftDown(TrollImage),ReplacementTransform(TrollMsg,CyberBullyDef))
+        self.wait(2)
+        self.play(Write(CBasCrime))
+
+        self.wait(3)
+        
+        CyberStalking=Text("Cyber Stalking",color="#C30000",font="Geneva").to_edge(UP)
+
+        self.play(Uncreate(CBasCrime),Uncreate(CyberBullyDef),ReplacementTransform(CyberBullyTroll,CyberStalking))
+        self.clear()
+
+    def CyberStalking(self):
+        CyberStalking=Text("Cyber Stalking",color="#C30000",font="Geneva").to_edge(UP)
+        self.add(CyberStalking)
+
+        CStalking1=Text("Cyberstalking is the repeated use of electronic",font="Geneva").next_to(CyberStalking,DOWN)
+        CStalking2=Text("communications to harass or frighten someone.",font="Geneva").next_to(CStalking1,DOWN)
+
+        CStalking=VGroup(CStalking1,CStalking2).scale(0.5)
+
+        VictimsKnown=Text("Usually, the stalker knows the victim personally.",font="Geneva").scale(0.5).next_to(CStalking,DOWN)
+        AnonymityImportant=Text("They hide behind the anonymity provided by the Net.",font="Geneva").scale(0.5).next_to(CStalking,DOWN)
+
+        StalkingDict={
+            Text("They Do Things Like:",font="Impact"):[
+            Text("Posting the victims info Online.",font="Geneva"),
+            Text("Masquerade as the Victim on obscene websites.",font="Geneva"),
+            Text("Allow people from bad backgrounds to access Victim's info.",font="Geneva"),
+            Text("Add Victim to Mailing list of obscene websites.",font="Geneva"),
+            Text("Threaten the Victim directly or indirectly.",font="Geneva")
+            ]
+        }
+
+        StalkingTable=Table.get_table(StalkingDict,line_color=RED).scale(0.4).move_to(ORIGIN)
+
+        self.play(Write(CStalking))
+        self.wait(1)
+        self.play(Write(VictimsKnown))
+        self.wait(2)
+        self.play(ReplacementTransform(VictimsKnown,AnonymityImportant))
+        self.wait(2)
+        self.play(ReplacementTransform(AnonymityImportant,StalkingTable[0]),Write(StalkingTable[6]),FadeOut(CStalking))
+        self.play(Write(StalkingTable[1:6]))
+        self.wait(5)
+
+        self.play(FadeOutAndShiftDown(StalkingTable),ReplacementTransform(CyberStalking,Text("Rumour Spreading",color="#C30000",font="Geneva").to_edge(UP)))
+        self.clear()
+    def RumourSpreading(self):
+        RumourSpreadingH=Text("Rumour Spreading",color="#C30000",font="Geneva").to_edge(UP)
+        self.add(RumourSpreadingH)
+        FakeInfo=Text("Often, people post fake info behind fake accounts.",font="Geneva").scale(0.5).next_to(RumourSpreadingH,DOWN)
+
+        Tension=Text("This could lead to tensions between communities and even riots.",font="Geneva").scale(0.4).next_to(FakeInfo,DOWN)
+        Punishable=Text("Spreading such rumors is illegal and a punishable offence.",font="Geneva").scale(0.5).next_to(Tension,DOWN)
+        JailTime1=Text("As per Information Technology Act, the deed could land you",font="Geneva").scale(0.4).next_to(Tension,DOWN)
+        JailTime2=Text("upto 3 years of jail and a fine.",font="Geneva").scale(0.4).next_to(JailTime1,DOWN)
+        JailTime=VGroup(JailTime1,JailTime2)
+
+        self.play(Write(FakeInfo))
+        self.wait(1)
+        self.play(Write(Tension))
+        self.wait(1)
+        self.play(Write(Punishable))
+        self.wait(1)
+        self.play(ReplacementTransform(Punishable,JailTime))
+        self.wait(2)
+        self.play(Uncreate(JailTime))
+        self.play(Uncreate(Tension),Uncreate(FakeInfo))
+        self.play(Uncreate(RumourSpreadingH))
+
+        self.clear()
+
+    def ReportingCyberCrime(self):
+        Report=Text("Reporting CyberCrime",font="Geneva",color=REP_GREEN).to_edge(UP)
+        self.play(Write(Report))
+        Firstly=Text("One must first report it to their Guardian/school staff.",font="Geneva").scale(0.4).next_to(Report,DOWN)
+        Then=Text("Then, one may report it like any 'non-cyber' crime:",font="Geneva").scale(0.4).next_to(Firstly,DOWN)
+
+        ReportingDict={
+            Text("To report a CyberCrime",font="Impact",color=REP_GREEN):[
+            Text("Approach Local Police.",font="Geneva"),
+            Text("File E-FIRs.",font="Geneva"),
+            Text("Contact the CyberSecurity Cell of your state's police.",font="Geneva"),
+            ]
+        }
+
+        ReportingTable=Table.get_table(ReportingDict,line_color=LIGHT_GRAY).scale(0.5).move_to(ORIGIN)
+
+        self.play(Write(Firstly))
+        self.wait(1)
+        self.play(Write(Then))
+        self.wait(2)
+        self.play(ReplacementTransform(Then,ReportingTable))
+        self.wait(5)
+        self.play(FadeOutAndShiftDown(ReportingTable))
+
+        self.play(Uncreate(Firstly))
+        self.play(Uncreate(Report))
+        
+        GoodTips=Text("Now, for some general tips on staying safe online...",font="Geneva",color=BLUE).scale(0.5)
+        
+        self.play(Write(GoodTips))
+        self.wait(1)
+        self.play(Uncreate(GoodTips))
+
+    def construct(self):
+        self.WhatIsCyberCrime()
+        self.CyberBullying()
+        self.CyberStalking()
+        self.RumourSpreading()
+        self.ReportingCyberCrime()
+
 class SafePracticesAgainstCyberCrime(Scene):
 
     def All(self):
@@ -809,22 +999,30 @@ class SafePracticesAgainstCyberCrime(Scene):
         HomePC=ImageMobject("/Users/aathishs/Desktop/HomePC.png").scale(0.5).next_to(SafePracTable[8],RIGHT)
         
         self.play(Write(SafePracTable[0]),Write(SafePracTable[9]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[1]),FadeIn(Wall))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[2]),FadeIn(Browsers))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[3]),FadeIn(Incognito))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[4]))
         self.wait(5)
         self.play(Write(SafePracTable[5]),FadeIn(Lock))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[6]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[7]))
-        self.wait(0.5)
+        self.wait(1)
         self.play(Write(SafePracTable[8]),FadeIn(HomePC))
+
+        self.play(FadeOutAndShiftDown(SafePracTable),
+        FadeOut(Wall),
+        FadeOut(Browsers),
+        FadeOut(Incognito),
+        FadeOut(Lock),
+        FadeOut(HomePC),
+        Write(Text("Stay Safe, and Have Fun!",font="Geneva",color=REP_GREEN).move_to(ORIGIN)))
 
     def construct(self):
         self.All()
