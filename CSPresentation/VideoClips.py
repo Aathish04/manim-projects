@@ -357,19 +357,24 @@ class WebBrowsing(Scene):
 
         WorldMap=ImageMobject("/Users/aathishs/Desktop/WorldMap.png").scale(2).shift(2.5*RIGHT+1.8*DOWN)
         TracerDot=SmallDot(color=RED).move_to(WorldMap.get_center())
+        TracerArc=ArcBetweenPoints(TracerDot.get_center(), TracerDot.get_center()+RIGHT*1.23, color=RED,angle=-TAU/2)
         self.play(VGroup(IP,IP4Brace,RouterPart,RestOfIPBrace,ISPSpecific).shift,3*LEFT)
         
         self.play(FadeInFromDown(WorldMap))
         self.play(FadeIn(TracerDot))
 
-        self.play(ApplyMethod(
+        self.play(
+
+            ApplyMethod(
                 TracerDot.shift, (RIGHT*1.23),
                 path_func = path_along_arc(-TAU/2)
-            ))
+                ),
+                Write(TracerArc)
+            )
 
         self.play(Tools.wait_while_updating(2))
         
-        self.play(Uncreate(TracerDot))
+        self.play(Uncreate(TracerDot),Uncreate(TracerArc))
         
         self.play(FadeOutAndShiftDown(WorldMap))
         
