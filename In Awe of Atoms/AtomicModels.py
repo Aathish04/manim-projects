@@ -1,3 +1,6 @@
+#phi changes camera "along z axis"
+#theta rotates camera?
+
 from manimlib.imports import *
 from sanim.anim_tools.tables import *
 class Tools():
@@ -183,12 +186,14 @@ class RutherfordsModel(SpecialThreeDScene):
 
                 neutron=Tools.get_surface(Sphere(radius=0.1),shade_color=DARK_GREY,opacity=1)
                 DIRECTION=[LEFT,RIGHT,UP,DOWN,OUT,IN,UL,UR][np.random.randint(0,8)]
-                neutron.shift(DIRECTION*0.1)
+                neutron.shift(DIRECTION*0.15)
                 nucleus.add(proton,neutron)
             return nucleus
         
         nucleus=make_nucleus(ATOMIC_NUMBER)
         atom.add(nucleus)
+
+
         electron_count=ATOMIC_NUMBER
         angle_between_orbits=PI/electron_count
         electrons=VGroup()
@@ -197,17 +202,22 @@ class RutherfordsModel(SpecialThreeDScene):
             orbit=Circle(radius=1)
             orbit.rotate(angle_between_orbits*n,axis=Y_AXIS)
             atom.add(orbit)
-        always_rotate(atom,rate=-20*DEGREES)
+        # always_rotate(atom,rate=-20*DEGREES)
         self.add(atom)
 
 
     def construct(self):
         # self.begin_ambient_camera_rotation(0.15) #I dont need this since im using always_rotate()
-        
-        self.Make_Atom(ATOMIC_NUMBER=5)
+        # print(**self.default_angled_camera_position)
+        # quit()
+        # self.Make_Atom(ATOMIC_NUMBER=5)
+
+        self.add(Cube())
         
         self.move_camera(
-            **self.default_angled_camera_position,
+            theta= 20 * DEGREES,
+            phi=20*DEGREES,
             run_time=1,
         )
         self.wait(2)
+
