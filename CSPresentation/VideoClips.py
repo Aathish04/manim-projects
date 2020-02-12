@@ -118,7 +118,10 @@ class WebBrowsing(Scene):
         )
         PointsToNote=Text("Points To Be Covered:",font="Geneva",color=REP_GREEN).scale(1.5)
         PointsDict={
-            PointsToNote:[Text("Anonymity",font="Geneva"),Text("Tracking",font="Geneva"),Text("Privacy",font="Geneva"),Text("Cybersafety",font="Geneva")]
+            PointsToNote:[Text("Anonymity",font="Geneva"),
+            Text("Tracking",font="Geneva"),
+            Text("Privacy",font="Geneva"),
+            Text("Cybersafety",font="Geneva")]
         }
 
         PointsTable=Table.get_table(PointsDict).scale(0.5)
@@ -161,7 +164,9 @@ class WebBrowsing(Scene):
         self.wait(1)
         IDTheft=Text("Identity Theft",font="Impact").scale(1.5)
         IDTDetails={
-            IDTheft:[Text("Type of Fraud",color=RED,font="Arial Black"),Text("Impersonation",color=RED,font="Arial Black"),Text("Stealing Private Info",color=RED,font="Arial Black")]
+            IDTheft:[Text("Type of Fraud",color=RED,font="Arial Black"),
+            Text("Impersonation",color=RED,font="Arial Black"),
+            Text("Stealing Private Info",color=RED,font="Arial Black")]
         }
 
         IDTheftTable=Table.get_table(IDTDetails)
@@ -311,7 +316,12 @@ class WebBrowsing(Scene):
 
         self.play(Tools.wait_while_updating(2))
 
-        self.play(FadeOutAndShiftDown(IP),Uncreate(IP4Brace),Uncreate(YourIP),Uncreate(YourSharedSubnet),Uncreate(RestOfIPBrace),Uncreate(OthersCanAttack))
+        self.play(FadeOutAndShiftDown(IP),
+        Uncreate(IP4Brace),
+        Uncreate(YourIP),
+        Uncreate(YourSharedSubnet),
+        Uncreate(RestOfIPBrace),
+        Uncreate(OthersCanAttack))
 
         self.wait(1)
 
@@ -425,7 +435,9 @@ class WebBrowsing(Scene):
         self.wait(2)
 
         CookiesDict={
-            Text("Cookie Types:",font="Geneva",color=REP_GREEN):[Text("First Party",color=BLUE,font="Geneva"),Text("Third party",font="Geneva",color=RED),Text("SuperCookies",font="Geneva",color=PURPLE)]
+            Text("Cookie Types:",font="Geneva",color=REP_GREEN):[Text("First Party",color=BLUE,font="Geneva"),
+            Text("Third party",font="Geneva",color=RED),
+            Text("SuperCookies",font="Geneva",color=PURPLE)]
         }
 
         CookiesTable=Table.get_table(CookiesDict).scale(0.5)
