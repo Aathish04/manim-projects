@@ -72,7 +72,7 @@ class WhatIsCyberSafety(Scene):
             MainQualities:[Text("Safely",font="Geneva"),Text("Responsibly",font="Geneva"),Text("Securely",font="Geneva")]
         }
         
-        QualitiesTable=Table.get_table(Qualities).scale(0.5)
+        QualitiesTable=Table(tabledict=Qualities).scale(0.5)
         QualitiesTable.move_to((0,-1,0))
         
         SoWhatIsIt=Text("So what is it?",font="Geneva").move_to(QualitiesTable[0].get_center())
@@ -124,7 +124,7 @@ class WebBrowsing(Scene):
             Text("Cybersafety",font="Geneva")]
         }
 
-        PointsTable=Table.get_table(PointsDict).scale(0.5)
+        PointsTable=Table(tabledict=PointsDict).scale(0.5)
         PointsTable.move_to((0,-1,0))
         self.play(Write(PointsTable[0]),Write(PointsTable[5]))
         self.wait(1)
@@ -169,7 +169,7 @@ class WebBrowsing(Scene):
             Text("Stealing Private Info",color=RED,font="Arial Black")]
         }
 
-        IDTheftTable=Table.get_table(IDTDetails)
+        IDTheftTable=Table(tabledict=IDTDetails)
 
         IDTheftTable.scale(0.5)
         IDTheftTable.move_to((0,-1,0))
@@ -440,7 +440,7 @@ class WebBrowsing(Scene):
             Text("SuperCookies",font="Geneva",color=PURPLE)]
         }
 
-        CookiesTable=Table.get_table(CookiesDict).scale(0.5)
+        CookiesTable=Table(tabledict=CookiesDict).scale(0.5)
 
         CookiesTable.move_to(ORIGIN)
         CookiesTable.shift(DOWN)
@@ -639,7 +639,7 @@ class PrivateAndAnonymousBrowsing(Scene):
             Text("Some types of private browsing are:",font="Geneva",color=REP_GREEN).scale(1.5):[Text("Incognito Browsing",font="Geneva"),Text("Proxy Based Browsing",font="Geneva"),Text("VPN Based Browsing",font="Geneva")]
             }
 
-        PrivTypesTable=Table.get_table(PrivTypesDict).scale(0.5)
+        PrivTypesTable=Table(tabledict=PrivTypesDict).scale(0.5)
 
         PrivTypesTable.move_to(ORIGIN)
 
@@ -821,7 +821,7 @@ class CommonCybercrime(Scene):
             ]
         }
 
-        CyberCrimeTable=Table.get_table(CyberCrimeDict).scale(0.5).move_to(ORIGIN)
+        CyberCrimeTable=Table(tabledict=CyberCrimeDict).scale(0.5).move_to(ORIGIN)
 
         self.play(Write(WhatIsCC))
         self.wait(1)
@@ -843,7 +843,7 @@ class CommonCybercrime(Scene):
             ]
         }
 
-        CyberCrimeTable=Table.get_table(CyberCrimeDict).scale(0.5).move_to(ORIGIN)
+        CyberCrimeTable=Table(tabledict=CyberCrimeDict).scale(0.5).move_to(ORIGIN)
 
         self.add(CyberCrimeTable)
         self.wait(2)
@@ -912,7 +912,7 @@ class CommonCybercrime(Scene):
             ]
         }
 
-        StalkingTable=Table.get_table(StalkingDict,line_color=RED).scale(0.4).move_to(ORIGIN)
+        StalkingTable=Table(tabledict=StalkingDict,line_color=RED).scale(0.4).move_to(ORIGIN)
 
         self.play(Write(CStalking))
         self.wait(1)
@@ -965,7 +965,7 @@ class CommonCybercrime(Scene):
             ]
         }
 
-        ReportingTable=Table.get_table(ReportingDict,line_color=LIGHT_GRAY).scale(0.5).move_to(ORIGIN)
+        ReportingTable=Table(tabledict=ReportingDict,line_color=LIGHT_GRAY).scale(0.5).move_to(ORIGIN)
 
         self.play(Write(Firstly))
         self.wait(1)
@@ -1007,7 +1007,7 @@ class SafePracticesAgainstCyberCrime(Scene):
                 Text("Avoiding Public Computers.",color=RED,font="Geneva"),]
         }
         
-        SafePracTable=Table.get_table(SafePracDict).scale(0.5).move_to(ORIGIN)
+        SafePracTable=Table(tabledict=SafePracDict).scale(0.5).move_to(ORIGIN)
 
         Wall=ImageMobject("/Users/aathishs/Desktop/FireWall.png").scale(0.6).next_to(SafePracTable[1],RIGHT)
         Browsers=ImageMobject("/Users/aathishs/Desktop/Browsers.png").scale(0.3).next_to(SafePracTable[2],RIGHT)
