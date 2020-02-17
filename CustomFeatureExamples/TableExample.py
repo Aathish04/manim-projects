@@ -10,7 +10,7 @@ class Tables(Scene):
             Text("Text input",font="Lucida Grande"):[Text("Text",font="Alys Script Bold"),Text("is",font="serif"),Text("Supported",font="serif")],
         }
 
-        table=Table(tabledict=tabledict,line_color=GRAY,raw_string_color=BLUE)
+        table=Table(tabledict=tabledict,buff_length=0.3,line_color=GRAY,raw_string_color=BLUE)
         table.move_to((0,0,0))
         table.scale(0.5)
         
