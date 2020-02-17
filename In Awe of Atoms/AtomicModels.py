@@ -22,6 +22,13 @@ class Tools():
                 outlist.append(sub_element)
         return outlist
 
+class StoichiometricLaws(Scene):
+    def IntroduceLaws(self):
+        In1773=Text("1773",font="Alys Script Bold")
+        LawsOfStoichiometry=Text("The Laws of Stoichiometry",font="Futura")
+    def construct(self):
+
+
 class DaltonsModel(SpecialThreeDScene):
     def Make_Atom(self,color,radius):
         atom=Tools.get_surface(self.get_sphere(color=color,radius=radius),shade_color=color,opacity=0.5)
