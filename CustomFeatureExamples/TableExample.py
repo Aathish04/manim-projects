@@ -16,8 +16,11 @@ class Tables(Scene):
         
         self.play(Write(table),run_time=2)
 
-        self.play(Write(table.add_record(record=TextMobject("New Value"),field_num=1)))
+        self.play(Write(table.add_record(record=TextMobject("New Value"),field_num=0)))
         
+        self.play(*table.adjust_lines())
+
         self.play(Uncreate(table.remove_record(field_num=1,record_num=0)))
         
+        self.play(*table.adjust_positions())
         self.wait(1)
