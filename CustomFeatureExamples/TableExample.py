@@ -23,4 +23,13 @@ class Tables(Scene):
         self.play(Uncreate(table.remove_record(field_num=1,record_num=0)))
         
         self.play(table.adjust_positions())
+        
+        self.play(Write(table.add_field(TextMobject("Hi"))))
+        
+        self.play(table.adjust_lines())
+
+        self.play(table.scale,0.75,
+        table.shift,LEFT)
+        
+        
         self.wait(1)
