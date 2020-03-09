@@ -1,6 +1,6 @@
 #phi changes camera "along z axis"
 #theta rotates camera?
-
+import random
 from manimlib.imports import *
 from sanim.anim_tools.tables import *
 class Tools():
@@ -21,12 +21,466 @@ class Tools():
             for sub_element in element:
                 outlist.append(sub_element)
         return outlist
+    
+    def wait_while_updating(duration=1):
+        return Animation(Mobject(), run_time=duration)
 
-class StoichiometricLaws(Scene):
+class StoichiometricLaws(ZoomedScene):
     def IntroduceLaws(self):
-        In1773=Text("1773",font="Alys Script Bold")
-        LawsOfStoichiometry=Text("The Laws of Stoichiometry",font="Futura")
+        LawsOf=Text("The Laws of",font="Futura",stroke_width=0).scale(1)
+        Stoichiometry=Text("Stoichiometry",font="Geneva",stroke_width=0).scale(1).next_to(LawsOf,DOWN)
+        LawsOfStoichiometry=VGroup(LawsOf,Stoichiometry).move_to(ORIGIN) 
+        
+        StoichioBrace=Brace(Stoichiometry[0:8],DOWN,color=REP_GREEN)
+        MetryBrace=Brace(Stoichiometry[8:13],DOWN,color=BLUE,buff=0)
+        
+        stoicheionGreek=Text("στοιχεῖον",font="Geneva",stroke_width=0).scale(0.5).next_to(StoichioBrace,DOWN)
+        stoicheionEnglish=Text("stoicheion",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.3).next_to(stoicheionGreek,DOWN)
+        element=Text("(element)",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.25).next_to(stoicheionEnglish,DOWN)
+        
+        metronGreek=Text("μέτρον",font="Geneva",stroke_width=0).scale(0.5).next_to(MetryBrace,DOWN)
+        metronEnglish=Text("metron",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.3).next_to(metronGreek,DOWN)
+        measure=Text("(measure)",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.25).next_to(metronEnglish,DOWN)
+        
+        Everything=VGroup(LawsOfStoichiometry,StoichioBrace,MetryBrace,stoicheionGreek,stoicheionEnglish,element,metronGreek,metronEnglish,measure).move_to(ORIGIN)
+        
+        self.play(Write(LawsOfStoichiometry))
+        self.wait(1)
+        
+        self.play(
+            Stoichiometry[0:8].set_color,(REP_GREEN),
+            Write(StoichioBrace),
+            run_time=1
+            )
+
+        self.play(Write(stoicheionGreek),run_time=1)
+        self.play(Write(stoicheionEnglish),Write(element),run_time=1)
+        
+        self.play(
+            Stoichiometry[8:13].set_color,(BLUE),
+            Write(MetryBrace),
+            run_time=1
+            )
+        
+        self.play(Write(metronGreek),run_time=1)
+        self.play(Write(metronEnglish),Write(measure),run_time=1
+            )
+        self.wait(2)
+
+
+        self.play(Uncreate(Everything),run_time=2)
+        self.clear()
+    
+    def ConservationOfMass(self):
+        LavoisierPhoto=ImageMobject("/Users/aathishs/AtomThroughAgesImages/Lavoisier.png").scale(2)
+        Date=Text("1743-1794",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.5).next_to(LavoisierPhoto,DOWN)
+        
+        self.play(FadeInFromDown(LavoisierPhoto))
+        self.play(Write(Date))
+        
+        self.wait(7)
+        
+        LCMTitle=Text("The Law Of Conservation of Mass",font="Futura",stroke_width=0).to_edge(UP).scale(0.5)
+        
+        self.play(FadeOutAndShiftDown(LavoisierPhoto),ReplacementTransform(Date,LCMTitle))
+        self.wait(2)
+        
+        System=RegularPolygon(n=9,color=GREEN,fill_color=RED,fill_opacity=0.1).scale(2).round_corners()
+
+        self.play(ShowCreation(System))
+        
+        InParticles=VGroup()
+        
+        for i in range(0,15):
+            particle=Dot(
+                color=[GREEN,REP_GREEN,DARK_BLUE,GOLD_A,PINK,LIGHT_PINK,TEAL_A,LIGHT_BROWN,DARK_GREY,PURPLE_A,GREEN_B,BLUE_D,MAROON_E,WHITE,GREY_BROWN][i]
+                )
+            InParticles.add(particle)
+        
+        
+        class IPUs:
+            def IPU0(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[0].move_to(ORIGIN)
+                else:
+                    InParticles[0].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU1(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[1].move_to(ORIGIN)
+                else:
+                    InParticles[1].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU2(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[2].move_to(ORIGIN)
+                else:
+                    InParticles[2].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU3(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[3].move_to(ORIGIN)
+                else:
+                    InParticles[3].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU4(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[4].move_to(ORIGIN)
+                else:
+                    InParticles[4].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU5(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[5].move_to(ORIGIN)
+                else:
+                    InParticles[5].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU6(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[6].move_to(ORIGIN)
+                else:
+                    InParticles[6].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU7(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[7].move_to(ORIGIN)
+                else:
+                    InParticles[7].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU8(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[8].move_to(ORIGIN)
+                else:
+                    InParticles[8].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU9(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[9].move_to(ORIGIN)
+                else:
+                    InParticles[9].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU10(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[10].move_to(ORIGIN)
+                else:
+                    InParticles[10].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU11(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[11].move_to(ORIGIN)
+                else:
+                    InParticles[11].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU12(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[12].move_to(ORIGIN)
+                else:
+                    InParticles[12].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU13(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[13].move_to(ORIGIN)
+                else:
+                    InParticles[13].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+            def IPU14(obj):
+                coord=obj.get_center()
+                c_x=coord[0];c_y=coord[1]
+                dist_from_origin=np.sqrt((c_x**2)+(c_y**2))
+                if dist_from_origin>=1.75:
+                    InParticles[14].move_to(ORIGIN)
+                else:
+                    InParticles[14].shift(
+                        random.choice([UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR])*0.05
+                    )
+                
+        InParticles[0].add_updater(IPUs.IPU0)
+        InParticles[1].add_updater(IPUs.IPU1)
+        InParticles[2].add_updater(IPUs.IPU2)
+        InParticles[3].add_updater(IPUs.IPU3)
+        InParticles[4].add_updater(IPUs.IPU4)
+        InParticles[5].add_updater(IPUs.IPU5)
+        InParticles[6].add_updater(IPUs.IPU6)
+        InParticles[7].add_updater(IPUs.IPU7)
+        InParticles[8].add_updater(IPUs.IPU8)
+        InParticles[9].add_updater(IPUs.IPU9)
+        InParticles[10].add_updater(IPUs.IPU10)
+        InParticles[11].add_updater(IPUs.IPU11)
+        InParticles[12].add_updater(IPUs.IPU12)
+        InParticles[13].add_updater(IPUs.IPU13)
+        InParticles[14].add_updater(IPUs.IPU14)
+
+        self.add(InParticles)
+
+        zoomed_camera = self.zoomed_camera
+        zoomed_display = self.zoomed_display
+        frame = zoomed_camera.frame
+        zoomed_display_frame = zoomed_display.display_frame
+        frame.add_updater(lambda m:m.move_to(InParticles[0].get_center()))
+        zoomed_display.scale(0.5)
+        self.play(GrowFromPoint(zoomed_display,InParticles[0].get_center()))
+        self.activate_zooming()
+
+        Mass=Text("Mass=1 unit",font="Futura",stroke_width=0).scale(0.25).next_to(zoomed_display,DOWN).shift(LEFT)
+        Volume=Text("Volume = 1 unit",font="Futura",stroke_width=0).scale(0.25).next_to(zoomed_display,DOWN).shift(RIGHT)
+
+        self.play(Write(Mass),Write(Volume))
+
+        self.play(Tools.wait_while_updating(2))   
+
+        TemperatureMonitor=VGroup(Text("Temperature: 25 °C",font="serif",stroke_width=0)).scale(0.5).to_corner(UP+LEFT)
+        self.play(Uncreate(LCMTitle),Write(TemperatureMonitor))
+        
+        self.play(Tools.wait_while_updating(6))  
+        
+        FirstLaw=TexMobject("U=Q+W").next_to(System,DOWN)
+        self.play(Write(FirstLaw))
+        self.play(Tools.wait_while_updating(0.5))
+        self.play(Uncreate(FirstLaw))
+
+        OutParticles=VGroup(
+            Dot(color=GREEN),Dot(color=BLUE),Dot(color=RED),
+            Dot(color=GRAY),Dot(color=PURPLE_A),Dot(color=DARK_BLUE),
+            Dot(color=TEAL_A),Dot(color=BLUE_D),Dot(color=WHITE),
+            Dot(color=TEAL_B),Dot(color=DARKER_GREY),Dot(color=GREY_BROWN),
+        )
+
+        PathofParticleRIGHT=FunctionGraph(lambda x:np.abs((x-2)*3),x_max=5,x_min=-3).rotate(270*DEGREES, about_point=(2,0,0))
+        PathofParticleLEFT=FunctionGraph(lambda x:np.abs((x+2)*3),x_max=5,x_min=-5).rotate(90*DEGREES, about_point=(-2,0,0))
+        PathofParticleUP=FunctionGraph(lambda x:np.abs((x)*3),x_max=5,x_min=-3).shift(UP*2)
+        PathofParticleDOWN=FunctionGraph(lambda x:-np.abs((x)*3),x_max=5,x_min=-3).shift(DOWN*2)
+
+        self.play(
+            LaggedStart(
+
+                MoveAlongPath(OutParticles[0],PathofParticleRIGHT,run_time=5),
+                MoveAlongPath(OutParticles[4],PathofParticleRIGHT,run_time=5),
+                MoveAlongPath(OutParticles[8],PathofParticleRIGHT,run_time=5),
+            ),
+            LaggedStart(
+                MoveAlongPath(OutParticles[5],PathofParticleLEFT,run_time=5),
+                MoveAlongPath(OutParticles[9],PathofParticleLEFT,run_time=5),
+                MoveAlongPath(OutParticles[1],PathofParticleLEFT,run_time=5),
+            ),
+            LaggedStart(
+                MoveAlongPath(OutParticles[2],PathofParticleUP,run_time=5),
+                MoveAlongPath(OutParticles[6],PathofParticleUP,run_time=5),
+                MoveAlongPath(OutParticles[10],PathofParticleUP,run_time=5),
+            ),
+            LaggedStart(
+                MoveAlongPath(OutParticles[3],PathofParticleDOWN,run_time=5),
+                MoveAlongPath(OutParticles[7],PathofParticleDOWN,run_time=5),
+                MoveAlongPath(OutParticles[11],PathofParticleDOWN,run_time=5),
+            )
+        )
+
+        self.play(Uncreate(OutParticles),Uncreate(zoomed_display),Uncreate(zoomed_display_frame),Uncreate(frame))
+        self.play(Uncreate(InParticles))
+        self.play(Uncreate(System),Uncreate(TemperatureMonitor),Uncreate(Mass),Uncreate(Volume))
+        self.clear()
+
+        self.wait(1)
+
+        BeforeSystem=Square(color=GREEN,fill_color=RED,fill_opacity=0.1).scale(1.5).round_corners().shift(LEFT*3)
+        
+        AfterSystem=Square(color=RED,fill_color=GREEN,fill_opacity=0.1).scale(1.5).round_corners().shift(RIGHT*3)
+
+        Reactants=VGroup(
+            Dot(color=BLUE).shift(UP),
+            Dot(color=GREEN).shift(DOWN),
+            Dot(color=RED).shift(RIGHT),
+            Dot(color=WHITE).shift(LEFT),
+            Dot(color=LIGHT_GRAY).shift(UL),
+            Dot(color=PINK).shift(DL),
+            Dot(color=PURPLE_A).shift(UR),
+            Dot(color=YELLOW).shift(DR),)
+        
+        Products=Reactants.copy()
+        
+        def arrange_in_circle(inputs):
+            total_angle=2*PI
+            angle_diff_per_particle=total_angle/len(inputs)
+            for i in range(len(inputs)):
+                particle=inputs[i]
+                particle.move_to((3,0,0))
+                particle.shift(UP)
+                particle.rotate(angle_diff_per_particle*i,about_point=(3,0,0))
+        Reactants.move_to(BeforeSystem.get_center())
+        
+        arrange_in_circle(Products)
+        
+        Reactants.add_updater(lambda m: m.move_to(BeforeSystem.get_center()))
+        Products.add_updater(lambda m: m.move_to(AfterSystem.get_center()))
+        
+        RSLabel=Text("Reactants",font="Futura",color=GREEN,stroke_width=0).scale(0.5).add_updater(lambda m: m.next_to(BeforeSystem,UP))
+        PSLabel=Text("Products",font="Futura",color=RED,stroke_width=0).scale(0.5).add_updater(lambda m: m.next_to(AfterSystem,UP))
+        
+        BScaleTop=Line(BeforeSystem.get_center()-(2,1.8,0),BeforeSystem.get_center()-(-2,1.8,0))
+        AScaleTop=Line(AfterSystem.get_center()-(2,1.8,0),AfterSystem.get_center()-(-2,1.8,0))
+        BScaleConnect=Line(BScaleTop.get_center(),BScaleTop.get_center()-(0,1,0))
+        AScaleConnect=Line(AScaleTop.get_center(),AScaleTop.get_center()-(0,1,0))
+        ABConnect=Line(BScaleConnect.get_end(),AScaleConnect.get_end())
+        Fulcrum=Triangle().move_to(ABConnect.get_center()).scale(0.5).shift(DOWN*0.5)
+        Scale=VGroup(BScaleTop,AScaleTop,BScaleConnect,AScaleConnect,ABConnect,Fulcrum)
+        
+        BScaleTop.add_updater(lambda m: m.put_start_and_end_on(BeforeSystem.get_center()-(2,1.8,0),BeforeSystem.get_center()-(-2,1.8,0)))
+        AScaleTop.add_updater(lambda m: m.put_start_and_end_on(AfterSystem.get_center()-(2,1.8,0),AfterSystem.get_center()-(-2,1.8,0)))
+        AScaleConnect.add_updater(lambda m: m.put_start_and_end_on(AScaleTop.get_center(),AScaleTop.get_center()-(0,1,0)))
+        BScaleConnect.add_updater(lambda m: m.put_start_and_end_on(BScaleTop.get_center(),BScaleTop.get_center()-(0,1,0)))
+        ABConnect.add_updater(lambda m: m.put_start_and_end_on(BScaleConnect.get_end(),AScaleConnect.get_end()))
+
+        self.play(ShowCreation(BeforeSystem),ShowCreation(AfterSystem))
+        self.play(ShowCreation(Reactants),ShowCreation(Products),Write(RSLabel),Write(PSLabel))
+        self.play(Write(Scale))
+        self.wait(1)
+        self.play(BeforeSystem.shift,DOWN,AfterSystem.shift,UP)
+        self.wait(0.5)
+        self.play(BeforeSystem.shift,UP*2,AfterSystem.shift,DOWN*2)
+        self.wait(0.5)
+        self.play(BeforeSystem.shift,DOWN,AfterSystem.shift,UP)
+        self.wait(1)
+        self.play(Uncreate(Scale),FadeOut(Reactants),FadeOut(Products))
+        
+        Reactants.clear_updaters()
+        Products.clear_updaters()
+        BScaleTop.clear_updaters()
+        AScaleTop.clear_updaters()
+        BScaleConnect.clear_updaters()
+        AScaleConnect.clear_updaters()
+        ABConnect.clear_updaters()
+
+        Reactants=VGroup(
+            Dot(color=BLUE).shift(UP),
+            Dot(color=GREEN).shift(DOWN),
+            Dot(color=RED).shift(RIGHT),
+            Dot(color=WHITE).shift(LEFT),
+            Dot(color=LIGHT_GRAY).shift(UL),
+            Dot(color=PINK).shift(DL),
+            Dot(color=PURPLE_A).shift(UR),
+            Dot(color=YELLOW).shift(DR),
+        )
+        Products=Reactants.copy()
+        
+        def arrange_in_circle(inputs):
+            total_angle=2*PI
+            angle_diff_per_particle=total_angle/len(inputs)
+            for i in range(len(inputs)):
+                particle=inputs[i]
+                particle.move_to((3,0,0))
+                particle.shift(UP)
+                particle.rotate(angle_diff_per_particle*i,about_point=(3,0,0))
+        Reactants.move_to(BeforeSystem.get_center())
+        
+        arrange_in_circle(Products)
+
+        ReactionArrow=Arrow(BeforeSystem.get_center()+(1.4,0,0),AfterSystem.get_center()-(1.5,0,0))
+        
+        self.play(Write(ReactionArrow),Write(Reactants))
+        
+        self.wait(1)
+        
+        self.play(Uncreate(Reactants))
+        
+        self.play(Write(Products))
+
+        crossout=VGroup(
+            Line(BeforeSystem.get_corner(UP+LEFT),AfterSystem.get_corner(DOWN+RIGHT),color=RED,stroke_width=5),
+            Line(BeforeSystem.get_corner(DOWN+LEFT),AfterSystem.get_corner(UP+RIGHT),color=RED,stroke_width=5)
+        )
+        
+        self.play(Write(crossout))
+        self.play(Uncreate(crossout),Uncreate(Products))
+        
+        Reactants=VGroup(
+            Dot(color=BLUE).shift(UP),
+            Dot(color=GREEN).shift(DOWN),
+            Dot(color=RED).shift(RIGHT),
+            Dot(color=WHITE).shift(LEFT),
+            Dot(color=LIGHT_GRAY).shift(UL),
+            Dot(color=PINK).shift(DL),
+            Dot(color=PURPLE_A).shift(UR),
+            Dot(color=YELLOW).shift(DR),
+        )
+        Products=Reactants.copy()
+        def arrange_in_circle(inputs):
+            total_angle=2*PI
+            angle_diff_per_particle=total_angle/len(inputs)
+            for i in range(len(inputs)):
+                particle=inputs[i]
+                particle.move_to((3,0,0))
+                particle.shift(UP)
+                particle.rotate(angle_diff_per_particle*i,about_point=(3,0,0))
+                Reactants.move_to(BeforeSystem.get_center())
+        arrange_in_circle(Products)
+        
+        self.play(Write(Reactants))
+
+        self.wait(1)
+        self.play(ReplacementTransform(Reactants.copy(),Products),
+        Reactants.set_color,GRAY)
+        self.wait(1)
+        self.play(FadeOut(Reactants),Uncreate(Products),Uncreate(ReactionArrow),Uncreate(Reactants.copy()))
+        self.play(Uncreate(BeforeSystem),Uncreate(AfterSystem),Uncreate(RSLabel),Uncreate(PSLabel))
+    
     def construct(self):
+        self.IntroduceLaws()
+        self.ConservationOfMass()
 
 
 class DaltonsModel(SpecialThreeDScene):
