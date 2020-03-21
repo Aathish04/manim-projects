@@ -9,10 +9,10 @@ class Tools():
                             radius*np.sin(pol_ang) * np.sin(azim_ang),
                             radius*np.cos(pol_ang))
                             )
-    def get_surface(surface,shade_color,opacity=0.3):
+    def get_surface(surface,shade_color,stroke_width=0.5,opacity=0.3):
         result = surface.copy()
         result.set_fill(shade_color, opacity=opacity)
-        result.set_stroke(WHITE, width=0.5, opacity=opacity)
+        result.set_stroke(WHITE, width=stroke_width, opacity=opacity)
         return result
     
     def flatten(inlist):
@@ -274,8 +274,7 @@ class StoichiometricLaws(ZoomedScene):
         zoomed_display_frame = zoomed_display.display_frame
         frame.add_updater(lambda m:m.move_to(InParticles[0].get_center()))
         zoomed_display.scale(0.5)
-        self.play(GrowFromPoint(zoomed_display,InParticles[0].get_center()))
-        self.activate_zooming()
+        self.activate_zooming(animate=True)
 
         Mass=Text("Mass=1 unit",font="Futura",stroke_width=0).scale(0.25).next_to(zoomed_display,DOWN).shift(LEFT)
         Volume=Text("Volume = 1 unit",font="Futura",stroke_width=0).scale(0.25).next_to(zoomed_display,DOWN).shift(RIGHT)
@@ -333,8 +332,9 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Uncreate(OutParticles),Uncreate(zoomed_display),Uncreate(zoomed_display_frame),Uncreate(frame))
         self.play(Uncreate(InParticles))
         self.play(Uncreate(System),Uncreate(TemperatureMonitor),Uncreate(Mass),Uncreate(Volume))
-        self.clear()
 
+        self.zoom_activated = False#This stops the 
+        self.camera.image_mobjects_from_cameras = []#ImageMobject buffer from being filled. Essentially deactivates zooming. Add a function that does this?
         self.wait(1)
 
         BeforeSystem=Square(color=GREEN,fill_color=RED,fill_opacity=0.1).scale(1.5).round_corners().shift(LEFT*3)
@@ -477,12 +477,145 @@ class StoichiometricLaws(ZoomedScene):
         self.wait(1)
         self.play(FadeOut(Reactants),Uncreate(Products),Uncreate(ReactionArrow),Uncreate(Reactants.copy()))
         self.play(Uncreate(BeforeSystem),Uncreate(AfterSystem),Uncreate(RSLabel),Uncreate(PSLabel))
+        self.clear()
     
+    def DefiniteProportions(self):
+        LDPTitle=Text("The Law of Definite Proportions",font="Futura",stroke_width=0).scale(0.5)
+        self.play(Write(LDPTitle))
+        self.wait(2)
+        self.play(LDPTitle.to_edge,UP)
+        ProustPortrait=ImageMobject("/Users/aathishs/AtomThroughAgesImages/Proust.png").scale(2)
+        Date1=Text("1754-1826",font="Geneva",stroke_width=0).scale(0.5).next_to(ProustPortrait,DOWN)
+        self.play(FadeInFromDown(ProustPortrait))
+        self.play(Write(Date1))
+        self.wait(0.5)
+        self.play(FadeOutAndShiftDown(ProustPortrait),Uncreate(Date1))
+        
+        E1=Square(color=REP_GREEN,fill_color=REP_GREEN,fill_opacity=1).to_edge(LEFT)
+        E2=Square(color=BLUE,fill_color=BLUE,fill_opacity=1).to_edge(LEFT).shift(2.5*RIGHT)
+        PLUS0=TexMobject("+").move_to(VGroup(E1,E2).get_center())
+        P1=Rectangle(color="#28CEC4",fill_color="#28CEC4",fill_opacity=1).to_edge(RIGHT)
+        Arrow0=Arrow(E2,P1).shift(DOWN)
+        
+        
+        
+        self.play(Write(VGroup(E1,E2,PLUS0,P1,Arrow0)))
+
+        self.wait(1)
+        for i in range(3):
+            self.play(
+                E1.scale,0.75,
+                E2.scale,0.75,
+            )
+            self.play(
+                P1.scale,0.75
+            )
+        
+        self.play(
+            FadeOut(E1),FadeOut(E2),FadeOut(P1),FadeOut(PLUS0),FadeOut(Arrow0)
+        )
+
+        self.wait(2)
+
+        ThreeFe=VGroup(
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5), 
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(RIGHT*1.1),
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(LEFT*1.1)
+            ).shift(LEFT*5)
+        
+        
+        TwoO2=VGroup(
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25), 
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*0.5),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*1.1), 
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*1.6),
+            ).rotate(90*DEGREES).next_to(ThreeFe,RIGHT,buff=1)
+        
+        Fe3O4=Rectangle(colour=WHITE,fill_color=BLACK,fill_opacity=1,height=1,width=1.5).shift(RIGHT*0.5)
+
+        PLUS1=TexMobject("+").move_to(VGroup(ThreeFe[1],TwoO2).get_center()).shift(RIGHT*0.25)
+        arrow1=Arrow(TwoO2.get_center()+RIGHT*0.1,Fe3O4.get_center()+LEFT*0.6)
+        
+        R1=VGroup(ThreeFe,PLUS1,TwoO2,arrow1,Fe3O4).move_to(ORIGIN)
+        
+        FourFe=VGroup(
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5), 
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(RIGHT*1.1),
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(DOWN*1.1),
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(RIGHT*1.1).shift(DOWN*1.1),
+            ).shift(LEFT*5)
+        ThreeO2=VGroup(
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25), 
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*0.5),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(LEFT*0.5),
+            ).rotate(90*DEGREES).next_to(FourFe,RIGHT,buff=1)
+        TwoFe2O3=VGroup(
+            Rectangle(colour=WHITE,fill_color=MAROON_E,fill_opacity=1,height=1,width=1.5),
+            Rectangle(colour=WHITE,fill_color=MAROON_E,fill_opacity=1,height=1,width=1.5).shift(LEFT*1.5)).shift((RIGHT)*5).shift(DOWN*0.5)
+        PLUS2=TexMobject("+").move_to(VGroup(FourFe,ThreeO2).get_center()).shift(RIGHT*0.75)
+        arrow2=Arrow(ThreeO2[2].get_center()+UP*0.5+RIGHT*0.1,(TwoFe2O3.get_center()+LEFT*1.5))
+        
+        R2=VGroup(FourFe,PLUS2,ThreeO2,arrow2,TwoFe2O3).move_to(ORIGIN).shift(DOWN)
+        
+        self.play(Write(R1),run_time=2)
+        self.wait(2)
+        self.play(R1.shift,UP*1.9)
+        self.play(Write(R2),run_time=2)
+        self.wait(2)
+        self.play(Uncreate(VGroup(R2,R1)),run_time=2)
+        self.wait(2)
+        
+        
+        Compounds=Text("Compounds",font="Futura",color=REP_GREEN,stroke_width=0).scale(0.5)
+        CDef=Text("""A compound is a substance:
+        made up of two or more different elements,
+        in definite proportions,
+        joined together by bonds.""",font="Futura",stroke_width=0).scale(0.5)
+        
+        self.play(Write(Compounds))
+        self.wait(1)
+        self.play(Compounds.next_to,LDPTitle,DOWN)
+        self.play(Write(CDef),run_time=8)
+        self.play(CDef[59:78].set_color,(REP_GREEN))
+        self.wait(3)
+        self.play(FadeOut(CDef))
+        Reverse=VGroup(Text("The Law of Definite Proportions",font="Futura",stroke_width=0).scale(0.5),TexMobject(r"\Updownarrow"),Text("Compounds",font="Futura",color=WHITE,stroke_width=0).scale(0.5))
+        Reverse[0].shift(DOWN)
+        Reverse[2].shift(UP)
+        self.play(
+            ReplacementTransform(LDPTitle.copy(),Reverse[0]),
+            ReplacementTransform(Compounds.copy(),Reverse[2]),
+            Write(Reverse[1])
+        )
+        self.wait(3)
+        self.play(Uncreate(Reverse))
+        LDPDef=Text("""For a given compound:
+        the elements that are in it are 
+        always present in a fixed ratio, 
+        no matter where the elements came from 
+        or how they bonded.""",font="Futura",stroke_width=0).scale(0.5).shift(DOWN)
+        
+        self.play(Write(LDPDef),run_time=4)
+        self.wait(3)
+        self.play(Uncreate(LDPDef))
+        
+        self.play(Compounds.shift,2.2*RIGHT)
+        NonStoichiometric=Text("Non-Stoichiometric",font="Futura",color=RED,stroke_width=0).scale(0.5).next_to(Compounds,LEFT).shift(UP*0.05)
+        self.play(Write(NonStoichiometric))
+        
+        NaClStruct=ImageMobject("/Users/aathishs/AtomThroughAgesImages/NaClWustite.png").scale(2).shift(DOWN)
+        self.play(FadeIn(NaClStruct))
+        Below=TextMobject("(This is actually Sodium Chloride, but the structures are pretty similar)").scale(0.5).next_to(NaClStruct,DOWN)
+        self.play(Write(Below))
+        self.wait(5)
+        self.play(Uncreate(Below))
+        self.play(FadeOut(NaClStruct))
+        self.play(Uncreate(NonStoichiometric),Uncreate(Compounds),Uncreate(LDPTitle))
+
     def construct(self):
         self.IntroduceLaws()
         self.ConservationOfMass()
-
-
+        self.DefiniteProportions()
 class DaltonsModel(SpecialThreeDScene):
     def Make_Atom(self,color,radius):
         atom=Tools.get_surface(self.get_sphere(color=color,radius=radius),shade_color=color,opacity=0.5)
@@ -508,6 +641,7 @@ class DaltonsModel(SpecialThreeDScene):
 
         self.play(atoms.move_to, ORIGIN)
         self.wait(1)
+        self.clear()
 
 class ThomsonsModel(SpecialThreeDScene):
     
