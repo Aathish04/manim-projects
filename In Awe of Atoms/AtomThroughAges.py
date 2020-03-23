@@ -855,6 +855,7 @@ class StoichiometricLaws(ZoomedScene):
             )
         ))
         self.clear()
+    
     def construct(self):
         self.IntroduceLaws()
         self.ConservationOfMass()
@@ -1060,4 +1061,3 @@ class RutherfordsModel(SpecialThreeDScene):
             run_time=1,
         )
         self.wait(2)
-
