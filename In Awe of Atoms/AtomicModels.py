@@ -286,11 +286,11 @@ class StoichiometricLaws(ZoomedScene):
         TemperatureMonitor=VGroup(Text("Temperature: 25 °C",font="serif",stroke_width=0)).scale(0.5).to_corner(UP+LEFT)
         self.play(Uncreate(LCMTitle),Write(TemperatureMonitor))
         
-        self.play(Tools.wait_while_updating(6))  
+        self.play(Tools.wait_while_updating(7))  
         
         FirstLaw=TexMobject("U=Q+W").next_to(System,DOWN)
         self.play(Write(FirstLaw))
-        self.play(Tools.wait_while_updating(0.5))
+        self.play(Tools.wait_while_updating(2))
         self.play(Uncreate(FirstLaw))
 
         OutParticles=VGroup(
@@ -335,7 +335,7 @@ class StoichiometricLaws(ZoomedScene):
 
         self.zoom_activated = False#This stops the 
         self.camera.image_mobjects_from_cameras = []#ImageMobject buffer from being filled. Essentially deactivates zooming. Add a function that does this?
-        self.wait(1)
+        self.wait(3)
 
         BeforeSystem=Square(color=GREEN,fill_color=RED,fill_opacity=0.1).scale(1.5).round_corners().shift(LEFT*3)
         
@@ -547,13 +547,19 @@ class StoichiometricLaws(ZoomedScene):
         ThreeO2=VGroup(
             Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25), 
             Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*0.5),
-            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(LEFT*0.5),
+
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(UP*0.6),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(UP*0.6).shift(RIGHT*0.5),
+
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(DOWN*0.6),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(DOWN*0.6).shift(RIGHT*0.5),
+
             ).rotate(90*DEGREES).next_to(FourFe,RIGHT,buff=1)
         TwoFe2O3=VGroup(
             Rectangle(colour=WHITE,fill_color=MAROON_E,fill_opacity=1,height=1,width=1.5),
             Rectangle(colour=WHITE,fill_color=MAROON_E,fill_opacity=1,height=1,width=1.5).shift(LEFT*1.5)).shift((RIGHT)*5).shift(DOWN*0.5)
-        PLUS2=TexMobject("+").move_to(VGroup(FourFe,ThreeO2).get_center()).shift(RIGHT*0.75)
-        arrow2=Arrow(ThreeO2[2].get_center()+UP*0.5+RIGHT*0.1,(TwoFe2O3.get_center()+LEFT*1.5))
+        PLUS2=TexMobject("+").move_to(VGroup(FourFe,ThreeO2).get_center()).shift(RIGHT*0.13)
+        arrow2=Arrow(ThreeO2.get_center()+ RIGHT,(TwoFe2O3.get_center()+LEFT*1.5))
         
         R2=VGroup(FourFe,PLUS2,ThreeO2,arrow2,TwoFe2O3).move_to(ORIGIN).shift(DOWN)
         
@@ -612,10 +618,245 @@ class StoichiometricLaws(ZoomedScene):
         self.play(FadeOut(NaClStruct))
         self.play(Uncreate(NonStoichiometric),Uncreate(Compounds),Uncreate(LDPTitle))
 
+    def MultipleProportions(self):
+        LMPTitle=Text("The Law of Multiple Proportions",font="Futura",stroke_width=0).scale(0.5)
+        self.play(Write(LMPTitle))
+        self.wait(3)
+        self.play(LMPTitle.to_edge,UP,LMPTitle.set_color,REP_GREEN)
+        DaltonPortrait=ImageMobject("/Users/aathishs/AtomThroughAgesImages/Dalton.png").scale(2.9)
+        Date3=TextMobject("1766-1844").next_to(DaltonPortrait,DOWN)
+        self.play(FadeInFrom(DaltonPortrait,UP),Write(Date3))
+        self.wait(3)
+        self.play(FadeOutAndShiftDown(DaltonPortrait),Uncreate(Date3))
+
+        ThreeFe=VGroup(
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5), 
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(RIGHT*1.1),
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(LEFT*1.1)
+            ).shift(LEFT*5)
+        
+        
+        TwoO2=VGroup(
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25), 
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*0.5),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*1.1), 
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*1.6),
+            ).rotate(90*DEGREES).next_to(ThreeFe,RIGHT,buff=1)
+        
+        Fe3O4=Rectangle(colour=WHITE,fill_color=BLACK,fill_opacity=1,height=1,width=1.5).shift(RIGHT*0.5)
+
+        PLUS1=TexMobject("+").move_to(VGroup(ThreeFe[1],TwoO2).get_center()).shift(RIGHT*0.25)
+        arrow1=Arrow(TwoO2.get_center()+RIGHT*0.1,Fe3O4.get_center()+LEFT*0.6)
+        
+        R1=VGroup(ThreeFe,PLUS1,TwoO2,arrow1,Fe3O4).move_to(ORIGIN)
+        
+        FourFe=VGroup(
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5), 
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(RIGHT*1.1),
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(DOWN*1.1),
+            Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).shift(RIGHT*1.1).shift(DOWN*1.1),
+            ).shift(LEFT*5)
+        ThreeO2=VGroup(
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25), 
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(RIGHT*0.5),
+
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(UP*0.6),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(UP*0.6).shift(RIGHT*0.5),
+
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(DOWN*0.6),
+            Square(color=WHITE,fill_color=BLUE,fill_opacity=1).scale(0.25).shift(DOWN*0.6).shift(RIGHT*0.5),
+
+            ).rotate(90*DEGREES).next_to(FourFe,RIGHT,buff=1)
+        TwoFe2O3=VGroup(
+            Rectangle(colour=WHITE,fill_color=MAROON_E,fill_opacity=1,height=1,width=1.5),
+            Rectangle(colour=WHITE,fill_color=MAROON_E,fill_opacity=1,height=1,width=1.5).shift(LEFT*1.5)).shift((RIGHT)*5).shift(DOWN*0.5)
+        PLUS2=TexMobject("+").move_to(VGroup(FourFe,ThreeO2).get_center()).shift(RIGHT*0.13)
+        arrow2=Arrow(ThreeO2.get_center()+ RIGHT,(TwoFe2O3.get_center()+LEFT*1.5))
+        
+        R2=VGroup(FourFe,PLUS2,ThreeO2,arrow2,TwoFe2O3).move_to(ORIGIN).shift(DOWN)
+
+        OneFe1=Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).move_to(ThreeFe[0].get_center()).shift(UP*1.8)
+        OneFe2=Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5).move_to(FourFe.get_center())
+
+        One0=TextMobject("1g",color=BLACK).add_updater(lambda m: m.move_to(OneFe1.get_center()))
+        One1=TextMobject("1g",color=BLACK).add_updater(lambda m: m.move_to(OneFe2.get_center()))
+        
+        Oxygen42981=Rectangle(color=BLUE,fill_color=BLUE,fill_opacity=1,width=0.25,height=0.25*0.42981).move_to(TwoO2.get_center()).shift(UP*1.8).shift(LEFT*0.5)
+        Oxygen38206=Rectangle(color=BLUE,fill_color=BLUE,fill_opacity=1,width=0.25,height=0.25*0.38206).move_to(ThreeO2.get_center())
+
+        self.play(Write(R1),run_time=2)
+        self.wait(1)
+        self.play(R1.shift,UP*1.8)
+        self.play(Write(R2),run_time=2)
+        self.wait(2)
+        self.play(
+            ReplacementTransform(ThreeFe,OneFe1),
+            ReplacementTransform(FourFe,OneFe2),
+            PLUS1.shift,LEFT*0.3,
+            PLUS2.shift,LEFT*0.25,
+        )
+        self.play(
+        Write(One0),Write(One1),
+        ReplacementTransform(TwoO2,Oxygen42981),
+        ReplacementTransform(ThreeO2,Oxygen38206),
+        PLUS1.shift,LEFT*0.5,
+        PLUS2.shift,RIGHT*0.5,
+        )
+
+        R1.remove(TwoO2)
+        R1.remove(ThreeFe)
+        R2.remove(ThreeO2)
+        R2.remove(FourFe)
+        R1.add(Oxygen42981)
+        R2.add(Oxygen38206)
+        R1.add(OneFe1)
+        R2.add(OneFe2)
+        R2.add(One1)
+        R1.add(One0)
+        self.remove(TwoO2)
+        self.remove(ThreeO2)
+
+        R1OBrace=Brace(Oxygen42981,DOWN).add_updater(lambda m:m.next_to(Oxygen42981,DOWN))
+        R2OBrace=Brace(Oxygen38206,DOWN).add_updater(lambda m:m.next_to(Oxygen38206,DOWN))
+
+        R1OText=TextMobject("0.42981g").scale(0.5).add_updater(lambda m:m.next_to(R1OBrace,DOWN))
+        R2OText=TextMobject("0.38206g").scale(0.5).add_updater(lambda m:m.next_to(R2OBrace,DOWN))
+
+
+        self.play(Write(R1OBrace),Write(R1OText),Write(R2OBrace),Write(R2OText))
+
+        
+        self.play(R2.shift,UP)
+
+        self.wait(1)
+
+        GramFrac=VGroup(DecimalNumber(0.42981,num_decimal_places=5))
+        GramFrac.add(DecimalNumber(0.38206,num_decimal_places=5).next_to(GramFrac[0],DOWN))
+        GramFrac.add(
+            Line(
+                GramFrac[0].get_corner(LEFT+DOWN)+LEFT*0.2,
+                GramFrac[0].get_corner(RIGHT+DOWN)+RIGHT*0.2,
+                ).shift(DOWN*0.1)
+            )
+        GramFrac.to_edge(DOWN)
+        self.play(
+            ReplacementTransform(R1OText.copy(),GramFrac[0]),
+            ReplacementTransform(R2OText.copy(),GramFrac[1]),
+            Write(GramFrac[2])
+        )
+        
+        self.wait(1)
+
+        Approx=TexMobject(r"\approx").add_updater(lambda m: m.next_to(GramFrac,RIGHT))
+        GramFrac2=VGroup(DecimalNumber(0.42975,num_decimal_places=5))
+        GramFrac2.add(DecimalNumber(0.38200,num_decimal_places=5).next_to(GramFrac2[0],DOWN))
+        GramFrac2.add(
+            Line(
+                GramFrac2[0].get_corner(LEFT+DOWN)+LEFT*0.2,
+                GramFrac2[0].get_corner(RIGHT+DOWN)+RIGHT*0.2,
+                ).shift(DOWN*0.1)
+            )
+        GramFrac2.add_updater(lambda m: m.next_to(Approx,RIGHT))
+        self.play(
+            GramFrac.shift,3*LEFT,
+            Write(Approx),
+            Write(GramFrac2)
+            )
+        
+        GramFracFinal=VGroup(DecimalNumber(9))
+        GramFracFinal.add(DecimalNumber(8).next_to(GramFracFinal[0],DOWN))
+        GramFracFinal.add(
+            Line(
+                GramFracFinal[0].get_corner(LEFT+DOWN)+LEFT*0.2,
+                GramFracFinal[0].get_corner(RIGHT+DOWN)+RIGHT*0.2,
+                ).shift(DOWN*0.1)
+            )
+        Equals=TexMobject(r"=").add_updater(lambda m: m.next_to(GramFrac2,RIGHT))
+        GramFracFinal.next_to(Equals,RIGHT)
+        SmallWholeNumBrace=Brace(GramFracFinal,RIGHT,color=BLUE)
+        SmallWholeNumText=Text("our\nsmol\nwhole\nnumbers",font="Futura",stroke_width=0).scale(0.25).next_to(SmallWholeNumBrace,RIGHT)
+        self.play(
+            Write(Equals),
+            Write(GramFracFinal)
+        )
+        self.play(
+            Write(SmallWholeNumBrace),
+            Write(SmallWholeNumText)
+        )
+        
+        self.wait(3)
+        self.play(Uncreate(
+            VGroup(
+                *self.get_mobjects()[1:]
+            )
+        ))
+        DWNTableDict={
+            Text("Doesn't Like:",color=RED,font="Futura",stroke_width=0):[
+                Text("Non-Stoichiometric Compounds (e.g FeO)",font="Futura",color=BLUE,stroke_width=0),
+                Text("Large, Complex Compounds (e.g large Hydrocarbons)",font="Futura",stroke_width=0),
+            ]
+        }
+        DoesntWorkWith=Table(DWNTableDict,line_color=RED).scale(0.5).move_to(ORIGIN)
+        self.wait(1)
+        self.play(Write(DoesntWorkWith))
+        self.wait(2)
+        self.play(Uncreate(DoesntWorkWith))
+        Undecane=SVGMobject("/Users/aathishs/AtomThroughAgesImages/Undecane.svg").next_to(LMPTitle,DOWN)
+        Decane=SVGMobject("/Users/aathishs/AtomThroughAgesImages/Decane.svg").next_to(Undecane,DOWN)
+        DHydro=VGroup(*Decane.submobjects[38:53])
+        DHydro.add(*Decane.submobjects[54:56])
+        DHydro.add(*Decane.submobjects[57:59])
+        DHydro.add(*Decane.submobjects[60:63])
+        
+        UHydro=VGroup(*Undecane.submobjects[41:56])
+        UHydro.add(*Undecane.submobjects[57:59])
+        UHydro.add(*Undecane.submobjects[60:62])
+        UHydro.add(*Undecane.submobjects[63:65])
+        UHydro.add(*Undecane.submobjects[66:69])
+
+        DecaneBrace=Brace(Decane,LEFT)
+        DecaneBraceText=TexMobject("Decane").rotate(90*DEGREES).next_to(DecaneBrace,LEFT)
+        UndecaneBrace=Brace(Undecane,LEFT)
+        UndecaneBraceText=TexMobject("Undecane").rotate(90*DEGREES).next_to(UndecaneBrace,LEFT)
+
+        self.play(Write(Decane),Write(Undecane),Write(VGroup(DecaneBrace,DecaneBraceText,UndecaneBrace,UndecaneBraceText)))
+        self.wait(1)
+        GramFrac=VGroup(TexMobject("121"))
+        GramFrac.add(TexMobject("120").next_to(GramFrac[0],DOWN))
+
+        GramFrac.add(
+            Line(
+                GramFrac[0].get_corner(LEFT+DOWN)+LEFT*0.2,
+                GramFrac[0].get_corner(RIGHT+DOWN)+RIGHT*0.2,
+                ).shift(DOWN*0.1)
+            )
+        GramFrac.to_edge(DOWN)
+
+        self.play(
+            ReplacementTransform(DHydro.copy(),GramFrac[0]),
+        )
+        self.play(
+            ReplacementTransform(UHydro.copy(),GramFrac[1]),
+            Write(GramFrac[2])
+        )
+        
+        NotSmallWholeNumBrace=Brace(GramFrac,RIGHT,color=RED)
+        NotSmallWholeNumText=Text("not\nsmol\nwhole\nnumbers :(",font="Futura",stroke_width=0,color=RED).scale(0.25).next_to(NotSmallWholeNumBrace,RIGHT)
+        self.play(Write(NotSmallWholeNumBrace))
+        self.play(Write(NotSmallWholeNumText))
+        self.wait(8)
+        self.play(Uncreate(
+            VGroup(
+                *self.get_mobjects()
+            )
+        ))
+        self.clear()
     def construct(self):
         self.IntroduceLaws()
         self.ConservationOfMass()
         self.DefiniteProportions()
+        self.MultipleProportions()
+
 class DaltonsModel(SpecialThreeDScene):
     def Make_Atom(self,color,radius):
         atom=Tools.get_surface(self.get_sphere(color=color,radius=radius),shade_color=color,opacity=0.5)
