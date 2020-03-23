@@ -702,6 +702,10 @@ class StoichiometricLaws(ZoomedScene):
         PLUS1.shift,LEFT*0.5,
         PLUS2.shift,RIGHT*0.5,
         )
+        self.play(
+            TwoFe2O3.scale,0.5693,
+            Fe3O4.scale,0.6,
+        )
 
         R1.remove(TwoO2)
         R1.remove(ThreeFe)
