@@ -29,6 +29,12 @@ class Tables(Scene):
         
         self.play(table.adjust_lines())
 
+        self.play(
+            table.get_record(0,2).set_color,BLUE,
+            table.get_field(0).set_color,GREEN,
+            
+        )
+
         self.play(table.scale,0.75,
         table.shift,LEFT)
         
