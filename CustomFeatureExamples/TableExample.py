@@ -12,7 +12,6 @@ class Tables(Scene):
         }
 
         table=Table(tabledict=tabledict,buff_length=0.3,line_color=GRAY,raw_string_color=BLUE)
-        table.move_to((0,0,0))
         table.scale(0.5)
         
         self.play(Write(table),run_time=2)
