@@ -7,13 +7,13 @@ class LogoAdd(Scene):
         
         Re=Text("Rp",font="Futura",size=3.6)
 
-        FaradaysConst=Text("F",font="Alys Script Bold", size=1.1)
+        FaradaysConst=Text("F",font="Alys Script Bold", size=1.1,stroke_width=0)
         FaradaysConst.move_to((0,2,0))
 
-        AvogadrosNumN=Text("N",font="Snell Roundhand", size=0.92)
+        AvogadrosNumN=Text("N",font="Snell Roundhand", size=0.92, stroke_width=1)
         AvogadrosNumN.move_to((-0.5,-1.8,0))
 
-        AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7)
+        AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7,stroke_width=1)
         AvogadrosNumA.move_to((-0.25,-2.2,0))
         
         AvogadrosNum=VGroup(AvogadrosNumN,AvogadrosNumA)
@@ -35,13 +35,13 @@ class LogoRemove(Scene):
         
         Re=Text("Rp",font="Futura",size=3.6)
 
-        FaradaysConst=Text("F",font="Alys Script Bold", size=1.1)
+        FaradaysConst=Text("F",font="Alys Script Bold", size=1.1,stroke_width=0)
         FaradaysConst.move_to((0,2,0))
 
-        AvogadrosNumN=Text("N",font="Snell Roundhand", size=0.92)
+        AvogadrosNumN=Text("N",font="Snell Roundhand", size=0.92,stroke_width=1)
         AvogadrosNumN.move_to((-0.5,-1.8,0))
 
-        AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7)
+        AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7,stroke_width=1)
         AvogadrosNumA.move_to((-0.25,-2.2,0))
         
         AvogadrosNum=VGroup(AvogadrosNumN,AvogadrosNumA)
@@ -69,13 +69,13 @@ class LogoBoth(Scene):
         
         Re=Text("Rp",font="Futura",size=3.6)
 
-        FaradaysConst=Text("F",font="Alys Script Bold", size=1.1)
+        FaradaysConst=Text("F",font="Alys Script Bold", size=1.1,stroke_width=0)
         FaradaysConst.move_to((0,2,0))
 
-        AvogadrosNumN=Text("N",font="Snell Roundhand", size=0.92)
+        AvogadrosNumN=Text("N",font="Snell Roundhand", size=0.92, stroke_width=1)
         AvogadrosNumN.move_to((-0.5,-1.8,0))
 
-        AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7)
+        AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7,stroke_width=1)
         AvogadrosNumA.move_to((-0.25,-2.2,0))
         
         AvogadrosNum=VGroup(AvogadrosNumN,AvogadrosNumA)
