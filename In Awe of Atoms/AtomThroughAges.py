@@ -78,7 +78,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(FadeInFromDown(LavoisierPhoto))
         self.play(Write(Date))
         
-        self.wait(7)
+        self.wait(9)
         
         LCMTitle=Text("The Law Of Conservation of Mass",font="Futura",stroke_width=0).to_edge(UP).scale(0.5)
         
@@ -286,7 +286,7 @@ class StoichiometricLaws(ZoomedScene):
         TemperatureMonitor=VGroup(Text("Temperature: 25 °C",font="serif",stroke_width=0)).scale(0.5).to_corner(UP+LEFT)
         self.play(Uncreate(LCMTitle),Write(TemperatureMonitor))
         
-        self.play(Tools.wait_while_updating(7))  
+        self.play(Tools.wait_while_updating(11))  
         
         FirstLaw=TexMobject("U=Q+W").next_to(System,DOWN)
         self.play(Write(FirstLaw))
@@ -329,6 +329,7 @@ class StoichiometricLaws(ZoomedScene):
             )
         )
 
+        self.play(Tools.wait_while_updating(8))
         self.play(Uncreate(OutParticles),Uncreate(zoomed_display),Uncreate(zoomed_display_frame),Uncreate(frame))
         self.play(Uncreate(InParticles))
         self.play(Uncreate(System),Uncreate(TemperatureMonitor),Uncreate(Mass),Uncreate(Volume))
