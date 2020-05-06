@@ -335,7 +335,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Uncreate(System),Uncreate(TemperatureMonitor),Uncreate(Mass),Uncreate(Volume))
 
         self.zoom_activated = False#This stops the 
-        self.camera.image_mobjects_from_cameras = []#ImageMobject buffer from being filled. Essentially deactivates zooming. Add a function that does this?
+        self.camera.image_mobjects_from_cameras = []#ImageMobjects buffer from being filled. Essentially deactivates zooming. Add a function that does this?
         self.wait(3)
 
         BeforeSystem=Square(color=GREEN,fill_color=RED,fill_opacity=0.1).scale(1.5).round_corners().shift(LEFT*3)
@@ -479,6 +479,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(FadeOut(Reactants),Uncreate(Products),Uncreate(ReactionArrow),Uncreate(Reactants.copy()))
         self.play(Uncreate(BeforeSystem),Uncreate(AfterSystem),Uncreate(RSLabel),Uncreate(PSLabel))
         self.clear()
+        self.wait(6)
     
     def DefiniteProportions(self):
         LDPTitle=Text("The Law of Definite Proportions",font="Futura",stroke_width=0).scale(0.5)
@@ -497,9 +498,7 @@ class StoichiometricLaws(ZoomedScene):
         PLUS0=TexMobject("+").move_to(VGroup(E1,E2).get_center())
         P1=Rectangle(color="#28CEC4",fill_color="#28CEC4",fill_opacity=1).to_edge(RIGHT)
         Arrow0=Arrow(E2,P1).shift(DOWN)
-        
-        
-        
+
         self.play(Write(VGroup(E1,E2,PLUS0,P1,Arrow0)))
 
         self.wait(1)
@@ -516,7 +515,7 @@ class StoichiometricLaws(ZoomedScene):
             FadeOut(E1),FadeOut(E2),FadeOut(P1),FadeOut(PLUS0),FadeOut(Arrow0)
         )
 
-        self.wait(2)
+        self.wait(4)
 
         ThreeFe=VGroup(
             Square(color=MAROON_A,fill_color=MAROON_A,fill_opacity=1).scale(0.5), 
@@ -564,10 +563,14 @@ class StoichiometricLaws(ZoomedScene):
         
         R2=VGroup(FourFe,PLUS2,ThreeO2,arrow2,TwoFe2O3).move_to(ORIGIN).shift(DOWN)
         
-        self.play(Write(R1),run_time=2)
+        self.play(Write(R1[0]),run_time=1.5)
+        self.play(Write(R1[1:3]),run_time=1.5)
+        self.play(Write(R1[3:]),run_time=1)
         self.wait(2)
         self.play(R1.shift,UP*1.9)
-        self.play(Write(R2),run_time=2)
+        self.play(Write(R2[0]),run_time=1.5)
+        self.play(Write(R2[1:3]),run_time=1.5)
+        self.play(Write(R2[3:]),run_time=1)
         self.wait(2)
         self.play(Uncreate(VGroup(R2,R1)),run_time=2)
         self.wait(2)
@@ -584,7 +587,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Compounds.next_to,LDPTitle,DOWN)
         self.play(Write(CDef),run_time=8)
         self.play(CDef[59:78].set_color,(REP_GREEN))
-        self.wait(3)
+        self.wait(5)
         self.play(FadeOut(CDef))
         Reverse=VGroup(Text("The Law of Definite Proportions",font="Futura",stroke_width=0).scale(0.5),TexMobject(r"\Updownarrow"),Text("Compounds",font="Futura",color=WHITE,stroke_width=0).scale(0.5))
         Reverse[0].shift(DOWN)
@@ -614,7 +617,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(FadeIn(NaClStruct))
         Below=TextMobject("(This is actually Sodium Chloride, but the structures are pretty similar)").scale(0.5).next_to(NaClStruct,DOWN)
         self.play(Write(Below))
-        self.wait(5)
+        self.wait(10)
         self.play(Uncreate(Below))
         self.play(FadeOut(NaClStruct))
         self.play(Uncreate(NonStoichiometric),Uncreate(Compounds),Uncreate(LDPTitle))
@@ -685,11 +688,13 @@ class StoichiometricLaws(ZoomedScene):
         Oxygen42981=Rectangle(color=BLUE,fill_color=BLUE,fill_opacity=1,width=0.25,height=0.25*0.42981).move_to(TwoO2.get_center()).shift(UP*1.8).shift(LEFT*0.5)
         Oxygen38206=Rectangle(color=BLUE,fill_color=BLUE,fill_opacity=1,width=0.25,height=0.25*0.38206).move_to(ThreeO2.get_center())
 
+        self.wait(1.5)
+
         self.play(Write(R1),run_time=2)
         self.wait(1)
         self.play(R1.shift,UP*1.8)
         self.play(Write(R2),run_time=2)
-        self.wait(2)
+        self.wait(3)
         self.play(
             ReplacementTransform(ThreeFe,OneFe1),
             ReplacementTransform(FourFe,OneFe2),
@@ -790,11 +795,9 @@ class StoichiometricLaws(ZoomedScene):
         )
         
         self.wait(3)
-        self.play(Uncreate(
-            VGroup(
+        self.remove(
                 *self.get_mobjects()[1:]
-            )
-        ))
+        )
         DWNTableDict={
             Text("Doesn't Like:",color=RED,font="Futura",stroke_width=0):[
                 Text("Non-Stoichiometric Compounds (e.g FeO)",font="Futura",color=BLUE,stroke_width=0),
@@ -802,9 +805,8 @@ class StoichiometricLaws(ZoomedScene):
             ]
         }
         DoesntWorkWith=Table(DWNTableDict,line_color=RED).scale(0.5).move_to(ORIGIN)
-        self.wait(1)
         self.play(Write(DoesntWorkWith))
-        self.wait(2)
+        self.wait(3)
         self.play(Uncreate(DoesntWorkWith))
         Undecane=SVGMobject("/Users/aathishs/AtomThroughAgesImages/Undecane.svg").next_to(LMPTitle,DOWN)
         Decane=SVGMobject("/Users/aathishs/AtomThroughAgesImages/Decane.svg").next_to(Undecane,DOWN)
