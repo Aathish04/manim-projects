@@ -72,7 +72,7 @@ class StoichiometricLaws(ZoomedScene):
         self.clear()
     
     def ConservationOfMass(self):
-        LavoisierPhoto=ImageMobject("/Users/aathishs/AtomThroughAgesImages/Lavoisier.png").scale(2)
+        LavoisierPhoto=ImageMobject("assets/raster_images/Lavoisier.png").scale(2)
         Date=Text("1743-1794",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.5).next_to(LavoisierPhoto,DOWN)
         
         self.play(FadeInFromDown(LavoisierPhoto))
@@ -486,7 +486,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Write(LDPTitle))
         self.wait(2)
         self.play(LDPTitle.to_edge,UP)
-        ProustPortrait=ImageMobject("/Users/aathishs/AtomThroughAgesImages/Proust.png").scale(2)
+        ProustPortrait=ImageMobject("assets/raster_images/Proust.png").scale(2)
         Date1=Text("1754-1826",font="Geneva",stroke_width=0).scale(0.5).next_to(ProustPortrait,DOWN)
         self.play(FadeInFromDown(ProustPortrait))
         self.play(Write(Date1))
@@ -613,7 +613,7 @@ class StoichiometricLaws(ZoomedScene):
         NonStoichiometric=Text("Non-Stoichiometric",font="Futura",color=RED,stroke_width=0).scale(0.5).next_to(Compounds,LEFT).shift(UP*0.05)
         self.play(Write(NonStoichiometric))
         
-        NaClStruct=ImageMobject("/Users/aathishs/AtomThroughAgesImages/NaClWustite.png").scale(2).shift(DOWN)
+        NaClStruct=ImageMobject("assets/raster_images/NaClWustite.png").scale(2).shift(DOWN)
         self.play(FadeIn(NaClStruct))
         Below=TextMobject("(This is actually Sodium Chloride, but the structures are pretty similar)").scale(0.5).next_to(NaClStruct,DOWN)
         self.play(Write(Below))
@@ -627,7 +627,7 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Write(LMPTitle))
         self.wait(3)
         self.play(LMPTitle.to_edge,UP,LMPTitle.set_color,REP_GREEN)
-        DaltonPortrait=ImageMobject("/Users/aathishs/AtomThroughAgesImages/Dalton.png").scale(2.9)
+        DaltonPortrait=ImageMobject("assets/raster_images/Dalton.png").scale(2.9)
         Date3=TextMobject("1766-1844").next_to(DaltonPortrait,DOWN)
         self.play(FadeInFrom(DaltonPortrait,UP),Write(Date3))
         self.wait(3)
@@ -808,8 +808,8 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Write(DoesntWorkWith))
         self.wait(3)
         self.play(Uncreate(DoesntWorkWith))
-        Undecane=SVGMobject("/Users/aathishs/AtomThroughAgesImages/Undecane.svg").next_to(LMPTitle,DOWN)
-        Decane=SVGMobject("/Users/aathishs/AtomThroughAgesImages/Decane.svg").next_to(Undecane,DOWN)
+        Undecane=SVGMobject("assets/svg_images/Undecane.svg").next_to(LMPTitle,DOWN)
+        Decane=SVGMobject("assets/svg_images/Decane.svg").next_to(Undecane,DOWN)
         DHydro=VGroup(*Decane.submobjects[38:53])
         DHydro.add(*Decane.submobjects[54:56])
         DHydro.add(*Decane.submobjects[57:59])
