@@ -866,31 +866,12 @@ class StoichiometricLaws(ZoomedScene):
         self.MultipleProportions()
 
 class DaltonsModel(SpecialThreeDScene):
-    def Make_Atom(self,color,radius):
-        atom=Tools.get_surface(self.get_sphere(color=color,radius=radius),shade_color=color,opacity=0.5)
-        atom.set_stroke(width=0)
-        atom.set_fill(color=color)
-        always_rotate(atom)
-        return atom
-
     def construct(self):
-        self.set_camera_orientation(**self.default_angled_camera_position)
-        
-        H_atom=self.Make_Atom(color=WHITE,radius=1)
-        Fe_atom=self.Make_Atom(color=MAROON_A,radius=2.4)
-        
+        DaltonPortrait=ImageMobject("assets/raster_images/DaltonNBG.png").to_corner(DR).shift(UP*0.2).scale(1.8)
+        speechbubble=SpeechBubble().scale(0.5).flip().move_to(DaltonPortrait.get_corner(UL)+UL*0.7+DOWN*0.5)
+        speechbubble.add_content(Text("Why would they be different? ",font="Trattatello",stroke_width=0))
+        self.play(LaggedStart(FadeInFrom(DaltonPortrait,RIGHT), Write(speechbubble),lag_ratio=0.5))
 
-        Fe_atom.shift(RIGHT*1.6)
-        atoms=VGroup(Fe_atom,H_atom)
-        self.play(GrowFromCenter(H_atom))
-        self.play(H_atom.shift,LEFT*2)
-
-        self.play(GrowFromCenter(Fe_atom))
-        self.play(Fe_atom.shift,RIGHT*2)
-
-        self.play(atoms.move_to, ORIGIN)
-        self.wait(1)
-        self.clear()
 
 class ThomsonsModel(SpecialThreeDScene):
     
