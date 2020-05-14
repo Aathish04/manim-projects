@@ -28,15 +28,15 @@ class Intro(SpecialThreeDScene):
         SpinningGlobe.rotate(about_point=SpinningGlobe.get_center(),axis=X_AXIS,angle=90*DEGREES)
 
         self.play(ShowCreation(SpinningGlobe))
-        
+
         always_rotate(SpinningGlobe,about_point=SpinningGlobe.get_center(),axis=-Y_AXIS)
-        
+
         self.wait(1)
 
         WikipediaLogo=ImageMobject("/Users/aathishs/Desktop/WikipediaLogo.png").scale(1)
         CommApps=ImageMobject("/Users/aathishs/Desktop/CommApps.png").scale(0.5)
         Ecomm=ImageMobject("/Users/aathishs/Desktop/Ecommerce.jpg").scale(0.75)
-        
+
         WikipediaLogo.move_to(SpinningGlobe.get_center()+2*RIGHT+UP)
         CommApps.move_to(SpinningGlobe.get_center()+2*LEFT+UP)
         Ecomm.move_to(SpinningGlobe.get_center()+2*DOWN)
@@ -47,14 +47,14 @@ class Intro(SpecialThreeDScene):
         self.wait(1.5)
         self.play(GrowFromPoint(Ecomm,SpinningGlobe.get_center()))
         self.wait(2)
-        
+
         self.play(ShrinkToCenter(BeforeCyberSafety),run_time=1.5)
         self.remove(BeforeCyberSafety)
         self.wait(1)
         self.play(Write(CYBERSAFETY))
         self.wait(2)
         self.clear()
-    
+
     def construct(self):
         self.InternetNow()
 
@@ -67,16 +67,16 @@ class WhatIsCyberSafety(Scene):
         self.play(CYBERSAFETY.to_edge,UP)
 
         MainQualities=Text("Cybersafety is the practice of utilising the internet:",font="Geneva")
-        
+
         Qualities={
             MainQualities:[Text("Safely",font="Geneva"),Text("Responsibly",font="Geneva"),Text("Securely",font="Geneva")]
         }
-        
+
         QualitiesTable=Table(tabledict=Qualities).scale(0.5)
         QualitiesTable.move_to((0,-1,0))
-        
+
         SoWhatIsIt=Text("So what is it?",font="Geneva").move_to(QualitiesTable[0].get_center())
-        
+
         self.play(Write(SoWhatIsIt))
         self.wait(1)
 
@@ -88,15 +88,15 @@ class WhatIsCyberSafety(Scene):
         self.play(Write(QualitiesTable[2]))
         self.wait(1)
         self.play(Write(QualitiesTable[3]))
-        
+
         self.wait(1)
         Everything=Group(CYBERSAFETY,QualitiesTable,MainQualities,SoWhatIsIt)
         self.play(ShrinkToCenter(Everything))
         self.remove(Everything)
         self.wait(1)
-        
+
         NetsMostPrevalent=Text("Let's talk about securing the net's most prevalent use...",font="Geneva").scale(0.5)
-        
+
         self.play(Write(NetsMostPrevalent))
         self.wait(1)
         self.play(ReplacementTransform(NetsMostPrevalent,Text("Web Browsing",font="Geneva").scale(2)))
@@ -136,7 +136,7 @@ class WebBrowsing(Scene):
         self.wait(1)
         self.play(Write(PointsTable[4]))
         self.wait(1)
-        
+
         Anonymity=PointsTable[1].deepcopy()
         self.add(Anonymity)
         self.remove(PointsTable[1])
@@ -188,9 +188,9 @@ class WebBrowsing(Scene):
         self.play(Write(IDTheftTable[4]))
 
         NotSolution=Group(IDTheftTable,Why,IDTheft)
-        
+
         HowToPrevent=Text("So, how do we prevent this?",color=BLUE,font="Geneva").scale(0.5)
-        
+
         self.play(FadeOut(NotSolution))
         self.play(FadeIn(HowToPrevent))
         self.remove(NotSolution)
@@ -215,9 +215,9 @@ class WebBrowsing(Scene):
         self.play(Uncreate(HowDoWebsitesTrack))
 
         self.clear()
-    
+
     def IPTracking(self):
-        
+
         Tracking=Text("Tracking",font="Geneva",color=REP_GREEN).to_edge(UP)
         self.add(Tracking)
 
@@ -231,7 +231,7 @@ class WebBrowsing(Scene):
         IPsLinked2=Text("other devices on the same local network.",font="Geneva",color=DARK_GRAY).next_to(IPsLinked1,DOWN)
         IPsLinked=VGroup(IPsLinked1,IPsLinked2).move_to(IPDef.get_center())
         IPsLinked.scale(0.5)
-        
+
         class LocalIPUpdaters():
             def Updater1(self):
                 IP1.set_value(192)
@@ -244,7 +244,7 @@ class WebBrowsing(Scene):
 
             def Updater4(self):
                 IP4.set_value(np.random.randint(100,255))
-        
+
         class GlobalIPUpdaters():
             def Updater1(self):
                 IP1.set_value(np.random.randint(100,223))
@@ -265,7 +265,7 @@ class WebBrowsing(Scene):
         IP3.move_to(IP2.get_center()+((IP2.get_width()/2)+IP3.get_width()/2,0,0)+RIGHT/1.25)
         IP4=Integer()
         IP4.move_to(IP3.get_center()+((IP3.get_width()/2)+IP4.get_width()/2,0,0)+RIGHT/1.25)
-        
+
         IPNums=VGroup(IP1,IP2,IP3,IP4).next_to(IPDef,DOWN)
 
         IP1.add_updater(LocalIPUpdaters.Updater1)
@@ -280,29 +280,29 @@ class WebBrowsing(Scene):
         IP.shift(DOWN)
         self.play(Write(IPAddressTracing))
         self.play(Write(IPDef),run_time=2)
-        
+
         self.wait(2)
-        
+
         self.play(ReplacementTransform(IPDef,IPsLinked))
-        
+
         self.play(Write(IP))
-        
+
 
         self.play(Tools.wait_while_updating(1))
-        
+
         IP4Brace=Brace(IP4,DOWN,color=BLUE)
-        
+
         YourIP=Text("the IP part unique to you",color=BLUE,font="Geneva").scale(0.3).next_to(IP4Brace,DOWN)
-        
+
         self.play(Tools.wait_while_updating(1))
-        
+
         IP4.clear_updaters()
         self.play(Write(YourIP),FadeToColor(IP4,BLUE),ShowCreation(IP4Brace))
         self.play(Tools.wait_while_updating(1))
 
         RestOfIPBrace=Brace(VGroup(IP1,IP2,IP3,IPSep1,IPSep2,IPSep3),UP,color=REP_GREEN)
         YourSharedSubnet=Text("your local network",font="Geneva",color=REP_GREEN).scale(0.3).next_to(RestOfIPBrace,UP)
-        
+
         self.play(FadeToColor(VGroup(IP1,IP2,IP3,IPSep1,IPSep2,IPSep3),REP_GREEN),
         ShowCreation(RestOfIPBrace),
         Write(YourSharedSubnet)
@@ -340,7 +340,7 @@ class WebBrowsing(Scene):
 
         IP4Brace=Brace(IP4,DOWN,color=BLUE)
         RouterPart=Text("for your router",font="Geneva",color=BLUE).next_to(IP4Brace,DOWN).scale(0.3)
-        
+
         RestOfIPBrace=Brace(VGroup(IP1,IP2,IP3),UP,color=REP_GREEN)
 
         ISPSpecific=Text("from ISP, for everyone",font="Geneva",color=REP_GREEN).scale(0.3).next_to(RestOfIPBrace,UP)
@@ -349,10 +349,10 @@ class WebBrowsing(Scene):
         CanGetLocation=Text("a website can get your rough physical location.",font="Geneva",color=RED).next_to(FromGlobalIP,DOWN)
 
         LocationFromIP=VGroup(FromGlobalIP,CanGetLocation).scale(0.5).next_to(IPAddressTracing,DOWN)
-        
-        
-        
-        
+
+
+
+
         self.play(Write(LocationFromIP),run_time=2)
 
         self.play(FadeInFromDown(IP))
@@ -369,7 +369,7 @@ class WebBrowsing(Scene):
         TracerDot=SmallDot(color=RED).move_to(WorldMap.get_center())
         TracerArc=ArcBetweenPoints(TracerDot.get_center(), TracerDot.get_center()+RIGHT*1.23, color=RED,angle=-TAU/2)
         self.play(VGroup(IP,IP4Brace,RouterPart,RestOfIPBrace,ISPSpecific).shift,3*LEFT)
-        
+
         self.play(FadeInFromDown(WorldMap))
         self.play(FadeIn(TracerDot))
 
@@ -383,11 +383,11 @@ class WebBrowsing(Scene):
             )
 
         self.play(Tools.wait_while_updating(2))
-        
+
         self.play(Uncreate(TracerDot),Uncreate(TracerArc))
-        
+
         self.play(FadeOutAndShiftDown(WorldMap))
-        
+
         self.play(Uncreate(RestOfIPBrace),
         Uncreate(ISPSpecific),
         Uncreate(IP4Brace),
@@ -400,7 +400,7 @@ class WebBrowsing(Scene):
 
         CookieTracking=Text("Cookies and Scripts",font="Geneva").next_to(Tracking,DOWN)
         DummyCookie=Text("Cookies and Cream",font="Geneva").next_to(Tracking,DOWN)
-        
+
         self.play(ReplacementTransform(IPAddressTracing,DummyCookie))
         self.wait(1)
         self.play(ReplacementTransform(DummyCookie,CookieTracking))
@@ -453,7 +453,7 @@ class WebBrowsing(Scene):
 
         self.add(FirstParty)
         self.remove(CookiesTable[1])
-        
+
         self.play(FadeOut(CookiesTable))
         self.play(
         FirstParty.set_color,REP_GREEN,
@@ -473,7 +473,7 @@ class WebBrowsing(Scene):
         self.play(Uncreate(FirstPartyDef))
 
         ThirdParty=Text("Third party",font="Geneva",color=RED).scale(0.75).move_to(FirstParty.get_center())
-        
+
         self.play(ReplacementTransform(FirstParty,ThirdParty))
 
         ThirdPartyDef1=Text("These are cookies that websites use to",font="Geneva").next_to(ThirdParty,DOWN)
@@ -483,12 +483,12 @@ class WebBrowsing(Scene):
 
         self.play(Write(ThirdPartyDef),run_time=2)
 
-        UsetoAdvert1=Text("They can use this info to annoyingly advertise",font="Geneva",color=RED) 
-        
+        UsetoAdvert1=Text("They can use this info to annoyingly advertise",font="Geneva",color=RED)
+
         UsetoAdvert2=Text("products that may interest you.",font="Geneva",color=RED).next_to(UsetoAdvert1,DOWN)
 
         UsetoAdvert=VGroup(UsetoAdvert1,UsetoAdvert2).next_to(ThirdParty,DOWN).scale(0.5)
-        
+
         self.play(ReplacementTransform(ThirdPartyDef,UsetoAdvert))
 
         self.wait(1)
@@ -521,7 +521,7 @@ class WebBrowsing(Scene):
 
         self.play(ReplacementTransform(CookieTracking, HTTPReferrer))
 
-        
+
         self.clear()
 
     def HTTPReferrers(self):
@@ -567,7 +567,7 @@ class WebBrowsing(Scene):
         self.wait(1)
 
         self.clear()
-        
+
     def UserAgents(self):
         Tracking=Text("Tracking",font="Geneva",color=REP_GREEN).to_edge(UP)
         self.add(Tracking)
@@ -575,7 +575,7 @@ class WebBrowsing(Scene):
         UserAgent=Text("User Agents",font="Geneva").next_to(Tracking,DOWN)
         self.add(UserAgent)
         QuiteSimple=Text("This one is quite simple.",font="Geneva").scale(0.5).next_to(UserAgent,DOWN)
-        
+
         UADef1=Text("A 'User Agent' is sent by your browser to the",font="Geneva").next_to(UserAgent,DOWN)
         UADef2=Text("sites you visit with info on your OS and browser.",font="Geneva").next_to(UADef1,DOWN)
         UADef=VGroup(UADef1,UADef2).scale(0.5)
@@ -584,12 +584,12 @@ class WebBrowsing(Scene):
         self.play(ReplacementTransform(QuiteSimple,UADef))
 
         self.wait(2)
-        
+
         self.play(Uncreate(UADef))
 
 
         HowToCircumvent=Text("So how do you circumvent all this stalking?",font="Geneva").scale(0.6).next_to(UserAgent,DOWN)
-        
+
         self.play(ReplacementTransform(UserAgent,HowToCircumvent))
         self.wait(3)
         PrivateBrowsing=Text("Private and Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
@@ -597,7 +597,7 @@ class WebBrowsing(Scene):
         self.play(ReplacementTransform(Tracking,PrivateBrowsing),Uncreate(HowToCircumvent))
 
         self.clear()
-    
+
     def construct(self):
         self.LeadIntoTracking()
         self.IPTracking()
@@ -607,25 +607,25 @@ class WebBrowsing(Scene):
 
 class PrivateAndAnonymousBrowsing(Scene):
     def DefinePrivateAnonBrowsing(self):
-        
+
         PrivateAndAnonBrowsing=Text("Private and Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
         self.add(PrivateAndAnonBrowsing)
         self.wait(1)
-       
+
         AnonBrowsing=Text("Anonymous Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
         self.play(ReplacementTransform(PrivateAndAnonBrowsing,AnonBrowsing))
-        
+
         WhatTheyDo1=Text("Anonymous Browsers allow users to view ",font="Geneva").scale(0.5).next_to(PrivateAndAnonBrowsing,DOWN)
         WhatTheyDo2=Text("websites without revealing their information.",font="Geneva").scale(0.5).next_to(WhatTheyDo1,DOWN)
         WhatTheyDo=VGroup(WhatTheyDo1,WhatTheyDo2)
-        
+
         UsedBy=Text("It's often used by whistleblowers and journalists. ",font="Geneva").scale(0.5).move_to(WhatTheyDo.get_center())
-        
+
         self.play(Write(WhatTheyDo))
         self.wait(2)
         self.play(ReplacementTransform(WhatTheyDo,UsedBy))
         self.wait(2)
-        
+
         AnotherType=Text("Another type of browsing is called Private Browsing. ",font="Geneva").scale(0.5).move_to(UsedBy.get_center())
         self.play(ReplacementTransform(UsedBy,AnotherType))
 
@@ -661,7 +661,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         IncognitoBrowsing.set_color,LIGHT_GREY,
         IncognitoBrowsing.scale,1.25,
         IncognitoBrowsing.next_to,PrivateBrowsing,DOWN
-        ) 
+        )
 
         DoNotStore=Text("These browsers don't record your activity.",font="Geneva").scale(0.5).next_to(IncognitoBrowsing,DOWN)
         FoundAsSetting=Text("Most modern browsers show this as an option in settings.",font="Geneva").scale(0.5).next_to(DoNotStore,DOWN)
@@ -683,7 +683,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.play(ReplacementTransform(IncognitoBrowsing,Text("Proxied Browsing",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)))
         self.wait(1)
         self.clear()
-    
+
     def ProxiedBrowsing(self):
         PrivateBrowsing=Text("Private Browsing",font="Geneva",color=REP_GREEN).scale(0.85).to_edge(UP)
         ProxiedBrowsing= Text("Proxied Browsing",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)
@@ -713,13 +713,13 @@ class PrivateAndAnonymousBrowsing(Scene):
         HomePC.to_edge(DOWN).shift(LEFT*5)
         ProxyServer.to_edge(DOWN)
         Website.to_edge(DOWN).shift(RIGHT*5)
-        
+
         self.play(FadeInFromDown(HomePC))
         self.play(FadeInFromDown(Website))
 
         FirstBeginLoc=HomePC.get_center()+(HomePC.get_width()/2+0.1,0,0)
         FirstEndLoc=ProxyServer.get_center()-(ProxyServer.get_width()/2+0.1,0,0)
-        
+
         FirstArrow=Arrow(start=FirstBeginLoc,end=FirstEndLoc,color=WHITE)
 
         SecondBeginloc=ProxyServer.get_center()+(ProxyServer.get_width()/2+0.1,0,0)
@@ -740,13 +740,13 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.play(ShowCreation(ZeroPointOnethArrow))
         self.wait(1)
         self.play(Uncreate(ZeroPointOnethArrow))
-        
-        
+
+
         self.play(FadeIn(ProxyServer))
         YourInfo2=Text("Your Info",font="Geneva",color=BLUE).scale(0.4).next_to(FirstArrow,UP)
         self.play(ShowCreation(FirstArrow))
         self.play(Write(YourInfo2))
-        
+
         self.play(Uncreate(FirstArrow),Uncreate(YourInfo2))
 
         ProxyInfo=Text("Proxy's Info",font="Geneva",color=RED).scale(0.4).next_to(SecondArrow,UP)
@@ -764,11 +764,11 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.play(FadeOutAndShiftDown(Website))
         self.play(FadeOut(ProxyServer))
         self.play(FadeOutAndShiftDown(HomePC))
-        
+
         self.play(Uncreate(GetsOtherIPAndNotYours))
 
         self.play(ReplacementTransform(ProxiedBrowsing,Text("Virtual Private Networks",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)))
-        
+
         self.clear()
 
     def VPNs(self):
@@ -776,22 +776,22 @@ class PrivateAndAnonymousBrowsing(Scene):
         VPN= Text("Virtual Private Networks",color=LIGHT_GREY,font="Geneva").scale(0.75).next_to(PrivateBrowsing,DOWN)
         self.add(PrivateBrowsing)
         self.add(VPN)
-        
+
         LikeProxy=Text("These work very much like Proxies.",font="Geneva").scale(0.5).next_to(VPN,DOWN)
         RouteThroughOwnNetwork=Text("However,they route your data through an entire private network",font="Geneva").scale(0.4).next_to(VPN,DOWN)
         BeforeSending=Text("before it reaches the site, and do it once more before it reaches you.",font="Geneva").scale(0.4).next_to(RouteThroughOwnNetwork,DOWN)
         RouteThroughOwnNetworkBeforeSending=VGroup(RouteThroughOwnNetwork,BeforeSending)
-        
+
         self.play(Write(LikeProxy))
         self.wait(1)
         self.play(ReplacementTransform(LikeProxy,RouteThroughOwnNetworkBeforeSending))
-        
+
         VPNDiagram=ImageMobject("/Users/aathishs/Desktop/VPN.png").scale(2).shift(DOWN*2)
         self.play(FadeInFromDown(VPNDiagram))
         self.wait(1)
         VPNsAtHome=Text("Now, you can even set up your own VPN's at home!",font="Geneva").scale(0.5).next_to(VPN,DOWN)
         self.play(ReplacementTransform(RouteThroughOwnNetworkBeforeSending,VPNsAtHome))
-        
+
         self.play(FadeOutAndShiftDown(VPNDiagram))
         self.play(Uncreate(VPNsAtHome))
         self.play(Uncreate(VPN))
@@ -804,7 +804,7 @@ class PrivateAndAnonymousBrowsing(Scene):
         self.VPNs()
 
 class CommonCybercrime(Scene):
-    
+
     def WhatIsCyberCrime(self):
         WhatIsCC=Text("What is CyberCrime?",font="Geneva",color=REP_GREEN).to_edge(UP)
         self.add(WhatIsCC)
@@ -828,7 +828,7 @@ class CommonCybercrime(Scene):
         self.play(Write(CCDef),run_time=3)
         self.wait(3)
         self.play(Uncreate(CCDef))
-        
+
         self.play(ReplacementTransform(WhatIsCC,CyberCrimeTable[0]),Write(CyberCrimeTable[3]))
 
         self.play(Write(CyberCrimeTable[1:3]))
@@ -856,7 +856,7 @@ class CommonCybercrime(Scene):
         CyberBullyTroll.to_edge,UP,
         CyberBullyTroll.scale,1.5,
         )
-        
+
         CyberTrollDef1=Text("A Cyber Troll is someone who purposely posts sarcastic",color=RED,font= "Geneva").next_to(CyberBullyTroll,DOWN)
         CyberTrollDef2=Text("sarcastic or insulting comments to target someone online.",color=RED,font= "Geneva").next_to(CyberTrollDef1,DOWN)
         CyberTrollDef=VGroup(CyberTrollDef1,CyberTrollDef2).scale(0.5)
@@ -884,7 +884,7 @@ class CommonCybercrime(Scene):
         self.play(Write(CBasCrime))
 
         self.wait(3)
-        
+
         CyberStalking=Text("Cyber Stalking",color="#C30000",font="Geneva").to_edge(UP)
 
         self.play(Uncreate(CBasCrime),Uncreate(CyberBullyDef),ReplacementTransform(CyberBullyTroll,CyberStalking))
@@ -977,9 +977,9 @@ class CommonCybercrime(Scene):
 
         self.play(Uncreate(Firstly))
         self.play(Uncreate(Report))
-        
+
         GoodTips=Text("Now, for some general tips on staying safe online...",font="Geneva",color=BLUE).scale(0.5)
-        
+
         self.play(Write(GoodTips))
         self.wait(1)
         self.play(Uncreate(GoodTips))
@@ -1006,7 +1006,7 @@ class SafePracticesAgainstCyberCrime(Scene):
                 Text("Transmiting sensitive data securely.",color=BLUE,font="Geneva"),
                 Text("Avoiding Public Computers.",color=RED,font="Geneva"),]
         }
-        
+
         SafePracTable=Table(tabledict=SafePracDict).scale(0.5).move_to(ORIGIN)
 
         Wall=ImageMobject("/Users/aathishs/Desktop/FireWall.png").scale(0.6).next_to(SafePracTable[1],RIGHT)
@@ -1014,7 +1014,7 @@ class SafePracticesAgainstCyberCrime(Scene):
         Incognito=ImageMobject("/Users/aathishs/Desktop/Incognito.png").scale(0.5).next_to(SafePracTable[3],RIGHT)
         Lock=ImageMobject("/Users/aathishs/Desktop/Lock.png").scale(0.5).next_to(SafePracTable[5],RIGHT)
         HomePC=ImageMobject("/Users/aathishs/Desktop/HomePC.png").scale(0.5).next_to(SafePracTable[8],RIGHT)
-        
+
         self.play(Write(SafePracTable[0]),Write(SafePracTable[9]))
         self.wait(1)
         self.play(Write(SafePracTable[1]),FadeIn(Wall))
