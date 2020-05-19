@@ -5,24 +5,24 @@ from manimlib.imports import *
 from sanim.anim_tools.tables import *
 from sanim.sci_objects.atoms import *
 from sanim.anim_tools.methods import *
-from sanim.anim_toos.shading import *
+from sanim.anim_tools.shading import *
 
 class StoichiometricLaws(ZoomedScene):
     def IntroduceLaws(self):
-        LawsOf=Text("The Laws of",font="Futura",stroke_width=0).scale(1)
-        Stoichiometry=Text("Stoichiometry",font="Geneva",stroke_width=0).scale(1).next_to(LawsOf,DOWN)
+        LawsOf=Text("The Laws of",font="Futura").scale(1.5)
+        Stoichiometry=Text("Stoichiometry",font="Geneva").scale(1.5).next_to(LawsOf,DOWN)
         LawsOfStoichiometry=VGroup(LawsOf,Stoichiometry).move_to(ORIGIN)
 
         StoichioBrace=Brace(Stoichiometry[0:8],DOWN,color=REP_GREEN)
         MetryBrace=Brace(Stoichiometry[8:13],DOWN,color=BLUE,buff=0)
 
-        stoicheionGreek=Text("στοιχεῖον",font="Geneva",stroke_width=0).scale(0.5).next_to(StoichioBrace,DOWN)
-        stoicheionEnglish=Text("stoicheion",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.3).next_to(stoicheionGreek,DOWN)
-        element=Text("(element)",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.25).next_to(stoicheionEnglish,DOWN)
+        stoicheionGreek=Text("στοιχεῖον",font="Geneva").scale(0.5).next_to(StoichioBrace,DOWN)
+        stoicheionEnglish=Text("stoicheion",font="Geneva",slant=ITALIC).scale(0.6).next_to(stoicheionGreek,DOWN)
+        element=Text("(element)",font="Geneva",slant=ITALIC).scale(0.5).next_to(stoicheionEnglish,DOWN)
 
-        metronGreek=Text("μέτρον",font="Geneva",stroke_width=0).scale(0.5).next_to(MetryBrace,DOWN)
-        metronEnglish=Text("metron",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.3).next_to(metronGreek,DOWN)
-        measure=Text("(measure)",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.25).next_to(metronEnglish,DOWN)
+        metronGreek=Text("μέτρον",font="Geneva").scale(0.5).next_to(MetryBrace,DOWN)
+        metronEnglish=Text("metron",font="Geneva",slant=ITALIC).scale(0.6).next_to(metronGreek,DOWN)
+        measure=Text("(measure)",font="Geneva",slant=ITALIC).scale(0.5).next_to(metronEnglish,DOWN)
 
         Everything=VGroup(LawsOfStoichiometry,StoichioBrace,MetryBrace,stoicheionGreek,stoicheionEnglish,element,metronGreek,metronEnglish,measure).move_to(ORIGIN)
 
@@ -55,21 +55,22 @@ class StoichiometricLaws(ZoomedScene):
 
     def ConservationOfMass(self):
         LavoisierPhoto=ImageMobject("assets/raster_images/Lavoisier.png").scale(2)
-        Date=Text("1743-1794",font="Geneva",stroke_width=0,slant=ITALIC).scale(0.5).next_to(LavoisierPhoto,DOWN)
+        Date=Text("1743-1794",font="Geneva",slant=ITALIC).next_to(LavoisierPhoto,DOWN)
 
         self.play(FadeInFromDown(LavoisierPhoto))
         self.play(Write(Date))
 
         self.wait(9)
 
-        LCMTitle=Text("The Law Of Conservation of Mass",font="Futura",stroke_width=0).to_edge(UP).scale(0.5)
+        LCMTitle=Text("The Law Of Conservation of Mass",font="Futura").to_edge(UP)
 
         self.play(FadeOutAndShiftDown(LavoisierPhoto),ReplacementTransform(Date,LCMTitle))
         self.wait(2)
 
-        System=RegularPolygon(n=9,color=GREEN,fill_color=RED,fill_opacity=0.1).scale(2).round_corners()
+        System=RegularPolygon(n=9,color=GREEN,fill_color=RED,fill_opacity=0.1,stroke_width=0).scale(2).round_corners()
 
         self.play(ShowCreation(System))
+        self.play(System.set_style,{"stroke_width":4})
 
         InParticles=VGroup()
 
@@ -258,17 +259,17 @@ class StoichiometricLaws(ZoomedScene):
         zoomed_display.scale(0.5)
         self.activate_zooming(animate=True)
 
-        Mass=Text("Mass=1 unit",font="Futura",stroke_width=0).scale(0.25).next_to(zoomed_display,DOWN).shift(LEFT)
-        Volume=Text("Volume = 1 unit",font="Futura",stroke_width=0).scale(0.25).next_to(zoomed_display,DOWN).shift(RIGHT)
+        Mass=Text("Mass=1 unit",font="Futura").scale(0.5).next_to(zoomed_display,DOWN).shift(LEFT)
+        Volume=Text("Volume = 1 unit",font="Futura").scale(0.5).next_to(zoomed_display,DOWN).shift(RIGHT)
 
         self.play(Write(Mass),Write(Volume))
 
         self.play(wait_while_updating(2))
 
-        TemperatureMonitor=VGroup(Text("Temperature: 25 °C",font="serif",stroke_width=0)).scale(0.5).to_corner(UP+LEFT)
+        TemperatureMonitor=VGroup(Text("Temperature: 25 °C",font="serif")).to_corner(UP+LEFT)
         self.play(Uncreate(LCMTitle),Write(TemperatureMonitor))
 
-        self.play(wait_while_updating(11))
+        self.play(wait_while_updating(9))
 
         FirstLaw=TexMobject("U=Q+W").next_to(System,DOWN)
         self.play(Write(FirstLaw))
@@ -351,8 +352,8 @@ class StoichiometricLaws(ZoomedScene):
         Reactants.add_updater(lambda m: m.move_to(BeforeSystem.get_center()))
         Products.add_updater(lambda m: m.move_to(AfterSystem.get_center()))
 
-        RSLabel=Text("Reactants",font="Futura",color=GREEN,stroke_width=0).scale(0.5).add_updater(lambda m: m.next_to(BeforeSystem,UP))
-        PSLabel=Text("Products",font="Futura",color=RED,stroke_width=0).scale(0.5).add_updater(lambda m: m.next_to(AfterSystem,UP))
+        RSLabel=Text("Reactants",font="Futura",color=GREEN).scale(0.5).add_updater(lambda m: m.next_to(BeforeSystem,UP))
+        PSLabel=Text("Products",font="Futura",color=RED).scale(0.5).add_updater(lambda m: m.next_to(AfterSystem,UP))
 
         BScaleTop=Line(BeforeSystem.get_center()-(2,1.8,0),BeforeSystem.get_center()-(-2,1.8,0))
         AScaleTop=Line(AfterSystem.get_center()-(2,1.8,0),AfterSystem.get_center()-(-2,1.8,0))
@@ -464,12 +465,12 @@ class StoichiometricLaws(ZoomedScene):
         self.wait(6)
 
     def DefiniteProportions(self):
-        LDPTitle=Text("The Law of Definite Proportions",font="Futura",stroke_width=0).scale(0.5)
+        LDPTitle=Text("The Law of Definite Proportions",font="Futura")
         self.play(Write(LDPTitle))
         self.wait(2)
         self.play(LDPTitle.to_edge,UP)
         ProustPortrait=ImageMobject("assets/raster_images/Proust.png").scale(2)
-        Date1=Text("1754-1826",font="Geneva",stroke_width=0).scale(0.5).next_to(ProustPortrait,DOWN)
+        Date1=Text("1754-1826",font="Geneva").next_to(ProustPortrait,DOWN)
         self.play(FadeInFromDown(ProustPortrait))
         self.play(Write(Date1))
         self.wait(0.5)
@@ -558,20 +559,21 @@ class StoichiometricLaws(ZoomedScene):
         self.wait(2)
 
 
-        Compounds=Text("Compounds",font="Futura",color=REP_GREEN,stroke_width=0).scale(0.5)
+        Compounds=Text("Compounds",font="Futura",color=REP_GREEN)
         CDef=Text("""A compound is a substance:
         made up of two or more different elements,
         in definite proportions,
-        joined together by bonds.""",font="Futura",stroke_width=0).scale(0.5)
+        joined together by bonds.""",font="Futura")
 
         self.play(Write(Compounds))
         self.wait(1)
         self.play(Compounds.next_to,LDPTitle,DOWN)
         self.play(Write(CDef),run_time=8)
-        self.play(CDef[59:78].set_color,(REP_GREEN))
+        self.play(CDef[89:109].set_color,(REP_GREEN))
         self.wait(5)
         self.play(FadeOut(CDef))
-        Reverse=VGroup(Text("The Law of Definite Proportions",font="Futura",stroke_width=0).scale(0.5),TexMobject(r"\Updownarrow"),Text("Compounds",font="Futura",color=WHITE,stroke_width=0).scale(0.5))
+        Reverse=VGroup(Text("The Law of Definite Proportions",font="Futura"),
+        TexMobject(r"\Updownarrow"),Text("Compounds",font="Futura",color=WHITE))
         Reverse[0].shift(DOWN)
         Reverse[2].shift(UP)
         self.play(
@@ -585,14 +587,14 @@ class StoichiometricLaws(ZoomedScene):
         the elements that are in it are
         always present in a fixed ratio,
         no matter where the elements came from
-        or how they bonded.""",font="Futura",stroke_width=0).scale(0.5).shift(DOWN)
+        or how they bonded.""",font="Futura").shift(DOWN)
 
         self.play(Write(LDPDef),run_time=4)
         self.wait(3)
         self.play(Uncreate(LDPDef))
 
         self.play(Compounds.shift,2.2*RIGHT)
-        NonStoichiometric=Text("Non-Stoichiometric",font="Futura",color=RED,stroke_width=0).scale(0.5).next_to(Compounds,LEFT).shift(UP*0.05)
+        NonStoichiometric=Text("Non-Stoichiometric",font="Futura",color=RED).next_to(Compounds,LEFT).shift(UP*0.05)
         self.play(Write(NonStoichiometric))
 
         NaClStruct=ImageMobject("assets/raster_images/NaClWustite.png").scale(2).shift(DOWN)
@@ -605,11 +607,11 @@ class StoichiometricLaws(ZoomedScene):
         self.play(Uncreate(NonStoichiometric),Uncreate(Compounds),Uncreate(LDPTitle))
 
     def MultipleProportions(self):
-        LMPTitle=Text("The Law of Multiple Proportions",font="Futura",stroke_width=0).scale(0.5)
+        LMPTitle=Text("The Law of Multiple Proportions",font="Futura")
         self.play(Write(LMPTitle))
         self.wait(3)
         self.play(LMPTitle.to_edge,UP,LMPTitle.set_color,REP_GREEN)
-        DaltonPortrait=ImageMobject("assets/raster_images/Dalton.png").scale(2.9)
+        DaltonPortrait=ImageMobject("assets/raster_images/Dalton.png").scale(1.45)
         Date3=TextMobject("1766-1844").next_to(DaltonPortrait,DOWN)
         self.play(FadeInFrom(DaltonPortrait,UP),Write(Date3))
         self.wait(3)
@@ -711,8 +713,8 @@ class StoichiometricLaws(ZoomedScene):
         R1OBrace=Brace(Oxygen42981,DOWN).add_updater(lambda m:m.next_to(Oxygen42981,DOWN))
         R2OBrace=Brace(Oxygen38206,DOWN).add_updater(lambda m:m.next_to(Oxygen38206,DOWN))
 
-        R1OText=TextMobject("0.42981g").scale(0.5).add_updater(lambda m:m.next_to(R1OBrace,DOWN))
-        R2OText=TextMobject("0.38206g").scale(0.5).add_updater(lambda m:m.next_to(R2OBrace,DOWN))
+        R1OText=TextMobject("0.42981g").add_updater(lambda m:m.next_to(R1OBrace,DOWN))
+        R2OText=TextMobject("0.38206g").add_updater(lambda m:m.next_to(R2OBrace,DOWN))
 
 
         self.play(Write(R1OBrace),Write(R1OText),Write(R2OBrace),Write(R2OText))
@@ -766,7 +768,7 @@ class StoichiometricLaws(ZoomedScene):
         Equals=TexMobject(r"=").add_updater(lambda m: m.next_to(GramFrac2,RIGHT))
         GramFracFinal.next_to(Equals,RIGHT)
         SmallWholeNumBrace=Brace(GramFracFinal,RIGHT,color=BLUE)
-        SmallWholeNumText=Text("our\nsmol\nwhole\nnumbers",font="Futura",stroke_width=0).scale(0.25).next_to(SmallWholeNumBrace,RIGHT)
+        SmallWholeNumText=Text("our\nsmol\nwhole\nnumbers",font="Futura").scale(0.5).next_to(SmallWholeNumBrace,RIGHT)
         self.play(
             Write(Equals),
             Write(GramFracFinal)
@@ -781,12 +783,12 @@ class StoichiometricLaws(ZoomedScene):
                 *self.get_mobjects()[1:]
         )
         DWNTableDict={
-            Text("Doesn't Like:",color=RED,font="Futura",stroke_width=0):[
-                Text("Non-Stoichiometric Compounds (e.g FeO)",font="Futura",color=BLUE,stroke_width=0),
-                Text("Large, Complex Compounds (e.g large Hydrocarbons)",font="Futura",stroke_width=0),
+            Text("Doesn't Like:",color=RED,font="Futura"):[
+                Text("Non-Stoichiometric Compounds (e.g FeO)",font="Futura",color=BLUE),
+                Text("Large, Complex Compounds (e.g large Hydrocarbons)",font="Futura"),
             ]
         }
-        DoesntWorkWith=Table(DWNTableDict,line_color=RED).scale(0.5).move_to(ORIGIN)
+        DoesntWorkWith=Table(DWNTableDict,line_color=RED).move_to(ORIGIN)
         self.play(Write(DoesntWorkWith))
         self.wait(3)
         self.play(Uncreate(DoesntWorkWith))
@@ -830,7 +832,7 @@ class StoichiometricLaws(ZoomedScene):
         )
 
         NotSmallWholeNumBrace=Brace(GramFrac,RIGHT,color=RED)
-        NotSmallWholeNumText=Text("not\nsmol\nwhole\nnumbers :(",font="Futura",stroke_width=0,color=RED).scale(0.25).next_to(NotSmallWholeNumBrace,RIGHT)
+        NotSmallWholeNumText=Text("not\nsmol\nwhole\nnumbers :(",font="Futura",color=RED).scale(0.5).next_to(NotSmallWholeNumBrace,RIGHT)
         self.play(Write(NotSmallWholeNumBrace))
         self.play(Write(NotSmallWholeNumText))
         self.wait(8)
@@ -849,10 +851,7 @@ class StoichiometricLaws(ZoomedScene):
 
 class DaltonsModel(SpecialThreeDScene):
     def construct(self):
-        DaltonPortrait=ImageMobject("assets/raster_images/DaltonNBG.png").to_corner(DR).shift(UP*0.2).scale(1.8)
-        speechbubble=SpeechBubble().scale(0.5).flip().move_to(DaltonPortrait.get_corner(UL)+UL*0.7+DOWN*0.5)
-        speechbubble.add_content(Text("Why would they be different? ",font="Trattatello",stroke_width=0))
-        self.play(LaggedStart(FadeInFrom(DaltonPortrait,RIGHT), Write(speechbubble),lag_ratio=0.5))
+        pass
 
 class ThomsonsModel(SpecialThreeDScene):
     def construct(self):
