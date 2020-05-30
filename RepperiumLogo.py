@@ -1,10 +1,10 @@
-from manimlib.imports import *
+from manim import *
 
 class LogoAdd(Scene):
     def construct(self):
 
         background=Rectangle(height=5, width=5, fill_color=REP_GREEN,fill_opacity=1,stroke_color=REP_GREEN)
-        
+
         Re=Text("Rp",font="Futura",size=3.6)
 
         FaradaysConst=Text("F",font="Alys Script Bold", size=1.1,stroke_width=0)
@@ -15,12 +15,12 @@ class LogoAdd(Scene):
 
         AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7,stroke_width=1)
         AvogadrosNumA.move_to((-0.25,-2.2,0))
-        
+
         AvogadrosNum=VGroup(AvogadrosNumN,AvogadrosNumA)
-        
+
         logo=VGroup(background,Re,FaradaysConst,AvogadrosNum)
         logo.scale(0.5)
-        
+
         self.play(ShowCreation(background,run_time = 1))
         self.play(Write(Re,run_time = 1))
         self.play(Write(FaradaysConst,run_time = 0.5))
@@ -32,7 +32,7 @@ class LogoRemove(Scene):
     def construct(self):
 
         background=Rectangle(height=5, width=5, fill_color=REP_GREEN,fill_opacity=1,stroke_color=REP_GREEN)
-        
+
         Re=Text("Rp",font="Futura",size=3.6)
 
         FaradaysConst=Text("F",font="Alys Script Bold", size=1.1,stroke_width=0)
@@ -43,9 +43,9 @@ class LogoRemove(Scene):
 
         AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7,stroke_width=1)
         AvogadrosNumA.move_to((-0.25,-2.2,0))
-        
+
         AvogadrosNum=VGroup(AvogadrosNumN,AvogadrosNumA)
-        
+
         logo=VGroup(background,Re,FaradaysConst,AvogadrosNum)
         logo.scale(0.5)
 
@@ -66,7 +66,7 @@ class LogoBoth(Scene):
     def construct(self):
 
         background=Rectangle(height=5, width=5, fill_color=REP_GREEN,fill_opacity=1,stroke_color=REP_GREEN)
-        
+
         Re=Text("Rp",font="Futura",size=3.6)
 
         FaradaysConst=Text("F",font="Alys Script Bold", size=1.1,stroke_width=0)
@@ -77,12 +77,12 @@ class LogoBoth(Scene):
 
         AvogadrosNumA=Text("A",font="Snell Roundhand",size=0.7,stroke_width=1)
         AvogadrosNumA.move_to((-0.25,-2.2,0))
-        
+
         AvogadrosNum=VGroup(AvogadrosNumN,AvogadrosNumA)
-        
+
         logo=VGroup(background,Re,FaradaysConst,AvogadrosNum)
         logo.scale(0.5)
-        
+
         self.play(ShowCreation(background,run_time = 1))
         self.play(Write(Re,run_time = 1))
         self.play(Write(FaradaysConst,run_time = 0.5))

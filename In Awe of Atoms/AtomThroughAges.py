@@ -1,11 +1,11 @@
-#phi changes camera "along z axis"
-#theta rotates camera?
 import random
-from manimlib.imports import *
+from manim import *
 from sanim.anim_tools.tables import *
 from sanim.sci_objects.atoms import *
 from sanim.anim_tools.methods import *
 from sanim.anim_tools.shading import *
+
+REP_GREEN="#00C099"
 
 class StoichiometricLaws(ZoomedScene):
     def IntroduceLaws(self):

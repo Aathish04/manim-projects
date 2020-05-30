@@ -1,5 +1,7 @@
+#This script should run stably on commit af65c9d5d4ecbcffc5e569508053d56d1f7e86eb of the version of manim at 3b1b/manim, master.
 from manimlib.imports import *
 from sanim.anim_tools.tables import *
+REP_GREEN="#00C099"
 class Tools():
     def wait_while_updating(duration=1):
         return Animation(Mobject(), run_time=duration)
