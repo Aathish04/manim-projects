@@ -1,5 +1,5 @@
 from manim import *
-
+REP_GREEN="#00C099"
 class LogoAdd(Scene):
     def construct(self):
 

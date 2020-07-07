@@ -1,6 +1,8 @@
 from manim import *
 # from manimlib.imports import * # Only if you are not using the ManimCommunity fork.
-from sanim.anim_tools.tables import * #This uses the ManimCommunity fork.
+from sanim.anim_tools.tables import * #This uses the ManimCommunity fork,
+# so use commit ef75f7a35255b28989fc5b0eef6548da1b7b20d5 of sanim if you are using 3b1b/manim.
+
 class Tables(Scene):
     def construct(self):
         tabledict={
