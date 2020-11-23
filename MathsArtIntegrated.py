@@ -1,5 +1,7 @@
 from manim import *
 
+# This was last tested with Manim commit b3d557dbc8c7a064a48db670c507c9116cf3c7aa
+
 class Angle(VMobject):
     # Credit to @cigar666
     CONFIG = {
@@ -128,6 +130,7 @@ class Hill(GraphScene):
         self.play(Transform(Point_U_H[0][-2].copy(),conclusion[0][1]))
         self.play(Write(conclusion[0][2]))
         self.play(Transform(totalheightbracelabel.copy(),conclusion[0][3:]))
+        self.wait(1)
 
 class HillWithTemple(GraphScene):
     def draw_hill_and_axes(self):
@@ -151,7 +154,6 @@ class HillWithTemple(GraphScene):
         temple = SVGMobject("/Users/aathishs/Python/ManimEnv/manim-projects/assets/Temple.svg",fill_color=LIGHT_GREY,stroke_width=0)
         temple.set_width(1.5, stretch=True)
         temple.set_height(1.5, stretch=True)
-        print(self.coords_to_point(1,1))
         temple.move_to(self.coords_to_point(1,1.2)).shift(DOWN*0.2+RIGHT*0.25)
         self.play(Write(temple))
         
@@ -241,3 +243,4 @@ class HillWithTemple(GraphScene):
         self.play(Transform(Point_U_H[0][-2].copy(),conclusion[0][1]))
         self.play(Write(conclusion[0][2]))
         self.play(Transform(totalheightbracelabel.copy(),conclusion[0][3:]))
+        self.wait(1)
