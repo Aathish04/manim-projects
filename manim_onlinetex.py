@@ -6,7 +6,6 @@ from manim import config, logger
 from manim.utils.tex_file_writing import generate_tex_file
 import manim.mobject.svg.tex_mobject
 
-
 def tex_to_svg_file_online(expression, environment=None, tex_template=None):
     """Takes a tex expression and returns the path to the svg file of the compiled tex
     after compiling it via one of two online rendering services: LaTeX4Technics or QuickLaTeX
@@ -85,6 +84,5 @@ def tex_to_svg_file_online(expression, environment=None, tex_template=None):
         svgfile.write(svgtext)
     logger.debug(f'SVG of "{expression}" written to {svgfilepath}')
     return svgfilepath
-
 
 manim.mobject.svg.tex_mobject.tex_to_svg_file = tex_to_svg_file_online
