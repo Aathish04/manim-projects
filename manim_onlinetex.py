@@ -4,13 +4,12 @@ import base64
 
 from manim import config, logger
 from manim.utils.tex_file_writing import generate_tex_file
+import manim.mobject.svg.tex_mobject
 
 
-def tex_to_svg_file_online(
-    expression, environment=None, tex_template=None, host="latex4technics"
-):
+def tex_to_svg_file_online(expression, environment=None, tex_template=None):
     """Takes a tex expression and returns the path to the svg file of the compiled tex
-    after compiling it via an online Rendering service.
+    after compiling it via one of two online rendering services: LaTeX4Technics or QuickLaTeX
 
     Parameters
     ----------
@@ -20,8 +19,6 @@ def tex_to_svg_file_online(
         The string containing the environment in which the expression should be typeset, e.g. ``align*``
     tex_template : Optional[:class:`~.TexTemplate`], optional
         Template class used to typesetting. If not set, use default template set via `config["tex_template"]`
-    host : Optional[:class:`str`], optional
-        Service through which the TeX should be rendered. Can be any one of {'latex4technics', 'quicklatex'}
 
     Returns
     -------
@@ -34,36 +31,35 @@ def tex_to_svg_file_online(
 
     hosturl = (
         "https://www.quicklatex.com/latex3.f"
-        if host == "quicklatex"
+        if urllib.request.urlopen("https://www.latex4technics.com").getcode() != 200
         else "https://www.latex4technics.com/compileLatex"
     )
 
-    if host == "latex4technics":
+    if hosturl == "https://www.latex4technics.com/compileLatex":
         params = {
             "content": tex_template.get_texcode_for_expression_in_env(
                 expression, environment
             ),
-            "compile_mode": "full",
+            "compile_mode": "full",  # So we can give them the entire latex file.
             "crop": True,
             "format": "svg",
             "resolution": 100,
         }
         payload = params
-    elif host == "quicklatex":
+    elif hosturl == "https://www.quicklatex.com/latex3.f":
         begin, end = tex_template._texcode_for_environment(environment)
         params = {
             "formula": f"{begin}\n{expression}\n{end}",
             "preamble": tex_template.preamble,
-            # "mode": 0,
-            "out": 2,
+            "out": 2,  # 2 For SVG output (though the recieved URL is a png...)
         }
         payload = urllib.parse.urlencode(
             params, quote_via=urllib.parse.quote
         )  # This is so requests doesn't use plus signs instead of spaces like it usually does.
-    logger.debug(f'Rendering "{expression}" via {host}...')
+    logger.debug(f'Rendering "{expression}" via {hosturl}...')
     response = requests.post(hosturl, data=payload)
 
-    if host == "latex4technics":
+    if hosturl == "https://www.latex4technics.com/compileLatex":
         responsedict = response.json()
         if responsedict["error"] == True:
             if responsedict["content"].find("! LaTeX Error") > -1:
@@ -75,7 +71,7 @@ def tex_to_svg_file_online(
         else:
             svgtext = base64.b64decode(responsedict["content"]).decode("utf-8")
 
-    elif host == "quicklatex":
+    elif hosturl == "https://www.quicklatex.com/latex3.f":
         if not response.text.startswith("0"):
             error = "\n".join(
                 response.text.split("\r\n")[2:]
@@ -91,9 +87,4 @@ def tex_to_svg_file_online(
     return svgfilepath
 
 
-if __name__ == "__main__":
-    expression = "This is TEX."
-    environment = "center"
-    print(tex_to_svg_file_online(expression, environment, host="quicklatex"))
-
-
+manim.mobject.svg.tex_mobject.tex_to_svg_file = tex_to_svg_file_online
