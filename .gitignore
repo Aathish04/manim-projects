@@ -139,5 +139,3 @@ cython_debug/
 
 # MacOS Specific
 .DS_Store
-
-manim-onlinetex
