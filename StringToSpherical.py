@@ -1,6 +1,5 @@
 from manim import *
 
-
 class StringToSpherical(ThreeDScene):
     def construct(self):
 
@@ -10,13 +9,12 @@ class StringToSpherical(ThreeDScene):
             .to_corner(UL)
         )
 
-        axes = Axes(x_axis_config={"include_tip": False})
+        axes = Axes(x_axis_config={"include_tip": False}, x_length=14)
         self.add(axes[0])
 
         t = ValueTracker()  # Timekeeper
 
-        x_min = ValueTracker(axes.x_axis_config["x_min"])
-        x_max = ValueTracker(axes.x_axis_config["x_max"])
+        t_range = [ValueTracker(axes.x_range[0]),ValueTracker(axes.x_range[1])]
 
         A = 1 / 2  # Maximum amplitude of standing wave. Arbitrary.
 
@@ -32,8 +30,7 @@ class StringToSpherical(ThreeDScene):
         wave = always_redraw(
             lambda: axes.get_graph(
                 lambda x: twodwavefunction(x, t.get_value()),
-                x_min=x_min.get_value(),
-                x_max=x_max.get_value(),
+                t_range=[t_range[0].get_value(), t_range[1].get_value()]
             )
         )
 
@@ -41,8 +38,8 @@ class StringToSpherical(ThreeDScene):
             *[
                 Dot(RIGHT * i, color=RED)
                 for i in np.arange(
-                    int(x_min.get_value()) + 1,
-                    int(x_max.get_value()),
+                    int(t_range[0].get_value()) + 1,
+                    int(t_range[1].get_value()),
                     step=l / 2,
                 )
             ]  # A node occurs every l/2 interval
@@ -81,8 +78,8 @@ class StringToSpherical(ThreeDScene):
                 Write(considertex, run_time=3),
                 AnimationGroup(  # Focus only on part of graph with one node and antinodes at either end.
                     FadeInFromLarge(indication_rect, 5),
-                    x_min.animate().set_value(indication_rect.get_left()[0]),
-                    x_max.animate().set_value(indication_rect.get_right()[0]),
+                    t_range[0].animate().set_value(indication_rect.get_left()[0]),
+                    t_range[1].animate().set_value(indication_rect.get_right()[0]),
                     FadeOut(VGroup(nodes[:5] + nodes[6:])),
                 ),
                 lag_ratio=1,
