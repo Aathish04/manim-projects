@@ -1,6 +1,25 @@
 from manim import *
 
 class StringToSpherical(ThreeDScene):
+
+    def anchor_and_handle_func(self,anchors_obj,anchor_func):
+        anchors = anchors_obj.get_anchors()
+
+        anchorpairs = np.split(anchors,len(anchors)/2)
+        outanchor1 = []
+        outhandle1 = []
+        outhandle2 = []
+        outanchor2 = []
+        for anchorpair in anchorpairs:
+            for i,anchor in enumerate(anchorpair):
+                outanchor = outanchor1 if i == 0 else outanchor2
+                outanchor.append(anchor_func(anchors_obj,anchor))
+            handles = get_smooth_cubic_bezier_handle_points((outanchor1[-1],outanchor2[-1]))
+            outhandle1.append(handles[0])
+            outhandle2.append(handles[1])
+
+        return outanchor1,outhandle1,outhandle2,outanchor2
+
     def construct(self):
 
         title = (
@@ -9,7 +28,7 @@ class StringToSpherical(ThreeDScene):
             .to_corner(UL)
         )
 
-        axes = Axes(x_axis_config={"include_tip": False}, x_length=14)
+        axes = Axes(x_axis_config={"include_tip": False}, x_length=14, y_length = 8)
         self.add(axes[0])
 
         t = ValueTracker()  # Timekeeper
@@ -93,11 +112,31 @@ class StringToSpherical(ThreeDScene):
             .shift(RIGHT * 1.25)
         )
 
+        def anchor_func(anchorobj,anchor):
+            p = anchorobj.proportion_from_point(anchor)
+            t_min = t_range[0].get_value()
+            t_max = t_range[1].get_value()
+            x_val = t_min + (p * (t_max-t_min))
+            scale_factor = 0.5*(twodwavefunction(x_val,t.get_value()))
+
+            return anchor*(1+scale_factor)
+
+        semicircle = always_redraw(
+            lambda : VMobject().set_anchors_and_handles(
+                *self.anchor_and_handle_func(Arc(start_angle=PI / 2, angle=-PI),anchor_func)
+            ).make_smooth()
+        )
+
         self.play(
             FadeOutAndShift(title, UP),
             Write(axes[1]),
             FadeOutAndShift(indication_rect, DOWN),
             ReplacementTransform(considertex, andbendtex),
-            Transform(wave, Arc(start_angle=PI / 2, angle=-PI)),
+            ReplacementTransform(wave, semicircle),
             nodes[5].animate().shift(LEFT * 0.5),
+        )
+
+        t_val = 8
+        self.play(
+            t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
         )
