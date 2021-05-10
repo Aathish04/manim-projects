@@ -136,7 +136,11 @@ class StringToSpherical(ThreeDScene):
             nodes[5].animate().shift(LEFT * 0.5),
         )
 
-        t_val = 8
-        self.play(
-            t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
-        )
+        t_val = 4
+        self.move_camera(
+            phi= -45 * DEGREES,
+            theta= -135 * DEGREES,
+            gamma=-55*DEGREES,
+            added_anims=[t.animate(run_time=t_val, rate_func=linear).increment_value(t_val)]
+            )
+        
