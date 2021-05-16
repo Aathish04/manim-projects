@@ -112,7 +112,7 @@ class StringToSpherical(ThreeDScene):
             .shift(RIGHT * 1.25)
         )
 
-        def anchor_func(anchorobj,anchor):
+        def arc_wavepoints_function(anchorobj,anchor):
             p = anchorobj.proportion_from_point(anchor)
             t_min = t_range[0].get_value()
             t_max = t_range[1].get_value()
@@ -123,7 +123,7 @@ class StringToSpherical(ThreeDScene):
 
         semicircle = always_redraw(
             lambda : VMobject().set_anchors_and_handles(
-                *self.anchor_and_handle_func(Arc(start_angle=PI / 2, angle=-PI),anchor_func)
+                *self.anchor_and_handle_func(Arc(start_angle=PI / 2, angle=-PI),arc_wavepoints_function)
             ).make_smooth()
         )
 
@@ -141,6 +141,42 @@ class StringToSpherical(ThreeDScene):
             phi= -45 * DEGREES,
             theta= -135 * DEGREES,
             gamma=-55*DEGREES,
-            added_anims=[t.animate(run_time=t_val, rate_func=linear).increment_value(t_val)]
+            added_anims=[
+                t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
+                ReplacementTransform(nodes[5],Dot3D(nodes[5].get_center(),color=RED))]
             )
-        
+
+        def threedwavepointsfunction(u,v):
+            p = u/(PI-10e-6)
+            
+            t_min = t_range[0].get_value()
+            t_max = t_range[1].get_value()
+            x_val = t_min + (p * (t_max-t_min))
+            scale_factor = 0.5*(twodwavefunction(x_val,t.get_value()))
+            
+            vect = np.array([
+                np.cos(v) * np.sin(u),
+                np.cos(u),
+                np.sin(v) * np.sin(u),
+                ])
+            
+            return vect*(1+scale_factor)
+
+        ThreeDWaveForm = always_redraw(lambda: ParametricSurface(
+            func = threedwavepointsfunction,
+            u_min=10e-6,
+            u_max=PI-10e-6,
+            v_min=0,
+            v_max=2*PI,
+            checkerboard_colors = [None,None],
+            fill_color=WHITE,
+            stroke_color=WHITE,
+            stroke_width=0,
+            fill_opacity = 1,
+        ))
+        self.play(Create(ThreeDWaveForm,run_time=1))
+
+        t_val=4
+        self.play(
+            t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
+        )
