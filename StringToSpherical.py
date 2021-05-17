@@ -31,11 +31,12 @@ class StringToSpherical(ThreeDScene):
         axes = Axes(x_axis_config={"include_tip": False}, x_length=14, y_length = 8)
         self.add(axes[0])
 
-        t = ValueTracker()  # Timekeeper
+        clock = ValueTracker()
 
         t_range = [ValueTracker(axes.x_range[0]),ValueTracker(axes.x_range[1])]
 
-        A = 1 / 2  # Maximum amplitude of standing wave. Arbitrary.
+        A = 1 / 2  # Maximum amplitude of travelling wave.
+                   # Arbitrary, but set here so the max amplitude of the standing wave is 1.
 
         l = 3  # Wavelength of standing wave. Arbitrary.
 
@@ -48,7 +49,7 @@ class StringToSpherical(ThreeDScene):
 
         wave = always_redraw(
             lambda: axes.get_graph(
-                lambda x: twodwavefunction(x, t.get_value()),
+                lambda x: twodwavefunction(x, clock.get_value()),
                 t_range=[t_range[0].get_value(), t_range[1].get_value()]
             )
         )
@@ -80,19 +81,19 @@ class StringToSpherical(ThreeDScene):
 
         self.add(wave)
 
-        t_val = 4
+        clock_incr = 4
         self.play(
             AnimationGroup(
-                t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
+                clock.animate(run_time=clock_incr, rate_func=linear).increment_value(clock_incr),
                 Write(nodes, lag_ratio=1),
                 lag_ratio=0.5,
             ),
             Write(title, run_time=4),
         )
 
-        t_val = 8
+        clock_incr = 8
         self.play(
-            t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
+            clock.animate(run_time=clock_incr, rate_func=linear).increment_value(clock_incr),
             AnimationGroup(
                 Write(considertex, run_time=3),
                 AnimationGroup(  # Focus only on part of graph with one node and antinodes at either end.
@@ -117,7 +118,7 @@ class StringToSpherical(ThreeDScene):
             t_min = t_range[0].get_value()
             t_max = t_range[1].get_value()
             x_val = t_min + (p * (t_max-t_min))
-            scale_factor = 0.5*(twodwavefunction(x_val,t.get_value()))
+            scale_factor = 0.5*(twodwavefunction(x_val,clock.get_value()))
 
             return anchor*(1+scale_factor)
 
@@ -136,13 +137,13 @@ class StringToSpherical(ThreeDScene):
             nodes[5].animate().shift(LEFT * 0.5),
         )
 
-        t_val = 4
+        clock_incr = 4
         self.move_camera(
             phi= -45 * DEGREES,
             theta= -135 * DEGREES,
             gamma=-55*DEGREES,
             added_anims=[
-                t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
+                clock.animate(run_time=clock_incr, rate_func=linear).increment_value(clock_incr),
                 ReplacementTransform(nodes[5],Dot3D(nodes[5].get_center(),color=RED))]
             )
 
@@ -152,7 +153,7 @@ class StringToSpherical(ThreeDScene):
             t_min = t_range[0].get_value()
             t_max = t_range[1].get_value()
             x_val = t_min + (p * (t_max-t_min))
-            scale_factor = 0.5*(twodwavefunction(x_val,t.get_value()))
+            scale_factor = 0.5*(twodwavefunction(x_val,clock.get_value()))
             
             vect = np.array([
                 np.cos(v) * np.sin(u),
@@ -176,7 +177,7 @@ class StringToSpherical(ThreeDScene):
         ))
         self.play(Create(ThreeDWaveForm,run_time=1))
 
-        t_val=4
+        clock_incr=4
         self.play(
-            t.animate(run_time=t_val, rate_func=linear).increment_value(t_val),
+            clock.animate(run_time=clock_incr, rate_func=linear).increment_value(clock_incr),
         )
