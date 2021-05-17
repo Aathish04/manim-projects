@@ -136,6 +136,7 @@ class StringToSpherical(ThreeDScene):
             ReplacementTransform(wave, semicircle),
             nodes[5].animate().shift(LEFT * 0.5),
         )
+        nodedot3d = Dot3D(nodes[5].get_center(),color=RED)
 
         clock_incr = 4
         self.move_camera(
@@ -144,8 +145,9 @@ class StringToSpherical(ThreeDScene):
             gamma=-55*DEGREES,
             added_anims=[
                 clock.animate(run_time=clock_incr, rate_func=linear).increment_value(clock_incr),
-                ReplacementTransform(nodes[5],Dot3D(nodes[5].get_center(),color=RED))]
+                ReplacementTransform(nodes[5],nodedot3d)]
             )
+        nodes = VGroup(*nodes[:5],nodedot3d,*nodes[6:])
 
         def threedwavepointsfunction(u,v):
             p = u/(PI-10e-6)
@@ -163,19 +165,36 @@ class StringToSpherical(ThreeDScene):
             
             return vect*(1+scale_factor)
 
-        ThreeDWaveForm = always_redraw(lambda: ParametricSurface(
-            func = threedwavepointsfunction,
-            u_min=10e-6,
-            u_max=PI-10e-6,
-            v_min=0,
-            v_max=2*PI,
-            checkerboard_colors = [None,None],
-            fill_color=WHITE,
-            stroke_color=WHITE,
-            stroke_width=0,
-            fill_opacity = 1,
-        ))
-        self.play(Create(ThreeDWaveForm,run_time=1))
+        v_max_tracker = ValueTracker()
+
+        threedwaveform = always_redraw(
+            lambda: ParametricSurface(
+                func = threedwavepointsfunction,
+                u_min=10e-6,
+                u_max=PI-10e-6,
+                v_min=0,
+                v_max=v_max_tracker.get_value(),
+                checkerboard_colors = [None,None],
+                fill_color=WHITE,
+                fill_opacity = 1,
+            )
+        )
+        
+        axes.add(
+            axes.create_axis(
+                (-4, 4, 1),
+                axis_config={},
+                length = 8,
+            ).rotate_about_zero(-PI / 2, UP)
+        )
+
+        self.add(threedwaveform)
+        self.play(
+            v_max_tracker.animate().set_value(2*PI),
+            Write(axes[2]),
+            FadeOut(semicircle),
+            )
+        
 
         clock_incr=4
         self.play(
