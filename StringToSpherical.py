@@ -1,3 +1,6 @@
+# Until https://github.com/ManimCommunity/manim/pull/1469 is merged,
+# use manim from https://github.com/Aathish04/manim/tree/add_bezier_utils
+
 from manim import *
 
 
@@ -209,7 +212,7 @@ class StringToSpherical(ThreeDScene):
             .to_corner(UR)
             .shift(LEFT * 0.3)
         )
-        nodecircle = Circle(color=RED).reverse_direction().rotate(-PI/2,RIGHT)
+        nodecircle = Circle(color=RED).reverse_direction().rotate(-PI / 2, RIGHT)
 
         self.add(threedwaveform)
         self.play(
@@ -218,8 +221,8 @@ class StringToSpherical(ThreeDScene):
             FadeOut(semicircle),
             Write(androtatetex, run_time=1),
             FadeOutAndShift(andbendtex, DOWN),
-            Create(nodecircle,run_time=1),
-            ShrinkToCenter(nodes[5])
+            Create(nodecircle, run_time=1),
+            ShrinkToCenter(nodes[5]),
         )
         nodes = VGroup(*nodes[:5], nodecircle, *nodes[6:])
 
