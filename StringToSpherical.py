@@ -203,11 +203,20 @@ class StringToSpherical(ThreeDScene):
             ).rotate_about_zero(-PI / 2, UP)
         )
 
+        androtatetex = (
+            Tex("Now, spin that semicircle about it's axis")
+            .scale(0.7)
+            .to_corner(UR)
+            .shift(LEFT * 0.3)
+        )
+
         self.add(threedwaveform)
         self.play(
             v_max_tracker.animate().set_value(2 * PI),
             Write(axes[2]),
             FadeOut(semicircle),
+            Write(androtatetex, run_time=1),
+            FadeOutAndShift(andbendtex, DOWN),
         )
 
         clock_incr = 4
