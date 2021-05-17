@@ -204,7 +204,7 @@ class StringToSpherical(ThreeDScene):
         )
 
         androtatetex = (
-            Tex("Now, spin that semicircle about it's axis")
+            Tex("Now, spin that semicircle about its axis.")
             .scale(0.7)
             .to_corner(UR)
             .shift(LEFT * 0.3)
