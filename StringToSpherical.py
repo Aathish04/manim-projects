@@ -244,7 +244,7 @@ class StringToSpherical(ThreeDScene):
         self.play(Group(*self.mobjects).animate().shift(UP * 15))  # Animation #6
         self.clear()
 
-    def greater_spherical_harmonics(self):
+    def second_harmonic(self):
         self.set_camera_orientation(phi=0, theta=-90 * DEGREES, gamma=0)
 
         axes = Axes(x_axis_config={"include_tip": False}, x_length=14, y_length=8)
@@ -274,9 +274,25 @@ class StringToSpherical(ThreeDScene):
             .shift(LEFT * self.l / 4)
         )
 
-        self.play(Write(axes), Create(wave))
+        considertex = (
+            Tex(
+                r"Next, take the standing wave with\\two nodes and antinodes at either end."
+            )
+            .scale(0.7)
+            .next_to(indication_rect, DOWN).shift(RIGHT)
+        )
 
-        clock_incr = 4
+        dothesame = (
+            Tex(
+                r"And do the same,\\bend it along a semicircle."
+            )
+            .scale(0.7)
+            .next_to(indication_rect, DOWN)
+        )
+
+        self.play(Write(axes[0]), Create(wave))
+
+        clock_incr = 3
         self.play(
             AnimationGroup(
                 self.clock.animate(
@@ -287,6 +303,112 @@ class StringToSpherical(ThreeDScene):
             )
         )
 
+        clock_incr = 6
+        self.play(
+            self.clock.animate(run_time=clock_incr, rate_func=linear).increment_value(
+                clock_incr
+            ),
+            AnimationGroup(
+                Write(considertex, run_time=3),
+                AnimationGroup(  # Focus only on part of graph with one node and antinodes at either end.
+                    FadeInFromLarge(indication_rect, 5),
+                    t_range[0].animate().set_value(indication_rect.get_left()[0]),
+                    t_range[1].animate().set_value(indication_rect.get_right()[0]),
+                    FadeOut(VGroup(nodes[:5] + nodes[7:])),
+                ),
+                lag_ratio=1,
+            ),
+        )
+
+        semicircle = always_redraw(
+            lambda: VMobject()
+            .set_anchors_and_handles(
+                *self.anchor_and_handle_func(
+                    Arc(start_angle=PI / 2, angle=-PI),
+                    self.arcwavepointsfunction,
+                    t_range=t_range,
+                )
+            )
+            .make_smooth()
+        )
+
+        self.play(
+            Write(axes[1]),
+            FadeOutAndShift(indication_rect, DOWN),
+            ReplacementTransform(considertex, dothesame),
+            ReplacementTransform(wave, semicircle),
+            nodes[5].animate().move_to([0.70710678,0.70710678, 0]),
+            nodes[6].animate().move_to([0.70710678,-0.70710678, 0]),
+        )
+
+        nodedots3d = [Dot3D(nodes[5].get_center(), color=RED),Dot3D(nodes[6].get_center(), color=RED)]
+        clock_incr = 7
+        self.move_camera(
+            phi=-45 * DEGREES,
+            theta=-135 * DEGREES,
+            gamma=-55 * DEGREES,
+            added_anims=[
+                self.clock.animate(
+                    run_time=clock_incr, rate_func=linear
+                ).increment_value(clock_incr),
+                ReplacementTransform(nodes[5], nodedots3d[0]),
+                ReplacementTransform(nodes[6], nodedots3d[1]),
+            ],
+        )
+        nodes = VGroup(*nodes[:5], *nodedots3d, *nodes[7:])
+
+        v_max_tracker = ValueTracker()
+
+        threedwaveform = always_redraw(
+            lambda: ParametricSurface(
+                func=lambda u, v: self.threedwavepointsfunction(u, v, t_range=t_range),
+                u_min=10e-6,
+                u_max=PI - 10e-6,
+                v_min=0,
+                v_max=v_max_tracker.get_value(),
+                checkerboard_colors=[None, None],
+                fill_color=WHITE,
+                fill_opacity=1,
+            )
+        )
+
+        axes.add(
+            axes.create_axis(
+                (-4, 4, 1),
+                axis_config={},
+                length=8,
+            ).rotate_about_zero(-PI / 2, UP)
+        )
+
+        nodecircles = VGroup(
+            Circle(color=RED,radius=0.70710678).reverse_direction().rotate(-PI / 2, RIGHT).shift(UP*0.70710678),
+            Circle(color=RED,radius=0.70710678).reverse_direction().rotate(-PI / 2, RIGHT).shift(UP*-0.70710678)
+        )
+
+        andspintex = Tex(r"And spin it about its axis\\to get a spherical harmonic with $l = 2$").scale(0.5).move_to(dothesame.get_center())
+
+        self.add(threedwaveform)
+        self.play(
+            v_max_tracker.animate().set_value(2 * PI),
+            Write(axes[2]),
+            FadeOut(semicircle),
+            ReplacementTransform(dothesame,andspintex),
+            Create(nodecircles, run_time=1),
+            ShrinkToCenter(nodes[5]),
+            ShrinkToCenter(nodes[6]),
+        )
+
+        nodes = VGroup(nodes[5:],*nodecircles,nodes[7:])
+
+        clock_incr = 6
+        self.play(
+            AnimationGroup(
+                self.clock.animate(
+                    run_time=clock_incr, rate_func=linear
+                ).increment_value(clock_incr),
+            )
+        )
+
     def construct(self):
         self.intro_till_first_sphere()
-        self.greater_spherical_harmonics()
+        self.second_harmonic()
