@@ -97,11 +97,9 @@ class StringToSpherical(ThreeDScene):
             ]  # A node occurs every l/2 interval
         )
 
-        indication_rect = (
-            Rectangle(color=GREEN, width=VGroup(nodes[5:7]).width - 0.15, height=2.2)
-            .move_to(nodes[5:7].get_center())
-            .shift(LEFT * self.l / 4)
-        )
+        indication_rect = Rectangle(
+            color=GREEN, width=VGroup(nodes[5:7]).width - 0.15, height=2.2
+        ).move_to(nodes[5].get_center())
 
         considertex = (
             Tex(
@@ -227,13 +225,68 @@ class StringToSpherical(ThreeDScene):
             ShrinkToCenter(nodes[5]),
         )
         nodes = VGroup(*nodes[:5], nodecircle, *nodes[6:])
+        togettex = (
+            Tex(r"To get one of the spherical harmonics\\with $l = 1$.")
+            .scale(0.75)
+            .move_to(andbendtex.get_center())
+            .shift(RIGHT * 0.6)
+        )
+        clock_incr = 6
+        self.play(
+            AnimationGroup(
+                self.clock.animate(
+                    run_time=clock_incr, rate_func=linear
+                ).increment_value(clock_incr),
+                Write(togettex),
+                lag_ratio=0.2,
+            )
+        )
+        self.play(Group(*self.mobjects).animate().shift(UP * 15))  # Animation #6
+        self.clear()
+
+    def greater_spherical_harmonics(self):
+        self.set_camera_orientation(phi=0, theta=-90 * DEGREES, gamma=0)
+
+        axes = Axes(x_axis_config={"include_tip": False}, x_length=14, y_length=8)
+        t_range = [ValueTracker(axes.x_range[0]), ValueTracker(axes.x_range[1])]
+
+        wave = always_redraw(
+            lambda: axes.get_graph(
+                lambda x: self.twodwavefunction(x, self.clock.get_value()),
+                t_range=[t_range[0].get_value(), t_range[1].get_value()],
+            )
+        )
+
+        nodes = VGroup(
+            *[
+                Dot(RIGHT * i, color=RED)
+                for i in np.arange(
+                    int(t_range[0].get_value()) + 1,
+                    int(t_range[1].get_value()),
+                    step=self.l / 2,
+                )
+            ]  # A node occurs every l/2 interval
+        )
+
+        indication_rect = (
+            Rectangle(color=GREEN, width=VGroup(nodes[5:8]).width - 0.15, height=2.2)
+            .move_to(nodes[6].get_center())
+            .shift(LEFT * self.l / 4)
+        )
+
+        self.play(Write(axes), Create(wave))
 
         clock_incr = 4
         self.play(
-            self.clock.animate(run_time=clock_incr, rate_func=linear).increment_value(
-                clock_incr
-            ),
+            AnimationGroup(
+                self.clock.animate(
+                    run_time=clock_incr, rate_func=linear
+                ).increment_value(clock_incr),
+                Write(nodes, lag_ratio=1),
+                lag_ratio=0.5,
+            )
         )
 
     def construct(self):
         self.intro_till_first_sphere()
+        self.greater_spherical_harmonics()
