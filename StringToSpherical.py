@@ -274,7 +274,7 @@ class StringToSpherical(ThreeDScene):
             .shift(LEFT * self.l / 4)
         )
 
-        considertex = (
+        taketex = (
             Tex(
                 r"Next, take the standing wave with\\two nodes and antinodes at either end."
             )
@@ -309,7 +309,7 @@ class StringToSpherical(ThreeDScene):
                 clock_incr
             ),
             AnimationGroup(
-                Write(considertex, run_time=3),
+                Write(taketex, run_time=3),
                 AnimationGroup(  # Focus only on part of graph with one node and antinodes at either end.
                     FadeInFromLarge(indication_rect, 5),
                     t_range[0].animate().set_value(indication_rect.get_left()[0]),
@@ -335,7 +335,7 @@ class StringToSpherical(ThreeDScene):
         self.play(
             Write(axes[1]),
             FadeOutAndShift(indication_rect, DOWN),
-            ReplacementTransform(considertex, dothesame),
+            ReplacementTransform(taketex, dothesame),
             ReplacementTransform(wave, semicircle),
             nodes[5].animate().move_to([0.70710678,0.70710678, 0]),
             nodes[6].animate().move_to([0.70710678,-0.70710678, 0]),
