@@ -87,6 +87,18 @@ class StringToSpherical(ThreeDScene):
                 fill_opacity=1,
             )
 
+    def get_nodes(self,t_range):
+        return VGroup(
+            *[
+                Dot(RIGHT * i, color=RED)
+                for i in np.arange(
+                    int(t_range[0].get_value()) + 1,
+                    int(t_range[1].get_value()),
+                    step=self.l / 2,
+                )
+            ]  # A node occurs every l/2 interval
+        )
+
     def anim_intro_till_first_sphere(self):
 
         title = (
@@ -107,16 +119,7 @@ class StringToSpherical(ThreeDScene):
             )
         )
 
-        nodes = VGroup(
-            *[
-                Dot(RIGHT * i, color=RED)
-                for i in np.arange(
-                    int(t_range[0].get_value()) + 1,
-                    int(t_range[1].get_value()),
-                    step=self.l / 2,
-                )
-            ]  # A node occurs every l/2 interval
-        )
+        nodes = self.get_nodes(t_range)
 
         indication_rect = Rectangle(
             color=GREEN, width=VGroup(nodes[5:7]).width - 0.15, height=2.2
@@ -258,16 +261,7 @@ class StringToSpherical(ThreeDScene):
             )
         )
 
-        nodes = VGroup(
-            *[
-                Dot(RIGHT * i, color=RED)
-                for i in np.arange(
-                    int(t_range[0].get_value()) + 1,
-                    int(t_range[1].get_value()),
-                    step=self.l / 2,
-                )
-            ]  # A node occurs every l/2 interval
-        )
+        nodes = self.get_nodes(t_range)
 
         indication_rect = (
             Rectangle(color=GREEN, width=VGroup(nodes[5:8]).width - 0.15, height=2.2)
