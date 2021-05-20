@@ -66,7 +66,28 @@ class StringToSpherical(ThreeDScene):
 
         return vect * (1 + scale_factor)
 
-    def intro_till_first_sphere(self):
+    def twodwavearc(self,t_range):
+        return VMobject().set_anchors_and_handles(
+                *self.anchor_and_handle_func(
+                    Arc(start_angle=PI / 2, angle=-PI),
+                    self.arcwavepointsfunction,
+                    t_range=t_range,
+                )
+        ).make_smooth()
+
+    def threedwavedsurface(self,t_range,v_max_tracker):
+        return ParametricSurface(
+                func=lambda u, v: self.threedwavepointsfunction(u, v, t_range=t_range),
+                u_min=10e-6,
+                u_max=PI - 10e-6,
+                v_min=0,
+                v_max=v_max_tracker.get_value(),
+                checkerboard_colors=[None, None],
+                fill_color=WHITE,
+                fill_opacity=1,
+            )
+
+    def anim_intro_till_first_sphere(self):
 
         title = (
             Tex("String Harmonics lead elegantly to Spherical Harmonics.")
@@ -147,17 +168,7 @@ class StringToSpherical(ThreeDScene):
             .shift(RIGHT * 1.25)
         )
 
-        semicircle = always_redraw(
-            lambda: VMobject()
-            .set_anchors_and_handles(
-                *self.anchor_and_handle_func(
-                    Arc(start_angle=PI / 2, angle=-PI),
-                    self.arcwavepointsfunction,
-                    t_range=t_range,
-                )
-            )
-            .make_smooth()
-        )
+        semicircle = always_redraw(lambda: self.twodwavearc(t_range))
 
         self.play(
             FadeOutAndShift(title, UP),
@@ -185,18 +196,7 @@ class StringToSpherical(ThreeDScene):
 
         v_max_tracker = ValueTracker()
 
-        threedwaveform = always_redraw(
-            lambda: ParametricSurface(
-                func=lambda u, v: self.threedwavepointsfunction(u, v, t_range=t_range),
-                u_min=10e-6,
-                u_max=PI - 10e-6,
-                v_min=0,
-                v_max=v_max_tracker.get_value(),
-                checkerboard_colors=[None, None],
-                fill_color=WHITE,
-                fill_opacity=1,
-            )
-        )
+        threedwaveform = always_redraw(lambda: self.threedwavedsurface(t_range,v_max_tracker))
 
         axes.add(
             axes.create_axis(
@@ -224,6 +224,7 @@ class StringToSpherical(ThreeDScene):
             Create(nodecircle, run_time=1),
             ShrinkToCenter(nodes[5]),
         )
+        self.bring_to_front(axes)
         nodes = VGroup(*nodes[:5], nodecircle, *nodes[6:])
         togettex = (
             Tex(r"To get one of the spherical harmonics\\with $l = 1$.")
@@ -244,7 +245,7 @@ class StringToSpherical(ThreeDScene):
         self.play(Group(*self.mobjects).animate().shift(UP * 15))  # Animation #6
         self.clear()
 
-    def second_harmonic(self):
+    def anim_second_harmonic(self):
         self.set_camera_orientation(phi=0, theta=-90 * DEGREES, gamma=0)
 
         axes = Axes(x_axis_config={"include_tip": False}, x_length=14, y_length=8)
@@ -320,17 +321,7 @@ class StringToSpherical(ThreeDScene):
             ),
         )
 
-        semicircle = always_redraw(
-            lambda: VMobject()
-            .set_anchors_and_handles(
-                *self.anchor_and_handle_func(
-                    Arc(start_angle=PI / 2, angle=-PI),
-                    self.arcwavepointsfunction,
-                    t_range=t_range,
-                )
-            )
-            .make_smooth()
-        )
+        semicircle = always_redraw(lambda: self.twodwavearc(t_range))
 
         self.play(
             Write(axes[1]),
@@ -359,18 +350,7 @@ class StringToSpherical(ThreeDScene):
 
         v_max_tracker = ValueTracker()
 
-        threedwaveform = always_redraw(
-            lambda: ParametricSurface(
-                func=lambda u, v: self.threedwavepointsfunction(u, v, t_range=t_range),
-                u_min=10e-6,
-                u_max=PI - 10e-6,
-                v_min=0,
-                v_max=v_max_tracker.get_value(),
-                checkerboard_colors=[None, None],
-                fill_color=WHITE,
-                fill_opacity=1,
-            )
-        )
+        threedwaveform = always_redraw(lambda: self.threedwavedsurface(t_range,v_max_tracker))
 
         axes.add(
             axes.create_axis(
@@ -397,6 +377,7 @@ class StringToSpherical(ThreeDScene):
             ShrinkToCenter(nodes[5]),
             ShrinkToCenter(nodes[6]),
         )
+        self.bring_to_front(axes)
 
         nodes = VGroup(nodes[5:],*nodecircles,nodes[7:])
 
@@ -410,5 +391,5 @@ class StringToSpherical(ThreeDScene):
         )
 
     def construct(self):
-        self.intro_till_first_sphere()
-        self.second_harmonic()
+        self.anim_intro_till_first_sphere()
+        self.anim_second_harmonic()
