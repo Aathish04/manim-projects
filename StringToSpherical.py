@@ -92,16 +92,16 @@ class StringToSpherical(ThreeDScene):
             .make_smooth()
         )
 
-    def threedwavedsurface(self, t_range, v_max_tracker):
+    def threedwavesurface(self, t_range, v_max_tracker = None, color = WHITE, opacity = 1):
         return ParametricSurface(
             func=lambda u, v: self.threedwavepointsfunction(u, v, t_range=t_range),
             u_min=10e-6,
             u_max=PI - 10e-6,
             v_min=0,
-            v_max=v_max_tracker.get_value(),
+            v_max= 2 * PI if v_max_tracker is None else v_max_tracker.get_value(),
             checkerboard_colors=[None, None],
-            fill_color=WHITE,
-            fill_opacity=1,
+            fill_color=color,
+            fill_opacity=opacity,
         )
 
     def get_nodes(self, t_range):
@@ -171,7 +171,7 @@ class StringToSpherical(ThreeDScene):
             AnimationGroup(
                 Write(considertex, run_time=3),
                 AnimationGroup(  # Focus only on part of graph with one node and antinodes at either end.
-                    FadeInFromLarge(indication_rect, 5),
+                    FadeIn(indication_rect, scale=5),
                     t_range[0].animate().set_value(indication_rect.get_left()[0]),
                     t_range[1].animate().set_value(indication_rect.get_right()[0]),
                     FadeOut(VGroup(nodes[:5] + nodes[6:])),
@@ -190,9 +190,9 @@ class StringToSpherical(ThreeDScene):
         semicircle = always_redraw(lambda: self.twodwavearc(t_range))
 
         self.play(
-            FadeOutAndShift(title, UP),
+            FadeOut(title, shift = UP),
             Create(axes[1]),
-            FadeOutAndShift(indication_rect, DOWN),
+            FadeOut(indication_rect, shift = DOWN),
             ReplacementTransform(considertex, andbendtex),
             ReplacementTransform(wave, semicircle),
             nodes[5].animate().shift(LEFT * 0.5),
@@ -216,7 +216,7 @@ class StringToSpherical(ThreeDScene):
         v_max_tracker = ValueTracker()
 
         threedwaveform = always_redraw(
-            lambda: self.threedwavedsurface(t_range, v_max_tracker)
+            lambda: self.threedwavesurface(t_range, v_max_tracker)
         )
 
         androtatetex = (
@@ -233,7 +233,7 @@ class StringToSpherical(ThreeDScene):
             Create(axes[2]),
             FadeOut(semicircle),
             Write(androtatetex, run_time=1),
-            FadeOutAndShift(andbendtex, DOWN),
+            FadeOut(andbendtex, shift = DOWN),
             Create(nodecircle, run_time=1),
             ShrinkToCenter(nodes[5]),
         )
@@ -314,7 +314,7 @@ class StringToSpherical(ThreeDScene):
             AnimationGroup(
                 Write(taketex, run_time=3),
                 AnimationGroup(  # Focus only on part of graph with one node and antinodes at either end.
-                    FadeInFromLarge(indication_rect, 5),
+                    FadeIn(indication_rect, scale=5),
                     t_range[0].animate().set_value(indication_rect.get_left()[0]),
                     t_range[1].animate().set_value(indication_rect.get_right()[0]),
                     FadeOut(VGroup(nodes[:5] + nodes[7:])),
@@ -327,7 +327,7 @@ class StringToSpherical(ThreeDScene):
 
         self.play(
             Create(axes[1]),
-            FadeOutAndShift(indication_rect, DOWN),
+            FadeOut(indication_rect, shift = DOWN),
             ReplacementTransform(taketex, dothesame),
             ReplacementTransform(wave, semicircle),
             nodes[5].animate().move_to([0.70710678, 0.70710678, 0]),
@@ -356,7 +356,7 @@ class StringToSpherical(ThreeDScene):
         v_max_tracker = ValueTracker()
 
         threedwaveform = always_redraw(
-            lambda: self.threedwavedsurface(t_range, v_max_tracker)
+            lambda: self.threedwavesurface(t_range, v_max_tracker)
         )
 
         nodecircles = VGroup(
@@ -399,6 +399,32 @@ class StringToSpherical(ThreeDScene):
             )
         )
 
+    def anim_custom_three_d_wavesurface(self, num_nodes = None, runtime = None):
+        self.set_camera_orientation(phi=-45 * DEGREES, theta=-135 * DEGREES, gamma=-55 * DEGREES,)
+        if num_nodes is None:
+            num_nodes = int(input("Enter number of (angular) nodes (l): "))
+        
+        axes, _ = self.custom_axes_and_t_range()
+        self.add(axes)
+
+        t_range = [
+            ValueTracker(self.l/4),
+            ValueTracker(self.l/4 * (2*num_nodes+1))
+        ]
+
+        surface = always_redraw(lambda:
+            self.threedwavesurface(t_range = t_range)
+        )
+        self.add(surface)
+
+        clock_incr = runtime if runtime is not None else 1/self.f # For GIFs, this is enough as the time period is covered.
+        self.play(
+                self.clock.animate(
+                    run_time=clock_incr, rate_func=linear
+                ).increment_value(clock_incr),
+        )
+
     def construct(self):
         self.anim_intro_till_first_sphere()
         self.anim_second_harmonic()
+        # self.anim_custom_three_d_wavesurface(3)
