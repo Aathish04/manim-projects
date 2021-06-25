@@ -32,8 +32,8 @@ class StringToSpherical(ThreeDScene):
             handles = get_smooth_cubic_bezier_handle_points(
                 (outanchor1[-1], outanchor2[-1])
             )
-            outhandle1.append(handles[0])
-            outhandle2.append(handles[1])
+            outhandle1.append(handles[0][0])
+            outhandle2.append(handles[1][0])
 
         return outanchor1, outhandle1, outhandle2, outanchor2
 
@@ -131,7 +131,7 @@ class StringToSpherical(ThreeDScene):
         wave = always_redraw(
             lambda: axes.get_graph(
                 lambda x: self.twodwavefunction(x, self.clock.get_value()),
-                t_range=[t_range[0].get_value(), t_range[1].get_value()],
+                x_range=[t_range[0].get_value(), t_range[1].get_value()],
             )
         )
 
@@ -266,7 +266,7 @@ class StringToSpherical(ThreeDScene):
         wave = always_redraw(
             lambda: axes.get_graph(
                 lambda x: self.twodwavefunction(x, self.clock.get_value()),
-                t_range=[t_range[0].get_value(), t_range[1].get_value()],
+                x_range=[t_range[0].get_value(), t_range[1].get_value()],
             )
         )
 
@@ -425,6 +425,6 @@ class StringToSpherical(ThreeDScene):
         )
 
     def construct(self):
-        self.anim_intro_till_first_sphere()
-        self.anim_second_harmonic()
-        # self.anim_custom_three_d_wavesurface(3)
+        # self.anim_intro_till_first_sphere()
+        # self.anim_second_harmonic()
+        self.anim_custom_three_d_wavesurface(2)
