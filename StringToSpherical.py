@@ -95,10 +95,8 @@ class StringToSpherical(ThreeDScene):
     def threedwavesurface(self, t_range, v_max_tracker = None, color = WHITE, opacity = 1):
         return ParametricSurface(
             func=lambda u, v: self.threedwavepointsfunction(u, v, t_range=t_range),
-            u_min=10e-6,
-            u_max=PI - 10e-6,
-            v_min=0,
-            v_max= 2 * PI if v_max_tracker is None else v_max_tracker.get_value(),
+            u_range=[10e-6,PI - 10e-6,],
+            v_range=[0,2 * PI if v_max_tracker is None else v_max_tracker.get_value()],
             checkerboard_colors=[None, None],
             fill_color=color,
             fill_opacity=opacity,
@@ -406,7 +404,7 @@ class StringToSpherical(ThreeDScene):
         
         axes, _ = self.custom_axes_and_t_range()
         self.add(axes)
-
+        self.add(MathTex(f"l={num_nodes}").to_edge(UR).shift(LEFT*1))
         t_range = [
             ValueTracker(self.l/4),
             ValueTracker(self.l/4 * (2*num_nodes+1))
